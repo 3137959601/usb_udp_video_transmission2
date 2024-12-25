@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>picture/home_1.png</file>
+        <file>picture/home_2.png</file>
+        <file>picture/log.png</file>
+        <file>picture/median_filter.png</file>
+        <file>picture/set.png</file>
+        <file>picture/tool.png</file>
+        <file>picture/switch_off.png</file>
+        <file>picture/switch_on.png</file>
+    </qresource>
+</RCC>
