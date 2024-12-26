@@ -42,8 +42,8 @@ void drawThread::drawimage()
     QImage im( mat.data,mat.cols, mat.rows,static_cast<int>(mat.step),QImage::Format_Grayscale16 );
     MainWindow::image = im;
 
-    float time = (double)mstimer.nsecsElapsed()/(double)1000000;
-    qDebug() <<"DrawImage TimeCost:"<< time<<"ms";// ms
+    //float time = (double)mstimer.nsecsElapsed()/(double)1000000;
+    //qDebug() <<"DrawImage TimeCost:"<< time<<"ms";// ms
 
     emit updataimage();
 

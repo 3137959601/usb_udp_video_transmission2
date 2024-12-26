@@ -30,7 +30,7 @@
      <item row="0" column="0">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QWidget" name="usb_widget" native="true">
+        <widget class="widget_image" name="usb_widget" native="true">
          <property name="minimumSize">
           <size>
            <width>128</width>
@@ -49,7 +49,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="udp_widget" native="true">
+        <widget class="widget_image" name="udp_widget" native="true">
          <property name="minimumSize">
           <size>
            <width>128</width>
@@ -303,49 +303,74 @@
      <rect>
       <x>66</x>
       <y>180</y>
-      <width>314</width>
-      <height>73</height>
+      <width>311</width>
+      <height>85</height>
      </rect>
     </property>
     <property name="title">
      <string/>
     </property>
-    <layout class="QGridLayout" name="gridLayout_7">
+    <layout class="QGridLayout" name="gridLayout_6">
      <item row="0" column="0">
-      <layout class="QGridLayout" name="gridLayout_6">
+      <layout class="QGridLayout" name="gridLayout_5">
        <item row="0" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
          <item>
-          <widget class="QPushButton" name="switchBt">
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QPushButton" name="switchBt">
+             <property name="minimumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </item>
          <item>
-          <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
+           <item>
+            <widget class="QPushButton" name="camera_det_pB">
+             <property name="text">
+              <string>相机检测</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="camera_comboBox">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -356,8 +381,8 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>292</width>
-           <height>19</height>
+           <width>289</width>
+           <height>13</height>
           </size>
          </property>
         </spacer>
@@ -644,325 +669,353 @@ QPushButton:default {
      <rect>
       <x>390</x>
       <y>10</y>
-      <width>457</width>
-      <height>512</height>
+      <width>459</width>
+      <height>546</height>
      </rect>
     </property>
     <property name="title">
      <string>电压电流控制窗口</string>
     </property>
-    <layout class="QGridLayout" name="gridLayout_5">
+    <layout class="QGridLayout" name="gridLayout_4">
      <item row="0" column="0">
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_40">
-         <property name="text">
-          <string>供电电流1~5</string>
-         </property>
-         <property name="openExternalLinks">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLCDNumber" name="sc_lcdNum1">
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLCDNumber" name="sc_lcdNum2"/>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLCDNumber" name="sc_lcdNum3"/>
-       </item>
-       <item row="0" column="4">
-        <widget class="QLCDNumber" name="sc_lcdNum4"/>
-       </item>
-       <item row="0" column="5">
-        <widget class="QLCDNumber" name="sc_lcdNum5"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_27">
-         <property name="text">
-          <string>供电电压1~5</string>
-         </property>
-         <property name="openExternalLinks">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLCDNumber" name="sc_lcdNum1_2"/>
-       </item>
-       <item row="1" column="2">
-        <widget class="QLCDNumber" name="sc_lcdNum2_2"/>
-       </item>
-       <item row="1" column="3">
-        <widget class="QLCDNumber" name="sc_lcdNum3_2"/>
-       </item>
-       <item row="1" column="4">
-        <widget class="QLCDNumber" name="sc_lcdNum4_2"/>
-       </item>
-       <item row="1" column="5">
-        <widget class="QLCDNumber" name="sc_lcdNum5_2"/>
-       </item>
-       <item row="2" column="1">
-        <widget class="QDoubleSpinBox" name="sv_dSB1">
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QDoubleSpinBox" name="sv_dSB2"/>
-       </item>
-       <item row="2" column="3">
-        <widget class="QDoubleSpinBox" name="sv_dSB3"/>
-       </item>
-       <item row="2" column="4">
-        <widget class="QDoubleSpinBox" name="sv_dSB4"/>
-       </item>
-       <item row="2" column="5">
-        <widget class="QDoubleSpinBox" name="sv_dSB5"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_41">
-         <property name="text">
-          <string>SUBPI</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLCDNumber" name="SUBPI_lcdNum"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_28">
-         <property name="text">
-          <string>SUBPV</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLCDNumber" name="SUBPV_lcdNum"/>
-       </item>
-       <item row="5" column="1">
-        <widget class="QDoubleSpinBox" name="SUBPV_dSB"/>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_42">
-         <property name="text">
-          <string>偏置电流1~5</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLCDNumber" name="bc_lcdNum1"/>
-       </item>
-       <item row="6" column="2">
-        <widget class="QLCDNumber" name="bc_lcdNum2"/>
-       </item>
-       <item row="6" column="3">
-        <widget class="QLCDNumber" name="bc_lcdNum3"/>
-       </item>
-       <item row="6" column="4">
-        <widget class="QLCDNumber" name="bc_lcdNum4"/>
-       </item>
-       <item row="6" column="5">
-        <widget class="QLCDNumber" name="bc_lcdNum5"/>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_29">
-         <property name="text">
-          <string>偏置电压1~5</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QLCDNumber" name="bv_lcdNum1"/>
-       </item>
-       <item row="7" column="2">
-        <widget class="QLCDNumber" name="bv_lcdNum2"/>
-       </item>
-       <item row="7" column="3">
-        <widget class="QLCDNumber" name="bv_lcdNum3"/>
-       </item>
-       <item row="7" column="4">
-        <widget class="QLCDNumber" name="bv_lcdNum4"/>
-       </item>
-       <item row="7" column="5">
-        <widget class="QLCDNumber" name="bv_lcdNum5"/>
-       </item>
-       <item row="8" column="1">
-        <widget class="QDoubleSpinBox" name="bv_dSB1"/>
-       </item>
-       <item row="8" column="2">
-        <widget class="QDoubleSpinBox" name="bv_dSB2"/>
-       </item>
-       <item row="8" column="3">
-        <widget class="QDoubleSpinBox" name="bv_dSB3"/>
-       </item>
-       <item row="8" column="4">
-        <widget class="QDoubleSpinBox" name="bv_dSB4"/>
-       </item>
-       <item row="8" column="5">
-        <widget class="QDoubleSpinBox" name="bv_dSB5"/>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="label_43">
-         <property name="text">
-          <string>偏置电流6~10</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1">
-        <widget class="QLCDNumber" name="bc_lcdNum6"/>
-       </item>
-       <item row="9" column="2">
-        <widget class="QLCDNumber" name="bc_lcdNum7"/>
-       </item>
-       <item row="9" column="3">
-        <widget class="QLCDNumber" name="bc_lcdNum8"/>
-       </item>
-       <item row="9" column="4">
-        <widget class="QLCDNumber" name="bc_lcdNum9"/>
-       </item>
-       <item row="9" column="5">
-        <widget class="QLCDNumber" name="bc_lcdNum10"/>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="label_30">
-         <property name="text">
-          <string>偏置电压6~10</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <widget class="QLCDNumber" name="bv_lcdNum6"/>
-       </item>
-       <item row="10" column="2">
-        <widget class="QLCDNumber" name="bv_lcdNum7"/>
-       </item>
-       <item row="10" column="3">
-        <widget class="QLCDNumber" name="bv_lcdNum8"/>
-       </item>
-       <item row="10" column="4">
-        <widget class="QLCDNumber" name="bv_lcdNum9"/>
-       </item>
-       <item row="10" column="5">
-        <widget class="QLCDNumber" name="bv_lcdNum10"/>
-       </item>
-       <item row="11" column="1">
-        <widget class="QDoubleSpinBox" name="bv_dSB6"/>
-       </item>
-       <item row="11" column="2">
-        <widget class="QDoubleSpinBox" name="bv_dSB7"/>
-       </item>
-       <item row="11" column="3">
-        <widget class="QDoubleSpinBox" name="bv_dSB8"/>
-       </item>
-       <item row="11" column="4">
-        <widget class="QDoubleSpinBox" name="bv_dSB9"/>
-       </item>
-       <item row="11" column="5">
-        <widget class="QDoubleSpinBox" name="bv_dSB10"/>
-       </item>
-       <item row="12" column="0">
-        <widget class="QLabel" name="label_44">
-         <property name="text">
-          <string>偏置电流11~15</string>
-         </property>
-        </widget>
-       </item>
-       <item row="12" column="1">
-        <widget class="QLCDNumber" name="bc_lcdNum11"/>
-       </item>
-       <item row="12" column="2">
-        <widget class="QLCDNumber" name="bc_lcdNum12"/>
-       </item>
-       <item row="12" column="3">
-        <widget class="QLCDNumber" name="bc_lcdNum13"/>
-       </item>
-       <item row="12" column="4">
-        <widget class="QLCDNumber" name="bc_lcdNum14"/>
-       </item>
-       <item row="12" column="5">
-        <widget class="QLCDNumber" name="bc_lcdNum15"/>
-       </item>
-       <item row="13" column="0">
-        <widget class="QLabel" name="label_31">
-         <property name="text">
-          <string>偏置电压11~15</string>
-         </property>
-        </widget>
-       </item>
-       <item row="13" column="1">
-        <widget class="QLCDNumber" name="bv_lcdNum11"/>
-       </item>
-       <item row="13" column="2">
-        <widget class="QLCDNumber" name="bv_lcdNum12"/>
-       </item>
-       <item row="13" column="3">
-        <widget class="QLCDNumber" name="bv_lcdNum13"/>
-       </item>
-       <item row="13" column="4">
-        <widget class="QLCDNumber" name="bv_lcdNum14"/>
-       </item>
-       <item row="13" column="5">
-        <widget class="QLCDNumber" name="bv_lcdNum15"/>
-       </item>
-       <item row="14" column="1">
-        <widget class="QDoubleSpinBox" name="bv_dSB11"/>
-       </item>
-       <item row="14" column="2">
-        <widget class="QDoubleSpinBox" name="bv_dSB12"/>
-       </item>
-       <item row="14" column="3">
-        <widget class="QDoubleSpinBox" name="bv_dSB13"/>
-       </item>
-       <item row="14" column="4">
-        <widget class="QDoubleSpinBox" name="bv_dSB14"/>
-       </item>
-       <item row="14" column="5">
-        <widget class="QDoubleSpinBox" name="bv_dSB15"/>
-       </item>
-       <item row="15" column="0">
-        <widget class="QLabel" name="label_32">
-         <property name="text">
-          <string>可调电流1~5</string>
-         </property>
-        </widget>
-       </item>
-       <item row="15" column="1">
-        <widget class="QLCDNumber" name="ajc_lcdNum1"/>
-       </item>
-       <item row="15" column="2">
-        <widget class="QLCDNumber" name="ajc_lcdNum2"/>
-       </item>
-       <item row="15" column="3">
-        <widget class="QLCDNumber" name="ajc_lcdNum3"/>
-       </item>
-       <item row="15" column="4">
-        <widget class="QLCDNumber" name="ajc_lcdNum4"/>
-       </item>
-       <item row="15" column="5">
-        <widget class="QLCDNumber" name="ajc_lcdNum5"/>
-       </item>
-       <item row="16" column="1">
-        <widget class="QDoubleSpinBox" name="ajc_dSB1"/>
-       </item>
-       <item row="16" column="2">
-        <widget class="QDoubleSpinBox" name="ajc_dSB2"/>
-       </item>
-       <item row="16" column="3">
-        <widget class="QDoubleSpinBox" name="ajc_dSB3"/>
-       </item>
-       <item row="16" column="4">
-        <widget class="QDoubleSpinBox" name="ajc_dSB4"/>
-       </item>
-       <item row="16" column="5">
-        <widget class="QDoubleSpinBox" name="ajc_dSB5"/>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_40">
+           <property name="text">
+            <string>供电电流1~5</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLCDNumber" name="sc_lcdNum1">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLCDNumber" name="sc_lcdNum2"/>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLCDNumber" name="sc_lcdNum3"/>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLCDNumber" name="sc_lcdNum4"/>
+         </item>
+         <item row="0" column="5">
+          <widget class="QLCDNumber" name="sc_lcdNum5"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_27">
+           <property name="text">
+            <string>供电电压1~5</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLCDNumber" name="sc_lcdNum1_2"/>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLCDNumber" name="sc_lcdNum2_2"/>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLCDNumber" name="sc_lcdNum3_2"/>
+         </item>
+         <item row="1" column="4">
+          <widget class="QLCDNumber" name="sc_lcdNum4_2"/>
+         </item>
+         <item row="1" column="5">
+          <widget class="QLCDNumber" name="sc_lcdNum5_2"/>
+         </item>
+         <item row="2" column="1">
+          <widget class="QDoubleSpinBox" name="sv_dSB1">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QDoubleSpinBox" name="sv_dSB2"/>
+         </item>
+         <item row="2" column="3">
+          <widget class="QDoubleSpinBox" name="sv_dSB3"/>
+         </item>
+         <item row="2" column="4">
+          <widget class="QDoubleSpinBox" name="sv_dSB4"/>
+         </item>
+         <item row="2" column="5">
+          <widget class="QDoubleSpinBox" name="sv_dSB5"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_41">
+           <property name="text">
+            <string>SUBPI</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLCDNumber" name="SUBPI_lcdNum"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_28">
+           <property name="text">
+            <string>SUBPV</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLCDNumber" name="SUBPV_lcdNum"/>
+         </item>
+         <item row="5" column="1">
+          <widget class="QDoubleSpinBox" name="SUBPV_dSB"/>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_42">
+           <property name="text">
+            <string>偏置电流1~5</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLCDNumber" name="bc_lcdNum1"/>
+         </item>
+         <item row="6" column="2">
+          <widget class="QLCDNumber" name="bc_lcdNum2"/>
+         </item>
+         <item row="6" column="3">
+          <widget class="QLCDNumber" name="bc_lcdNum3"/>
+         </item>
+         <item row="6" column="4">
+          <widget class="QLCDNumber" name="bc_lcdNum4"/>
+         </item>
+         <item row="6" column="5">
+          <widget class="QLCDNumber" name="bc_lcdNum5"/>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_29">
+           <property name="text">
+            <string>偏置电压1~5</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QLCDNumber" name="bv_lcdNum1"/>
+         </item>
+         <item row="7" column="2">
+          <widget class="QLCDNumber" name="bv_lcdNum2"/>
+         </item>
+         <item row="7" column="3">
+          <widget class="QLCDNumber" name="bv_lcdNum3"/>
+         </item>
+         <item row="7" column="4">
+          <widget class="QLCDNumber" name="bv_lcdNum4"/>
+         </item>
+         <item row="7" column="5">
+          <widget class="QLCDNumber" name="bv_lcdNum5"/>
+         </item>
+         <item row="8" column="1">
+          <widget class="QDoubleSpinBox" name="bv_dSB1"/>
+         </item>
+         <item row="8" column="2">
+          <widget class="QDoubleSpinBox" name="bv_dSB2"/>
+         </item>
+         <item row="8" column="3">
+          <widget class="QDoubleSpinBox" name="bv_dSB3"/>
+         </item>
+         <item row="8" column="4">
+          <widget class="QDoubleSpinBox" name="bv_dSB4"/>
+         </item>
+         <item row="8" column="5">
+          <widget class="QDoubleSpinBox" name="bv_dSB5"/>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_43">
+           <property name="text">
+            <string>偏置电流6~10</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QLCDNumber" name="bc_lcdNum6"/>
+         </item>
+         <item row="9" column="2">
+          <widget class="QLCDNumber" name="bc_lcdNum7"/>
+         </item>
+         <item row="9" column="3">
+          <widget class="QLCDNumber" name="bc_lcdNum8"/>
+         </item>
+         <item row="9" column="4">
+          <widget class="QLCDNumber" name="bc_lcdNum9"/>
+         </item>
+         <item row="9" column="5">
+          <widget class="QLCDNumber" name="bc_lcdNum10"/>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="label_30">
+           <property name="text">
+            <string>偏置电压6~10</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="QLCDNumber" name="bv_lcdNum6"/>
+         </item>
+         <item row="10" column="2">
+          <widget class="QLCDNumber" name="bv_lcdNum7"/>
+         </item>
+         <item row="10" column="3">
+          <widget class="QLCDNumber" name="bv_lcdNum8"/>
+         </item>
+         <item row="10" column="4">
+          <widget class="QLCDNumber" name="bv_lcdNum9"/>
+         </item>
+         <item row="10" column="5">
+          <widget class="QLCDNumber" name="bv_lcdNum10"/>
+         </item>
+         <item row="11" column="1">
+          <widget class="QDoubleSpinBox" name="bv_dSB6"/>
+         </item>
+         <item row="11" column="2">
+          <widget class="QDoubleSpinBox" name="bv_dSB7"/>
+         </item>
+         <item row="11" column="3">
+          <widget class="QDoubleSpinBox" name="bv_dSB8"/>
+         </item>
+         <item row="11" column="4">
+          <widget class="QDoubleSpinBox" name="bv_dSB9"/>
+         </item>
+         <item row="11" column="5">
+          <widget class="QDoubleSpinBox" name="bv_dSB10"/>
+         </item>
+         <item row="12" column="0">
+          <widget class="QLabel" name="label_44">
+           <property name="text">
+            <string>偏置电流11~15</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1">
+          <widget class="QLCDNumber" name="bc_lcdNum11"/>
+         </item>
+         <item row="12" column="2">
+          <widget class="QLCDNumber" name="bc_lcdNum12"/>
+         </item>
+         <item row="12" column="3">
+          <widget class="QLCDNumber" name="bc_lcdNum13"/>
+         </item>
+         <item row="12" column="4">
+          <widget class="QLCDNumber" name="bc_lcdNum14"/>
+         </item>
+         <item row="12" column="5">
+          <widget class="QLCDNumber" name="bc_lcdNum15"/>
+         </item>
+         <item row="13" column="0">
+          <widget class="QLabel" name="label_31">
+           <property name="text">
+            <string>偏置电压11~15</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="1">
+          <widget class="QLCDNumber" name="bv_lcdNum11"/>
+         </item>
+         <item row="13" column="2">
+          <widget class="QLCDNumber" name="bv_lcdNum12"/>
+         </item>
+         <item row="13" column="3">
+          <widget class="QLCDNumber" name="bv_lcdNum13"/>
+         </item>
+         <item row="13" column="4">
+          <widget class="QLCDNumber" name="bv_lcdNum14"/>
+         </item>
+         <item row="13" column="5">
+          <widget class="QLCDNumber" name="bv_lcdNum15"/>
+         </item>
+         <item row="14" column="1">
+          <widget class="QDoubleSpinBox" name="bv_dSB11"/>
+         </item>
+         <item row="14" column="2">
+          <widget class="QDoubleSpinBox" name="bv_dSB12"/>
+         </item>
+         <item row="14" column="3">
+          <widget class="QDoubleSpinBox" name="bv_dSB13"/>
+         </item>
+         <item row="14" column="4">
+          <widget class="QDoubleSpinBox" name="bv_dSB14"/>
+         </item>
+         <item row="14" column="5">
+          <widget class="QDoubleSpinBox" name="bv_dSB15"/>
+         </item>
+         <item row="15" column="0">
+          <widget class="QLabel" name="label_32">
+           <property name="text">
+            <string>可调电流1~5</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="1">
+          <widget class="QLCDNumber" name="ajc_lcdNum1"/>
+         </item>
+         <item row="15" column="2">
+          <widget class="QLCDNumber" name="ajc_lcdNum2"/>
+         </item>
+         <item row="15" column="3">
+          <widget class="QLCDNumber" name="ajc_lcdNum3"/>
+         </item>
+         <item row="15" column="4">
+          <widget class="QLCDNumber" name="ajc_lcdNum4"/>
+         </item>
+         <item row="15" column="5">
+          <widget class="QLCDNumber" name="ajc_lcdNum5"/>
+         </item>
+         <item row="16" column="1">
+          <widget class="QDoubleSpinBox" name="ajc_dSB1"/>
+         </item>
+         <item row="16" column="2">
+          <widget class="QDoubleSpinBox" name="ajc_dSB2"/>
+         </item>
+         <item row="16" column="3">
+          <widget class="QDoubleSpinBox" name="ajc_dSB3"/>
+         </item>
+         <item row="16" column="4">
+          <widget class="QDoubleSpinBox" name="ajc_dSB4"/>
+         </item>
+         <item row="16" column="5">
+          <widget class="QDoubleSpinBox" name="ajc_dSB5"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <spacer name="horizontalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="confsv_pB">
+           <property name="text">
+            <string>配置保存</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
@@ -986,6 +1039,14 @@ QPushButton:default {
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>widget_image</class>
+   <extends>QWidget</extends>
+   <header location="global">widget_image.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

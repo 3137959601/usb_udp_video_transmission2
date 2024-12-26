@@ -13,7 +13,8 @@
 #include "drawthread.h"
 #include "usbthread.h"
 
-#include<qelapsedtimer.h>
+#include <qelapsedtimer.h>
+#include <QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -51,7 +52,8 @@ public:
     bool zoom;
     double zoom_ratio[2];
 
-    void repaintImage();
+    void initUI();
+    void initThreads();
 
 signals :
     void new_Xfer();
@@ -75,6 +77,8 @@ private slots:
     void on_tooltB_clicked();
 
     void on_switchBt_clicked();
+
+    void on_camera_det_pB_clicked();
 
 private:
     Ui::MainWindow *ui;

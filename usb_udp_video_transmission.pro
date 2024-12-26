@@ -21,7 +21,8 @@ SOURCES += \
     mainwindow.cpp \
     child_window/system_settings_window.cpp \
     child_window/toolwindow.cpp \
-    usbthread.cpp
+    usbthread.cpp \
+    widget_image.cpp
 
 HEADERS += \
     child_window/image_procss_window.h \
@@ -31,7 +32,8 @@ HEADERS += \
     mainwindow.h \
     child_window/system_settings_window.h \
     child_window/toolwindow.h \
-    usbthread.h
+    usbthread.h \
+    widget_image.h
 
 FORMS += \
     child_window/image_procss_window.ui \

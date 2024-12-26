@@ -28,9 +28,22 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->initUI();
+    this->initThreads();
+
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::initUI()
+{
     this->setWindowTitle("双通道红外图像传输系统");
 
-    switch_flag = false;
+    Acquire = false;
     ui->switchBt->setIcon(QIcon(":/picture/switch_off.png"));
     ui->switchBt->setStyleSheet("border: none;"); // 去掉默认边框
     ui->switchBt->setIconSize(QSize(40, 40)); // 设置图标大小
@@ -54,15 +67,55 @@ MainWindow::MainWindow(QWidget *parent)
     auto p_status_bar = this->statusBar();
     p_status_bar->showMessage("这是一个QMainWindow集成QStatusBar示例。");
 
+    //初始时先检测一次USB接口
+    this->on_camera_det_pB_clicked();
+
+    //    zoom_ratio[0] = 0.2;
+    //    zoom_ratio[1] = 0.25;
 }
 
-MainWindow::~MainWindow()
+void MainWindow::initThreads()
 {
-    delete ui;
+    //为自定义的模块分配空间  不能指定父对象
+    usbthread = new usbThread;
+    drawthread = new drawThread;
+
+    //为自定义的子线程分配空间  指定父对象
+    thread1 = new QThread(this);//子线程1
+    thread2 = new QThread(this);//子2
+    //thread1->setPriority(QThread::HighPriority);
+
+    //把自定义模块添加到子线程
+    usbthread->moveToThread(thread1);
+    drawthread->moveToThread(thread2);
+
+    connect(this,&MainWindow::new_Xfer,usbthread,&usbThread::Xfer);
+    connect(usbthread,SIGNAL(updatapic()),drawthread,SLOT(drawimage()));//usb线程发出pic更新信号，draw线程绘图
+    connect(drawthread,&drawThread::updataimage,ui->usb_widget,&widget_image::repaintImage);//draw线程绘图结束，主线程更新界面
+
+    //启动子线程
+    thread1->start();
+    thread2->start();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    Acquire = false;
+    if(thread1)
+    {
+        thread1->quit();
+        thread1->wait();
+        usbthread->deleteLater();
+        thread1->deleteLater();
+    }
+    if(thread2)
+    {
+        thread2->quit();
+        thread2->wait();
+        drawthread->deleteLater();
+        thread2->deleteLater();
+    }
+
     // 如果子窗口存在，关闭它
     if (configWindow != nullptr) {
         configWindow->close();
@@ -186,12 +239,34 @@ void MainWindow::on_tooltB_clicked()
 
 void MainWindow::on_switchBt_clicked()
 {
-    switch_flag=!switch_flag;
-    if(switch_flag)
+    Acquire=!Acquire;
+    if(Acquire)
     {
         ui->switchBt->setIcon(QIcon(":/picture/switch_on.png"));
+        emit new_Xfer();
+        ui->camera_det_pB->setEnabled(false);
+        ui->camera_comboBox->setEnabled(false);
     }else{
         ui->switchBt->setIcon(QIcon(":/picture/switch_off.png"));
+        ui->camera_det_pB->setEnabled(true);
+        ui->camera_comboBox->setEnabled(true);
+    }
+}
+
+
+void MainWindow::on_camera_det_pB_clicked()
+{
+    int nDeviceCount = pUSB->DeviceCount();
+    ui->camera_comboBox->clear();
+
+    for (int nIdx = 0; nIdx < nDeviceCount; nIdx++)
+    {
+        pUSB->Open(nIdx);
+        qDebug("DeviceName  :%s\n", pUSB->DeviceName);
+        qDebug("FriendlyName:%s\n", pUSB->FriendlyName);
+        qDebug("VendorID    :%4x\n", pUSB->VendorID);
+        qDebug("ProductID   :%4x\n", pUSB->ProductID);
+        ui->camera_comboBox->addItem(pUSB->DeviceName);
     }
 }
 
