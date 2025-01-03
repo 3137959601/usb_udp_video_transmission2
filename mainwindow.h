@@ -1,6 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <qelapsedtimer.h>
+#include <QThread>
+#include <QSerialPort>
+#include <QSerialPortInfo>
+#include <QMessageBox>
+#include <QSettings>
+
 #include <QMainWindow>
 #include "child_window/system_settings_window.h"
 #include "child_window/logwindow.h"
@@ -12,9 +19,8 @@
 #include "cy_cpp/inc/CyAPI.h"
 #include "drawthread.h"
 #include "usbthread.h"
+#include "serialworker.h"
 
-#include <qelapsedtimer.h>
-#include <QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,6 +38,9 @@ public:
     static CCyUSBEndPoint * BulkInEpt;
     usbThread *usbthread;
     drawThread *drawthread;
+
+    SerialWorker *serialworker;
+
     QThread *thread1;
     QThread *thread2;
     QPixmap pixmap ;
@@ -54,17 +63,29 @@ public:
 
     void initUI();
     void initThreads();
+    void initSerial();
+    void initAD();
+
+    void serial_recvDataSlot(QString data);
+
 
 signals :
+    //USB信号
     void new_Xfer();
-    void new_display();
+
+    //串口信号
+    void open_serial_signal(QString com_name);
+    void close_serial_signal();
+    void serial_send_signal(QString buf);
+    //电压电流控制
+    void ADSettings_signal(QList<float>value);
 
 protected:
     void closeEvent(QCloseEvent *event) override; // 重载 closeEvent
 
 private slots:
     //void on_system_setup_tB_triggered(QAction *arg1);
-
+    //子窗口按键
     void on_system_setup_tB_clicked();
 
     void on_log_tB_clicked();
@@ -75,11 +96,29 @@ private slots:
 
 
     void on_tooltB_clicked();
-
+    //相机开关按键
     void on_switchBt_clicked();
-
+    //相机检测按键
     void on_camera_det_pB_clicked();
 
+    //串口功能按键
+    void on_serialpB_clicked();
+
+    void on_command_sendBt_clicked();
+
+    void on_command_clearBt_clicked();
+
+    void on_serial_det_pB_clicked();
+    //电压电流控制窗口
+    void LCDNumShow_slot(unsigned char index,float value);
+    void LCDNumShow_slot2(std::vector<float>currents);
+    void on_confupd_pB_clicked();
+
+    //void getADSettings();
+
+    void on_confsv_pB_clicked();
+
+    void loadData();
 private:
     Ui::MainWindow *ui;
 
@@ -90,6 +129,7 @@ private:
     image_procss_window *image_process_Window = nullptr;
     toolwindow *toolWindow = nullptr;
 
+    QSettings *settings;
     bool switch_flag;
 };
 #endif // MAINWINDOW_H

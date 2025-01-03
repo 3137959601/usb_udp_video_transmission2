@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
-    <height>590</height>
+    <width>921</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -76,22 +76,22 @@
      <rect>
       <x>66</x>
       <y>262</y>
-      <width>311</width>
-      <height>291</height>
+      <width>307</width>
+      <height>295</height>
      </rect>
     </property>
     <property name="title">
      <string>指令收发窗口</string>
     </property>
-    <layout class="QGridLayout" name="gridLayout_3">
+    <layout class="QGridLayout" name="gridLayout_7">
      <item row="0" column="0">
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLabel" name="label_33">
+          <widget class="QPushButton" name="serialpB">
            <property name="text">
-            <string>串口选择</string>
+            <string>打开串口</string>
            </property>
           </widget>
          </item>
@@ -109,14 +109,14 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="com_det_pB">
+          <widget class="QPushButton" name="serial_det_pB">
            <property name="text">
             <string>串口检测</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comcB">
+          <widget class="QComboBox" name="serialCb">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -136,7 +136,7 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="1" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
           <widget class="QLabel" name="label">
@@ -160,23 +160,17 @@
          </item>
         </layout>
        </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
+       <item row="2" column="0">
+        <widget class="QTextEdit" name="serialSendtE">
+         <property name="maximumSize">
           <size>
-           <width>0</width>
+           <width>16777215</width>
            <height>30</height>
           </size>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="3" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <spacer name="horizontalSpacer_2">
@@ -218,7 +212,7 @@
          </item>
         </layout>
        </item>
-       <item>
+       <item row="4" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
           <widget class="QLabel" name="label_2">
@@ -242,8 +236,8 @@
          </item>
         </layout>
        </item>
-       <item>
-        <widget class="QPlainTextEdit" name="plainTextEdit">
+       <item row="5" column="0">
+        <widget class="QPlainTextEdit" name="serialRecvpTE">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
            <horstretch>0</horstretch>
@@ -267,7 +261,7 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item row="6" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
           <spacer name="horizontalSpacer_3">
@@ -669,7 +663,7 @@ QPushButton:default {
      <rect>
       <x>390</x>
       <y>10</y>
-      <width>459</width>
+      <width>521</width>
       <height>546</height>
      </rect>
     </property>
@@ -678,7 +672,7 @@ QPushButton:default {
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
      <item row="0" column="0">
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
@@ -721,38 +715,102 @@ QPushButton:default {
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLCDNumber" name="sc_lcdNum1_2"/>
+          <widget class="QLCDNumber" name="sv_lcdNum1"/>
          </item>
          <item row="1" column="2">
-          <widget class="QLCDNumber" name="sc_lcdNum2_2"/>
+          <widget class="QLCDNumber" name="sv_lcdNum2"/>
          </item>
          <item row="1" column="3">
-          <widget class="QLCDNumber" name="sc_lcdNum3_2"/>
+          <widget class="QLCDNumber" name="sv_lcdNum3"/>
          </item>
          <item row="1" column="4">
-          <widget class="QLCDNumber" name="sc_lcdNum4_2"/>
+          <widget class="QLCDNumber" name="sv_lcdNum4"/>
          </item>
          <item row="1" column="5">
-          <widget class="QLCDNumber" name="sc_lcdNum5_2"/>
+          <widget class="QLCDNumber" name="sv_lcdNum5"/>
          </item>
          <item row="2" column="1">
           <widget class="QDoubleSpinBox" name="sv_dSB1">
            <property name="layoutDirection">
             <enum>Qt::LeftToRight</enum>
            </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="minimum">
+            <double>0.800000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="2" column="2">
-          <widget class="QDoubleSpinBox" name="sv_dSB2"/>
+          <widget class="QDoubleSpinBox" name="sv_dSB2">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="minimum">
+            <double>0.800000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="3">
-          <widget class="QDoubleSpinBox" name="sv_dSB3"/>
+          <widget class="QDoubleSpinBox" name="sv_dSB3">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="minimum">
+            <double>0.800000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="4">
-          <widget class="QDoubleSpinBox" name="sv_dSB4"/>
+          <widget class="QDoubleSpinBox" name="sv_dSB4">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="minimum">
+            <double>0.800000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="2" column="5">
-          <widget class="QDoubleSpinBox" name="sv_dSB5"/>
+          <widget class="QDoubleSpinBox" name="sv_dSB5">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="minimum">
+            <double>0.800000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="3" column="0">
           <widget class="QLabel" name="label_41">
@@ -775,7 +833,17 @@ QPushButton:default {
           <widget class="QLCDNumber" name="SUBPV_lcdNum"/>
          </item>
          <item row="5" column="1">
-          <widget class="QDoubleSpinBox" name="SUBPV_dSB"/>
+          <widget class="QDoubleSpinBox" name="SUBPV_dSB">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="6" column="0">
           <widget class="QLabel" name="label_42">
@@ -822,19 +890,84 @@ QPushButton:default {
           <widget class="QLCDNumber" name="bv_lcdNum5"/>
          </item>
          <item row="8" column="1">
-          <widget class="QDoubleSpinBox" name="bv_dSB1"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB1">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="8" column="2">
-          <widget class="QDoubleSpinBox" name="bv_dSB2"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB2">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="8" column="3">
-          <widget class="QDoubleSpinBox" name="bv_dSB3"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB3">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="8" column="4">
-          <widget class="QDoubleSpinBox" name="bv_dSB4"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB4">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="8" column="5">
-          <widget class="QDoubleSpinBox" name="bv_dSB5"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB5">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="9" column="0">
           <widget class="QLabel" name="label_43">
@@ -881,19 +1014,84 @@ QPushButton:default {
           <widget class="QLCDNumber" name="bv_lcdNum10"/>
          </item>
          <item row="11" column="1">
-          <widget class="QDoubleSpinBox" name="bv_dSB6"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB6">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="11" column="2">
-          <widget class="QDoubleSpinBox" name="bv_dSB7"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB7">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="11" column="3">
-          <widget class="QDoubleSpinBox" name="bv_dSB8"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB8">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="11" column="4">
-          <widget class="QDoubleSpinBox" name="bv_dSB9"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB9">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="11" column="5">
-          <widget class="QDoubleSpinBox" name="bv_dSB10"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB10">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="12" column="0">
           <widget class="QLabel" name="label_44">
@@ -914,9 +1112,6 @@ QPushButton:default {
          <item row="12" column="4">
           <widget class="QLCDNumber" name="bc_lcdNum14"/>
          </item>
-         <item row="12" column="5">
-          <widget class="QLCDNumber" name="bc_lcdNum15"/>
-         </item>
          <item row="13" column="0">
           <widget class="QLabel" name="label_31">
            <property name="text">
@@ -936,23 +1131,85 @@ QPushButton:default {
          <item row="13" column="4">
           <widget class="QLCDNumber" name="bv_lcdNum14"/>
          </item>
-         <item row="13" column="5">
-          <widget class="QLCDNumber" name="bv_lcdNum15"/>
-         </item>
          <item row="14" column="1">
-          <widget class="QDoubleSpinBox" name="bv_dSB11"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB11">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="14" column="2">
-          <widget class="QDoubleSpinBox" name="bv_dSB12"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB12">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="14" column="3">
-          <widget class="QDoubleSpinBox" name="bv_dSB13"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB13">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="14" column="4">
-          <widget class="QDoubleSpinBox" name="bv_dSB14"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB14">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="14" column="5">
-          <widget class="QDoubleSpinBox" name="bv_dSB15"/>
+          <widget class="QDoubleSpinBox" name="bv_dSB15">
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="15" column="0">
           <widget class="QLabel" name="label_32">
@@ -977,19 +1234,81 @@ QPushButton:default {
           <widget class="QLCDNumber" name="ajc_lcdNum5"/>
          </item>
          <item row="16" column="1">
-          <widget class="QDoubleSpinBox" name="ajc_dSB1"/>
+          <widget class="QDoubleSpinBox" name="ajc_dSB1">
+           <property name="suffix">
+            <string>mA</string>
+           </property>
+           <property name="maximum">
+            <double>10.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="16" column="2">
-          <widget class="QDoubleSpinBox" name="ajc_dSB2"/>
+          <widget class="QDoubleSpinBox" name="ajc_dSB2">
+           <property name="suffix">
+            <string>mA</string>
+           </property>
+           <property name="maximum">
+            <double>10.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="16" column="3">
-          <widget class="QDoubleSpinBox" name="ajc_dSB3"/>
+          <widget class="QDoubleSpinBox" name="ajc_dSB3">
+           <property name="suffix">
+            <string>mA</string>
+           </property>
+           <property name="maximum">
+            <double>10.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="16" column="4">
-          <widget class="QDoubleSpinBox" name="ajc_dSB4"/>
+          <widget class="QDoubleSpinBox" name="ajc_dSB4">
+           <property name="suffix">
+            <string>mA</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.001000000000000</double>
+           </property>
+          </widget>
          </item>
          <item row="16" column="5">
-          <widget class="QDoubleSpinBox" name="ajc_dSB5"/>
+          <widget class="QDoubleSpinBox" name="ajc_dSB5">
+           <property name="suffix">
+            <string>mA</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.001000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="5">
+          <widget class="QLCDNumber" name="bc_lcdNum15"/>
+         </item>
+         <item row="13" column="5">
+          <widget class="QLCDNumber" name="bv_lcdNum15"/>
          </item>
         </layout>
        </item>
@@ -1007,6 +1326,13 @@ QPushButton:default {
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="confupd_pB">
+           <property name="text">
+            <string>配置更新</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="confsv_pB">
@@ -1032,7 +1358,7 @@ QPushButton:default {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>860</width>
+     <width>921</width>
      <height>22</height>
     </rect>
    </property>

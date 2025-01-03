@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,6 +21,7 @@ SOURCES += \
     mainwindow.cpp \
     child_window/system_settings_window.cpp \
     child_window/toolwindow.cpp \
+    serialworker.cpp \
     usbthread.cpp \
     widget_image.cpp
 
@@ -32,6 +33,7 @@ HEADERS += \
     mainwindow.h \
     child_window/system_settings_window.h \
     child_window/toolwindow.h \
+    serialworker.h \
     usbthread.h \
     widget_image.h
 

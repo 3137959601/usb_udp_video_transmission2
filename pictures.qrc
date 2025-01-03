@@ -8,5 +8,7 @@
         <file>picture/tool.png</file>
         <file>picture/switch_off.png</file>
         <file>picture/switch_on.png</file>
+        <file>picture/serial_close.png</file>
+        <file>picture/serial_open.png</file>
     </qresource>
 </RCC>
