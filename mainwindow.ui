@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>921</width>
+    <width>979</width>
     <height>600</height>
    </rect>
   </property>
@@ -663,8 +663,8 @@ QPushButton:default {
      <rect>
       <x>390</x>
       <y>10</y>
-      <width>521</width>
-      <height>546</height>
+      <width>561</width>
+      <height>551</height>
      </rect>
     </property>
     <property name="title">
@@ -675,65 +675,73 @@ QPushButton:default {
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_40">
-           <property name="text">
-            <string>供电电流1~5</string>
-           </property>
-           <property name="openExternalLinks">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLCDNumber" name="sc_lcdNum1">
-           <property name="styleSheet">
-            <string notr="true"/>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLCDNumber" name="sc_lcdNum2"/>
-         </item>
-         <item row="0" column="3">
-          <widget class="QLCDNumber" name="sc_lcdNum3"/>
-         </item>
-         <item row="0" column="4">
-          <widget class="QLCDNumber" name="sc_lcdNum4"/>
-         </item>
-         <item row="0" column="5">
-          <widget class="QLCDNumber" name="sc_lcdNum5"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_27">
-           <property name="text">
-            <string>供电电压1~5</string>
-           </property>
-           <property name="openExternalLinks">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLCDNumber" name="sv_lcdNum1"/>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLCDNumber" name="sv_lcdNum2"/>
-         </item>
-         <item row="1" column="3">
-          <widget class="QLCDNumber" name="sv_lcdNum3"/>
-         </item>
-         <item row="1" column="4">
-          <widget class="QLCDNumber" name="sv_lcdNum4"/>
-         </item>
-         <item row="1" column="5">
-          <widget class="QLCDNumber" name="sv_lcdNum5"/>
-         </item>
          <item row="2" column="1">
           <widget class="QDoubleSpinBox" name="sv_dSB1">
            <property name="layoutDirection">
             <enum>Qt::LeftToRight</enum>
            </property>
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
            <property name="suffix">
             <string>V</string>
            </property>
@@ -748,100 +756,119 @@ QPushButton:default {
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
-          <widget class="QDoubleSpinBox" name="sv_dSB2">
+         <item row="11" column="3">
+          <widget class="QDoubleSpinBox" name="bv_dSB8">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
            <property name="suffix">
             <string>V</string>
            </property>
-           <property name="minimum">
-            <double>0.800000000000000</double>
+           <property name="decimals">
+            <number>3</number>
            </property>
            <property name="maximum">
             <double>5.000000000000000</double>
            </property>
            <property name="singleStep">
-            <double>0.010000000000000</double>
+            <double>0.002000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="2" column="3">
-          <widget class="QDoubleSpinBox" name="sv_dSB3">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="minimum">
-            <double>0.800000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="4">
-          <widget class="QDoubleSpinBox" name="sv_dSB4">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="minimum">
-            <double>0.800000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
+         <item row="9" column="4">
+          <widget class="QLCDNumber" name="bc_lcdNum9">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="5">
-          <widget class="QDoubleSpinBox" name="sv_dSB5">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="minimum">
-            <double>0.800000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_41">
-           <property name="text">
-            <string>SUBPI</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QLCDNumber" name="SUBPI_lcdNum"/>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_28">
-           <property name="text">
-            <string>SUBPV</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QLCDNumber" name="SUBPV_lcdNum"/>
-         </item>
-         <item row="5" column="1">
-          <widget class="QDoubleSpinBox" name="SUBPV_dSB">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
+         <item row="1" column="5">
+          <widget class="QLCDNumber" name="sv_lcdNum5">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
            </property>
           </widget>
          </item>
@@ -852,93 +879,170 @@ QPushButton:default {
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
-          <widget class="QLCDNumber" name="bc_lcdNum1"/>
-         </item>
-         <item row="6" column="2">
-          <widget class="QLCDNumber" name="bc_lcdNum2"/>
-         </item>
-         <item row="6" column="3">
-          <widget class="QLCDNumber" name="bc_lcdNum3"/>
-         </item>
-         <item row="6" column="4">
-          <widget class="QLCDNumber" name="bc_lcdNum4"/>
-         </item>
-         <item row="6" column="5">
-          <widget class="QLCDNumber" name="bc_lcdNum5"/>
-         </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="label_29">
-           <property name="text">
-            <string>偏置电压1~5</string>
+         <item row="0" column="1">
+          <widget class="QLCDNumber" name="sc_lcdNum1">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Filled</enum>
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
-          <widget class="QLCDNumber" name="bv_lcdNum1"/>
-         </item>
-         <item row="7" column="2">
-          <widget class="QLCDNumber" name="bv_lcdNum2"/>
-         </item>
-         <item row="7" column="3">
-          <widget class="QLCDNumber" name="bv_lcdNum3"/>
-         </item>
-         <item row="7" column="4">
-          <widget class="QLCDNumber" name="bv_lcdNum4"/>
-         </item>
-         <item row="7" column="5">
-          <widget class="QLCDNumber" name="bv_lcdNum5"/>
-         </item>
-         <item row="8" column="1">
-          <widget class="QDoubleSpinBox" name="bv_dSB1">
+         <item row="2" column="2">
+          <widget class="QDoubleSpinBox" name="sv_dSB2">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
            <property name="suffix">
             <string>V</string>
            </property>
-           <property name="decimals">
-            <number>3</number>
+           <property name="minimum">
+            <double>0.800000000000000</double>
            </property>
            <property name="maximum">
             <double>5.000000000000000</double>
            </property>
            <property name="singleStep">
-            <double>0.002000000000000</double>
+            <double>0.010000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="8" column="2">
-          <widget class="QDoubleSpinBox" name="bv_dSB2">
-           <property name="suffix">
-            <string>V</string>
+         <item row="14" column="3">
+          <widget class="QDoubleSpinBox" name="bv_dSB13">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
            </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="3">
-          <widget class="QDoubleSpinBox" name="bv_dSB3">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="4">
-          <widget class="QDoubleSpinBox" name="bv_dSB4">
            <property name="suffix">
             <string>V</string>
            </property>
@@ -955,6 +1059,68 @@ QPushButton:default {
          </item>
          <item row="8" column="5">
           <widget class="QDoubleSpinBox" name="bv_dSB5">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
            <property name="suffix">
             <string>V</string>
            </property>
@@ -968,171 +1134,166 @@ QPushButton:default {
             <double>0.002000000000000</double>
            </property>
           </widget>
-         </item>
-         <item row="9" column="0">
-          <widget class="QLabel" name="label_43">
-           <property name="text">
-            <string>偏置电流6~10</string>
-           </property>
-          </widget>
-         </item>
-         <item row="9" column="1">
-          <widget class="QLCDNumber" name="bc_lcdNum6"/>
-         </item>
-         <item row="9" column="2">
-          <widget class="QLCDNumber" name="bc_lcdNum7"/>
-         </item>
-         <item row="9" column="3">
-          <widget class="QLCDNumber" name="bc_lcdNum8"/>
-         </item>
-         <item row="9" column="4">
-          <widget class="QLCDNumber" name="bc_lcdNum9"/>
          </item>
          <item row="9" column="5">
-          <widget class="QLCDNumber" name="bc_lcdNum10"/>
-         </item>
-         <item row="10" column="0">
-          <widget class="QLabel" name="label_30">
-           <property name="text">
-            <string>偏置电压6~10</string>
+          <widget class="QLCDNumber" name="bc_lcdNum10">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
            </property>
           </widget>
-         </item>
-         <item row="10" column="1">
-          <widget class="QLCDNumber" name="bv_lcdNum6"/>
-         </item>
-         <item row="10" column="2">
-          <widget class="QLCDNumber" name="bv_lcdNum7"/>
-         </item>
-         <item row="10" column="3">
-          <widget class="QLCDNumber" name="bv_lcdNum8"/>
-         </item>
-         <item row="10" column="4">
-          <widget class="QLCDNumber" name="bv_lcdNum9"/>
-         </item>
-         <item row="10" column="5">
-          <widget class="QLCDNumber" name="bv_lcdNum10"/>
-         </item>
-         <item row="11" column="1">
-          <widget class="QDoubleSpinBox" name="bv_dSB6">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="11" column="2">
-          <widget class="QDoubleSpinBox" name="bv_dSB7">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="11" column="3">
-          <widget class="QDoubleSpinBox" name="bv_dSB8">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="11" column="4">
-          <widget class="QDoubleSpinBox" name="bv_dSB9">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="11" column="5">
-          <widget class="QDoubleSpinBox" name="bv_dSB10">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="12" column="0">
-          <widget class="QLabel" name="label_44">
-           <property name="text">
-            <string>偏置电流11~15</string>
-           </property>
-          </widget>
-         </item>
-         <item row="12" column="1">
-          <widget class="QLCDNumber" name="bc_lcdNum11"/>
-         </item>
-         <item row="12" column="2">
-          <widget class="QLCDNumber" name="bc_lcdNum12"/>
-         </item>
-         <item row="12" column="3">
-          <widget class="QLCDNumber" name="bc_lcdNum13"/>
-         </item>
-         <item row="12" column="4">
-          <widget class="QLCDNumber" name="bc_lcdNum14"/>
-         </item>
-         <item row="13" column="0">
-          <widget class="QLabel" name="label_31">
-           <property name="text">
-            <string>偏置电压11~15</string>
-           </property>
-          </widget>
-         </item>
-         <item row="13" column="1">
-          <widget class="QLCDNumber" name="bv_lcdNum11"/>
-         </item>
-         <item row="13" column="2">
-          <widget class="QLCDNumber" name="bv_lcdNum12"/>
          </item>
          <item row="13" column="3">
-          <widget class="QLCDNumber" name="bv_lcdNum13"/>
+          <widget class="QLCDNumber" name="bv_lcdNum13">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
          </item>
-         <item row="13" column="4">
-          <widget class="QLCDNumber" name="bv_lcdNum14"/>
+         <item row="12" column="5">
+          <widget class="QLCDNumber" name="bc_lcdNum15">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
          </item>
-         <item row="14" column="1">
-          <widget class="QDoubleSpinBox" name="bv_dSB11">
+         <item row="6" column="2">
+          <widget class="QLCDNumber" name="bc_lcdNum2">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLCDNumber" name="sv_lcdNum2">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="3">
+          <widget class="QDoubleSpinBox" name="bv_dSB3">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
            <property name="suffix">
             <string>V</string>
            </property>
@@ -1147,56 +1308,482 @@ QPushButton:default {
            </property>
           </widget>
          </item>
-         <item row="14" column="2">
-          <widget class="QDoubleSpinBox" name="bv_dSB12">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="14" column="3">
-          <widget class="QDoubleSpinBox" name="bv_dSB13">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="14" column="4">
-          <widget class="QDoubleSpinBox" name="bv_dSB14">
-           <property name="suffix">
-            <string>V</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>5.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.002000000000000</double>
+         <item row="0" column="3">
+          <widget class="QLCDNumber" name="sc_lcdNum3">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
            </property>
           </widget>
          </item>
          <item row="14" column="5">
           <widget class="QDoubleSpinBox" name="bv_dSB15">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_29">
+           <property name="text">
+            <string>偏置电压1~5</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="2">
+          <widget class="QDoubleSpinBox" name="bv_dSB2">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="5">
+          <widget class="QDoubleSpinBox" name="sv_dSB5">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="minimum">
+            <double>0.800000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLCDNumber" name="bc_lcdNum1">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="4">
+          <widget class="QLCDNumber" name="ajc_lcdNum4">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLCDNumber" name="sv_lcdNum3">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="4">
+          <widget class="QLCDNumber" name="bc_lcdNum14">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="2">
+          <widget class="QLCDNumber" name="bc_lcdNum7">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="3">
+          <widget class="QLCDNumber" name="ajc_lcdNum3">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="5">
+          <widget class="QLCDNumber" name="ajc_lcdNum5">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="1">
+          <widget class="QLCDNumber" name="ajc_lcdNum1">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="1">
+          <widget class="QDoubleSpinBox" name="bv_dSB6">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
            <property name="suffix">
             <string>V</string>
            </property>
@@ -1214,82 +1801,126 @@ QPushButton:default {
          <item row="15" column="0">
           <widget class="QLabel" name="label_32">
            <property name="text">
-            <string>可调电流1~5</string>
+            <string>可调电流1~5/V</string>
            </property>
           </widget>
          </item>
-         <item row="15" column="1">
-          <widget class="QLCDNumber" name="ajc_lcdNum1"/>
-         </item>
-         <item row="15" column="2">
-          <widget class="QLCDNumber" name="ajc_lcdNum2"/>
-         </item>
-         <item row="15" column="3">
-          <widget class="QLCDNumber" name="ajc_lcdNum3"/>
-         </item>
-         <item row="15" column="4">
-          <widget class="QLCDNumber" name="ajc_lcdNum4"/>
-         </item>
-         <item row="15" column="5">
-          <widget class="QLCDNumber" name="ajc_lcdNum5"/>
-         </item>
-         <item row="16" column="1">
-          <widget class="QDoubleSpinBox" name="ajc_dSB1">
-           <property name="suffix">
-            <string>mA</string>
-           </property>
-           <property name="maximum">
-            <double>10.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
+         <item row="7" column="3">
+          <widget class="QLCDNumber" name="bv_lcdNum3">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
            </property>
           </widget>
          </item>
-         <item row="16" column="2">
-          <widget class="QDoubleSpinBox" name="ajc_dSB2">
-           <property name="suffix">
-            <string>mA</string>
-           </property>
-           <property name="maximum">
-            <double>10.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
+         <item row="12" column="0">
+          <widget class="QLabel" name="label_44">
+           <property name="text">
+            <string>偏置电流11~15</string>
            </property>
           </widget>
          </item>
-         <item row="16" column="3">
-          <widget class="QDoubleSpinBox" name="ajc_dSB3">
-           <property name="suffix">
-            <string>mA</string>
-           </property>
-           <property name="maximum">
-            <double>10.000000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.010000000000000</double>
+         <item row="13" column="5">
+          <widget class="QLCDNumber" name="bv_lcdNum15">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
            </property>
           </widget>
          </item>
-         <item row="16" column="4">
-          <widget class="QDoubleSpinBox" name="ajc_dSB4">
-           <property name="suffix">
-            <string>mA</string>
-           </property>
-           <property name="decimals">
-            <number>3</number>
-           </property>
-           <property name="maximum">
-            <double>0.100000000000000</double>
-           </property>
-           <property name="singleStep">
-            <double>0.001000000000000</double>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_28">
+           <property name="text">
+            <string>SUBPV</string>
            </property>
           </widget>
          </item>
          <item row="16" column="5">
           <widget class="QDoubleSpinBox" name="ajc_dSB5">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
            <property name="suffix">
             <string>mA</string>
            </property>
@@ -1304,11 +1935,1752 @@ QPushButton:default {
            </property>
           </widget>
          </item>
-         <item row="12" column="5">
-          <widget class="QLCDNumber" name="bc_lcdNum15"/>
+         <item row="0" column="2">
+          <widget class="QLCDNumber" name="sc_lcdNum2">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
          </item>
-         <item row="13" column="5">
-          <widget class="QLCDNumber" name="bv_lcdNum15"/>
+         <item row="6" column="4">
+          <widget class="QLCDNumber" name="bc_lcdNum4">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="label_30">
+           <property name="text">
+            <string>偏置电压6~10</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="2">
+          <widget class="QDoubleSpinBox" name="bv_dSB7">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="4">
+          <widget class="QLCDNumber" name="bv_lcdNum4">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="2">
+          <widget class="QDoubleSpinBox" name="bv_dSB12">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="1">
+          <widget class="QLCDNumber" name="bc_lcdNum11">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="1">
+          <widget class="QLCDNumber" name="bv_lcdNum11">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="5">
+          <widget class="QLCDNumber" name="bv_lcdNum5">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="2">
+          <widget class="QDoubleSpinBox" name="ajc_dSB2">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>mA</string>
+           </property>
+           <property name="maximum">
+            <double>10.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QLCDNumber" name="bc_lcdNum6">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_27">
+           <property name="text">
+            <string>供电电压1~5</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="15" column="2">
+          <widget class="QLCDNumber" name="ajc_lcdNum2">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="1">
+          <widget class="QDoubleSpinBox" name="ajc_dSB1">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>mA</string>
+           </property>
+           <property name="maximum">
+            <double>10.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="4">
+          <widget class="QDoubleSpinBox" name="bv_dSB14">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QLCDNumber" name="sc_lcdNum5">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="4">
+          <widget class="QLCDNumber" name="bv_lcdNum14">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QDoubleSpinBox" name="sv_dSB3">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="minimum">
+            <double>0.800000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QLCDNumber" name="sv_lcdNum4">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QDoubleSpinBox" name="bv_dSB1">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="5">
+          <widget class="QDoubleSpinBox" name="bv_dSB10">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="5">
+          <widget class="QLCDNumber" name="bv_lcdNum10">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="3">
+          <widget class="QLCDNumber" name="bc_lcdNum3">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="4">
+          <widget class="QDoubleSpinBox" name="bv_dSB4">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QDoubleSpinBox" name="SUBPV_dSB">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="maximum">
+            <double>2.500000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLCDNumber" name="sv_lcdNum1">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Filled</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="3">
+          <widget class="QLCDNumber" name="bv_lcdNum8">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="5">
+          <widget class="QLCDNumber" name="bc_lcdNum5">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="11" column="4">
+          <widget class="QDoubleSpinBox" name="bv_dSB9">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4">
+          <widget class="QDoubleSpinBox" name="sv_dSB4">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="minimum">
+            <double>0.800000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLCDNumber" name="SUBPI_lcdNum">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+           <property name="smallDecimalPoint">
+            <bool>false</bool>
+           </property>
+           <property name="value" stdset="0">
+            <double>0.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="2">
+          <widget class="QLCDNumber" name="bv_lcdNum2">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="QLCDNumber" name="bv_lcdNum6">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="0">
+          <widget class="QLabel" name="label_31">
+           <property name="text">
+            <string>偏置电压11~15</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="2">
+          <widget class="QLCDNumber" name="bv_lcdNum7">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="3">
+          <widget class="QDoubleSpinBox" name="ajc_dSB3">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>mA</string>
+           </property>
+           <property name="maximum">
+            <double>10.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="13" column="2">
+          <widget class="QLCDNumber" name="bv_lcdNum12">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="16" column="4">
+          <widget class="QDoubleSpinBox" name="ajc_dSB4">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>mA</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.001000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLCDNumber" name="sc_lcdNum4">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="3">
+          <widget class="QLCDNumber" name="bc_lcdNum8">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="2">
+          <widget class="QLCDNumber" name="bc_lcdNum12">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="12" column="3">
+          <widget class="QLCDNumber" name="bc_lcdNum13">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLCDNumber" name="SUBPV_lcdNum">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_43">
+           <property name="text">
+            <string>偏置电流6~10</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QLCDNumber" name="bv_lcdNum1">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_40">
+           <property name="text">
+            <string>供电电流1~5</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="4">
+          <widget class="QLCDNumber" name="bv_lcdNum9">
+           <property name="styleSheet">
+            <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
+           </property>
+          </widget>
+         </item>
+         <item row="14" column="1">
+          <widget class="QDoubleSpinBox" name="bv_dSB11">
+           <property name="styleSheet">
+            <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+           </property>
+           <property name="suffix">
+            <string>V</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="maximum">
+            <double>5.000000000000000</double>
+           </property>
+           <property name="singleStep">
+            <double>0.002000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_41">
+           <property name="text">
+            <string>SUBPI</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -1358,7 +3730,7 @@ QPushButton:default {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>921</width>
+     <width>979</width>
      <height>22</height>
     </rect>
    </property>

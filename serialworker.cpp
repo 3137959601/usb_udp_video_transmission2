@@ -2,7 +2,7 @@
 #include <QDebug>
 
 bool serial_bind_flag = false;
-
+//QByteArray baRcvData;
 SerialWorker::SerialWorker(QObject *parent)
     : QObject{parent}
 {
@@ -11,12 +11,18 @@ SerialWorker::SerialWorker(QObject *parent)
 
 SerialWorker::~SerialWorker()
 {
+    if (timer) {
+        timer->stop();
+        delete timer;
+    }
     delete serialWorker;
+
 }
 
 void SerialWorker::SerialPortInit(QString com_name)
 {
     serialWorker = new QSerialPort;
+    timer = new QTimer;
 
     QSerialPort::BaudRate baudRate;
     QSerialPort::DataBits dataBits;
@@ -65,6 +71,7 @@ void SerialWorker::SerialPortInit(QString com_name)
     serialWorker->setParity(checkBits);
 
     connect(serialWorker,&QSerialPort::readyRead,this,&SerialWorker::SerialPortReadyRead_Slot);
+    connect(timer, &QTimer::timeout, this, &SerialWorker::timeUpdate);
 
     if(serialWorker->open(QIODevice::ReadWrite)==true)
     {
@@ -75,6 +82,7 @@ void SerialWorker::SerialPortInit(QString com_name)
         //qDebug()<<"串口打开失败";
     }
     //qDebug()<<"serial_bind_flag"<<serial_bind_flag;
+
 }
 
 void SerialWorker::SerialOpen()
@@ -164,10 +172,10 @@ void SerialWorker::DAInstructionCode(QList<float> ADSetVals)
 {
     //计算异或校验
     unsigned char checksum = 0; // 存储校验和
-    // 计算长度（长度始终为27个字节）
-    QString lengthString = QString::number(27, 16).toUpper().rightJustified(2, '0'); // 确保长度是2位
+    // 计算长度（长度始终为53个字节=26*2+1个指令）
+    QString lengthString = QString::number(53, 16).toUpper().rightJustified(2, '0'); // 确保长度是2位
 
-    checksum ^= 0x1B; // 进行异或运算,长度为27
+    checksum ^= 0x35; // 进行异或运算,长度为53
     checksum ^= 0xDA; // 进行异或运算
     QString dataString;
     for(int i=0;i<ADSetVals.size();i++)
@@ -198,7 +206,7 @@ void SerialWorker::DAInstructionCode(QList<float> ADSetVals)
     //最后发送给串口输出槽函数
     emit DA_instruction_signal(framedHexString);
 
-    qDebug() << "framedHexString:" << framedHexString;
+    qDebug() << "串口输出指令framedHexString:" << framedHexString;
 }
 
 
@@ -228,9 +236,9 @@ void SerialWorker::SerialAnalyse(const QByteArray &recvdata)
         byteArray[i] = strList[i].toInt(&ok,16);
     }
     // 打印每个字节
-    for (size_t i = 0; i < byteArray.size(); ++i) {
-        qDebug() << "byteArray[" << i << "]" << QString::number(byteArray[i],16).toUpper();
-    }
+//    for (size_t i = 0; i < byteArray.size(); ++i) {
+//        qDebug() << "byteArray[" << i << "]" << QString::number(byteArray[i],16).toUpper();
+//    }
 
     while(true)
     {
@@ -255,7 +263,7 @@ void SerialWorker::SerialAnalyse(const QByteArray &recvdata)
             }
         }
         int length = byteArray[1]; // 使用 unsigned char 类型
-        qDebug() << "length" << length;
+//        qDebug() << "length" << length;
         if(length+4>byteArray.size())
         {
             //末尾指令数据未接收完整或者之前获取的EB不是帧头，而是普通数据
@@ -263,6 +271,7 @@ void SerialWorker::SerialAnalyse(const QByteArray &recvdata)
             if(it!=byteArray.end())
             {
                 byteArray.erase(byteArray.begin(), it);
+                qDebug()<<"重新找到帧头";
                 continue;
             }
             else
@@ -275,6 +284,7 @@ void SerialWorker::SerialAnalyse(const QByteArray &recvdata)
             if(byteArray.size()>=length+4)
             {
                 byteArray.erase(byteArray.begin(), byteArray.begin() + length + 4);
+                qDebug()<<"重新定位长度";
                 continue;
             }
             else
@@ -282,17 +292,18 @@ void SerialWorker::SerialAnalyse(const QByteArray &recvdata)
         }
         std::vector<unsigned char> buffer(length+4);
         copy(byteArray.begin(), byteArray.begin() + length + 4, buffer.begin());    //将byteArray第一条指令赋值给buffer
-        qDebug()<<"buffer"<<buffer;
+//        qDebug()<<"buffer"<<buffer;
         // 计算异或校验
         bool Xor_flag= XorCorrect(buffer);
         if(Xor_flag==0)
         {
+            qDebug()<<"异或校验错误";
             return;
         }
 
         // 创建 content 数组并填充数据
         std::vector<unsigned char> content(buffer.begin() + 2, buffer.begin() + 3 + length - 1);
-        qDebug() << "content" << QByteArray(reinterpret_cast<char*>(content.data()), content.size());
+//        qDebug() << "content" << QByteArray(reinterpret_cast<char*>(content.data()), content.size());
 
         InstructionAnalyse(content);
         byteArray.erase(byteArray.begin(), byteArray.begin() + length + 4);
@@ -314,7 +325,7 @@ bool SerialWorker::XorCorrect(const std::vector<unsigned char> &byteArray)
     for (size_t i = 1; i < byteArray.size() - 2; ++i) { // 从长度字节开始到倒数第二个字节
         checksum ^= byteArray[i]; // 进行异或运算
     }
-    qDebug() << "checksum" << checksum;
+//    qDebug() << "checksum" << checksum;
     // 验证校验和
     return checksum == byteArray[byteArray.size() - 2];
 }
@@ -327,9 +338,8 @@ void SerialWorker::InstructionAnalyse(const std::vector<unsigned char> &content)
     {
         // 解析电流值
         float currentMilliamp = (content[2] << 8) | (content[3] & 0xFF);
-        float current = currentMilliamp / 1000; // 以 A 为单位的值
+        float current = currentMilliamp / 1000;
         emit LCDNumShow(content[1],current);
-        qDebug() << "content[1]" << content[1];
         qDebug() << "current" << current;
     }
     else if(content[0] == 0xDA && content.size() == 95)
@@ -339,7 +349,7 @@ void SerialWorker::InstructionAnalyse(const std::vector<unsigned char> &content)
         {
             // 解析电流值
             float currentMilliamp = (content[i] << 8) | (content[i+1] & 0xFF);
-            float current = currentMilliamp / 1000; // 以 A 为单位的值
+            float current = currentMilliamp / 1000;
             currents.push_back(current);
         }
         emit LCDNumShow2(currents);
@@ -350,16 +360,34 @@ void SerialWorker::InstructionAnalyse(const std::vector<unsigned char> &content)
 
 void SerialWorker::SerialPortReadyRead_Slot()
 {
-    QByteArray data = serialWorker->readAll();
-    // 解析接收到的数据
-    SerialAnalyse(data);
-    QString str = data.toHex(' ').toUpper().append(' ');//十六进制显示
-    emit recvDataSignal(str);
+
+    timer->start(200);//启动定时器，接收100毫秒数据（根据情况设定）
+    baRcvData.append(serialWorker->readAll());
+
+//    qDebug()<<baRcvData;
+//    QByteArray data = serialWorker->readAll();
+//    // 解析接收到的数据
+//    SerialAnalyse(data);
+//    QString str = data.toHex(' ').toUpper().append(' ');//十六进制显示
+//    emit recvDataSignal(str);
 
     //qDebug()<<"开启recvSlot线程"<<QThread::currentThreadId();//查看槽函数在哪个线程运行
 }
 
+void SerialWorker::timeUpdate()
+{
+    timer->stop();
+    if(baRcvData.length()!=0)
+    {
+//        qDebug()<<"baRcvData"<<baRcvData;
+        // 解析接收到的数据
+        SerialAnalyse(baRcvData);
+        QString str = baRcvData.toHex(' ').toUpper().append(' ');//十六进制显示
+        emit recvDataSignal(str);
 
+    }
+    baRcvData.clear();
+}
 
 void SerialWorker::string2Hex(QString str, QByteArray &senddata)
 {

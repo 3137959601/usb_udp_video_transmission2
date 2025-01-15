@@ -5,7 +5,8 @@
 #include <QTime>
 #include <qpainter.h>
 
-
+#include <iostream>
+#include <iomanip>  // for std::fixed and std::setprecision
 CCyUSBDevice* MainWindow::pUSB = new CCyUSBDevice;
 CCyUSBEndPoint * MainWindow::BulkInEpt;
 bool MainWindow::Acquire = false;
@@ -136,7 +137,7 @@ void MainWindow::initAD()
     //connect(this,&MainWindow::ADSettings_signal,serialworker,&SerialWorker::ADInstructionCode);
     connect(serialworker,&SerialWorker::LCDNumShow2,this,&MainWindow::LCDNumShow_slot2);
     connect(this,&MainWindow::ADSettings_signal,serialworker,&SerialWorker::DAInstructionCode);
-
+    LCDNumInit();
 }
 
 
@@ -342,7 +343,11 @@ void MainWindow::on_serialpB_clicked()
 
 void MainWindow::serial_recvDataSlot(QString data)
 {
-    ui->serialRecvpTE->appendPlainText(data);
+    if(data[0]==QChar(0xEB)&&data[2]!=QChar(0xDA))
+    {
+        ui->serialRecvpTE->appendPlainText(data);
+    }
+
     //qDebug()<<"开启recv主线程"<<QThread::currentThreadId();//查看槽函数在哪个线程运行
 }
 
@@ -376,8 +381,60 @@ void MainWindow::on_serial_det_pB_clicked()
         ui->serialCb->setCurrentText(currentSerialPort);
     }
 }
-
-void MainWindow::LCDNumShow_slot(unsigned char index,float value)
+void MainWindow::LCDNumInit()
+{
+//    ui->sc_lcdNum1->setFixedDecimalMode(3,0);
+    QList<float>ADSetInitVals;
+    ADSetInitVals.resize(26); // 分配足够的空间
+    for(int i=0;i<5;i++)
+    {
+        ADSetInitVals[i] = 0;
+    }
+        ADSetInitVals[5] = 0.4f;
+    for(int i=6;i<21;i++)
+    {
+        ADSetInitVals[i] = 1.2f;
+    }
+    for(int i=21;i<24;i++)
+    {
+        ADSetInitVals[i] = 5.0f;
+    }
+    for(int i=24;i<26;i++)
+    {
+        ADSetInitVals[i] = 0.1f;
+    }
+    //供电电压
+    ui->sv_dSB1->setValue(ADSetInitVals[0]);
+    ui->sv_dSB2->setValue(ADSetInitVals[1]);
+    ui->sv_dSB3->setValue(ADSetInitVals[2]);
+    ui->sv_dSB4->setValue(ADSetInitVals[3]);
+    ui->sv_dSB5->setValue(ADSetInitVals[4]);
+    //SUBPV
+    ui->SUBPV_dSB->setValue(ADSetInitVals[5]);
+    //偏置电压
+    ui->bv_dSB1->setValue(ADSetInitVals[6]);
+    ui->bv_dSB2->setValue(ADSetInitVals[7]);
+    ui->bv_dSB3->setValue(ADSetInitVals[8]);
+    ui->bv_dSB4->setValue(ADSetInitVals[9]);
+    ui->bv_dSB5->setValue(ADSetInitVals[10]);
+    ui->bv_dSB6->setValue(ADSetInitVals[11]);
+    ui->bv_dSB7->setValue(ADSetInitVals[12]);
+    ui->bv_dSB8->setValue(ADSetInitVals[13]);
+    ui->bv_dSB9->setValue(ADSetInitVals[14]);
+    ui->bv_dSB10->setValue(ADSetInitVals[15]);
+    ui->bv_dSB11->setValue(ADSetInitVals[16]);
+    ui->bv_dSB12->setValue(ADSetInitVals[17]);
+    ui->bv_dSB13->setValue(ADSetInitVals[18]);
+    ui->bv_dSB14->setValue(ADSetInitVals[19]);
+    ui->bv_dSB15->setValue(ADSetInitVals[20]);
+    //可调电流
+    ui->ajc_dSB1->setValue(ADSetInitVals[21]);
+    ui->ajc_dSB2->setValue(ADSetInitVals[22]);
+    ui->ajc_dSB3->setValue(ADSetInitVals[23]);
+    ui->ajc_dSB4->setValue(ADSetInitVals[24]);
+    ui->ajc_dSB5->setValue(ADSetInitVals[25]);
+}
+void MainWindow::LCDNumShow_slot(unsigned char index,float value)//这种方法没有被使用到，暂时舍弃
 {
     //也许有一种办法可以给LCDNumber批量赋值，例如找到它们的指针
     switch(index){
@@ -538,97 +595,105 @@ void MainWindow::LCDNumShow_slot(unsigned char index,float value)
 
 void MainWindow::LCDNumShow_slot2(std::vector<float> currents)
 {
-//供电电流
-        ui->sc_lcdNum1->display(currents[0]);
-        ui->sc_lcdNum2->display(currents[1]);
-        ui->sc_lcdNum3->display(currents[2]);
-        ui->sc_lcdNum4->display(currents[3]);
-        ui->sc_lcdNum5->display(currents[4]);
+     // 使用 QString 格式化为三位小数
+//     std::vector<QString> formattedNumbers(currents.size());
+//     for(int i=0;i<currents.size();i++)
+//        formattedNumbers[i] = QString::number(currents[i], 'f', 3);
+     // 将格式化后的字符串传递给 QLCDNumber
+
+    //按照原理图顺序,将LCDNumber小数点后固定为三位显示
+//供电电流电压
+        ui->sc_lcdNum1->display(QString::number(currents[0], 'f', 3));
+        ui->sc_lcdNum2->display(QString::number(currents[2], 'f', 3));
+        ui->sc_lcdNum3->display(QString::number(currents[4], 'f', 3));
+        ui->sc_lcdNum4->display(QString::number(currents[6], 'f', 3));
+        ui->sc_lcdNum5->display(QString::number(currents[8], 'f', 3));
 //供电电压
-        ui->sv_lcdNum1->display(currents[5]);
-        ui->sv_lcdNum2->display(currents[6]);
-        ui->sv_lcdNum3->display(currents[7]);
-        ui->sv_lcdNum4->display(currents[8]);
-        ui->sv_lcdNum5->display(currents[9]);
+        ui->sv_lcdNum1->display(QString::number(currents[1], 'f', 3));
+        ui->sv_lcdNum2->display(QString::number(currents[3], 'f', 3));
+        ui->sv_lcdNum3->display(QString::number(currents[5], 'f', 3));
+        ui->sv_lcdNum4->display(QString::number(currents[7], 'f', 3));
+        ui->sv_lcdNum5->display(QString::number(currents[9], 'f', 3));
 //SUBPI
-        ui->SUBPI_lcdNum->display(currents[10]);
+        ui->SUBPI_lcdNum->display(QString::number(currents[10]-2.5, 'f', 3));//根据原理图，实际测量值需要减去2.5v的电压
 //SUBPI
-        ui->SUBPV_lcdNum->display(currents[11]);
+        ui->SUBPV_lcdNum->display(QString::number(currents[11], 'f', 3));
 //偏置电流
-        ui->bc_lcdNum1->display(currents[12]);
-        ui->bc_lcdNum2->display(currents[13]);
-        ui->bc_lcdNum3->display(currents[14]);
-        ui->bc_lcdNum4->display(currents[15]);
-        ui->bc_lcdNum5->display(currents[16]);
-        ui->bc_lcdNum6->display(currents[17]);
-        ui->bc_lcdNum7->display(currents[18]);
-        ui->bc_lcdNum8->display(currents[19]);
-        ui->bc_lcdNum9->display(currents[20]);
-        ui->bc_lcdNum10->display(currents[21]);
-        ui->bc_lcdNum11->display(currents[22]);
-        ui->bc_lcdNum12->display(currents[23]);
-        ui->bc_lcdNum13->display(currents[24]);
-        ui->bc_lcdNum14->display(currents[25]);
-        ui->bc_lcdNum15->display(currents[26]);
+        ui->bc_lcdNum1->display(QString::number(currents[17], 'f', 3));
+        ui->bc_lcdNum2->display(QString::number(currents[19], 'f', 3));
+        ui->bc_lcdNum3->display(QString::number(currents[21], 'f', 3));
+        ui->bc_lcdNum4->display(QString::number(currents[23], 'f', 3));
+        ui->bc_lcdNum5->display(QString::number(currents[25], 'f', 3));
+        ui->bc_lcdNum6->display(QString::number(currents[27], 'f', 3));
+        ui->bc_lcdNum7->display(QString::number(currents[29], 'f', 3));
+        ui->bc_lcdNum8->display(QString::number(currents[31], 'f', 3));
+        ui->bc_lcdNum9->display(QString::number(currents[33], 'f', 3));
+        ui->bc_lcdNum10->display(QString::number(currents[35], 'f', 3));
+        ui->bc_lcdNum11->display(QString::number(currents[37], 'f', 3));
+        ui->bc_lcdNum12->display(QString::number(currents[39], 'f', 3));
+        ui->bc_lcdNum13->display(QString::number(currents[41], 'f', 3));
+        ui->bc_lcdNum14->display(QString::number(currents[43], 'f', 3));
+        ui->bc_lcdNum15->display(QString::number(currents[45], 'f', 3));
 
 //偏置电压
-        ui->bv_lcdNum1->display(currents[27]);
-        ui->bv_lcdNum2->display(currents[28]);
-        ui->bv_lcdNum3->display(currents[29]);
-        ui->bv_lcdNum4->display(currents[30]);
-        ui->bv_lcdNum5->display(currents[31]);
-        ui->bv_lcdNum6->display(currents[32]);
-        ui->bv_lcdNum7->display(currents[33]);
-        ui->bv_lcdNum8->display(currents[34]);
-        ui->bv_lcdNum9->display(currents[35]);
-        ui->bv_lcdNum10->display(currents[36]);
-        ui->bv_lcdNum11->display(currents[37]);
-        ui->bv_lcdNum12->display(currents[38]);
-        ui->bv_lcdNum13->display(currents[39]);
-        ui->bv_lcdNum14->display(currents[40]);
-        ui->bv_lcdNum15->display(currents[41]);
+        ui->bv_lcdNum1->display(QString::number(currents[16], 'f', 3));
+        ui->bv_lcdNum2->display(QString::number(currents[18], 'f', 3));
+        ui->bv_lcdNum3->display(QString::number(currents[20], 'f', 3));
+        ui->bv_lcdNum4->display(QString::number(currents[22], 'f', 3));
+        ui->bv_lcdNum5->display(QString::number(currents[24], 'f', 3));
+        ui->bv_lcdNum6->display(QString::number(currents[26], 'f', 3));
+        ui->bv_lcdNum7->display(QString::number(currents[28], 'f', 3));
+        ui->bv_lcdNum8->display(QString::number(currents[30], 'f', 3));
+        ui->bv_lcdNum9->display(QString::number(currents[32], 'f', 3));
+        ui->bv_lcdNum10->display(QString::number(currents[34], 'f', 3));
+        ui->bv_lcdNum11->display(QString::number(currents[36], 'f', 3));
+        ui->bv_lcdNum12->display(QString::number(currents[38], 'f', 3));
+        ui->bv_lcdNum13->display(QString::number(currents[40], 'f', 3));
+        ui->bv_lcdNum14->display(QString::number(currents[42], 'f', 3));
+        ui->bv_lcdNum15->display(QString::number(currents[44], 'f', 3));
 
 //可调电流
-        ui->ajc_lcdNum1->display(currents[42]);
-        ui->ajc_lcdNum2->display(currents[43]);
-        ui->ajc_lcdNum3->display(currents[44]);
-        ui->ajc_lcdNum4->display(currents[45]);
-        ui->ajc_lcdNum5->display(currents[46]);
+        ui->ajc_lcdNum1->display(QString::number(currents[12], 'f', 3));
+        ui->ajc_lcdNum2->display(QString::number(currents[13], 'f', 3));
+        ui->ajc_lcdNum3->display(QString::number(currents[14], 'f', 3));
+        ui->ajc_lcdNum4->display(QString::number(currents[15], 'f', 3));
+        ui->ajc_lcdNum5->display(QString::number(currents[46], 'f', 3));
 }
-
+//设置下位机电压值，同时根据原理图的倍数关系对设置值进行转换
 void MainWindow::on_confupd_pB_clicked()
 {
     QList<float>ADSetVals;
+    //根据原理图，电压电流会有2倍的放大，所以设置先除以2
     //供电电压
-    ADSetVals.append(ui->sv_dSB1->value());
-    ADSetVals.append(ui->sv_dSB2->value());
-    ADSetVals.append(ui->sv_dSB3->value());
-    ADSetVals.append(ui->sv_dSB4->value());
-    ADSetVals.append(ui->sv_dSB5->value());
+    ADSetVals.append(ui->sv_dSB1->value()/2);
+    ADSetVals.append(ui->sv_dSB2->value()/2);
+    ADSetVals.append(ui->sv_dSB3->value()/2);
+    ADSetVals.append(ui->sv_dSB4->value()/2);
+    ADSetVals.append(ui->sv_dSB5->value()/2);
     //SUBPV
-    ADSetVals.append(ui->SUBPV_dSB->value());
+    ADSetVals.append(ui->SUBPV_dSB->value());   //电路忘记放大了，暂时不除以2
     //偏置电压
-    ADSetVals.append(ui->bv_dSB1->value());
-    ADSetVals.append(ui->bv_dSB2->value());
-    ADSetVals.append(ui->bv_dSB3->value());
-    ADSetVals.append(ui->bv_dSB4->value());
-    ADSetVals.append(ui->bv_dSB5->value());
-    ADSetVals.append(ui->bv_dSB6->value());
-    ADSetVals.append(ui->bv_dSB7->value());
-    ADSetVals.append(ui->bv_dSB8->value());
-    ADSetVals.append(ui->bv_dSB9->value());
-    ADSetVals.append(ui->bv_dSB10->value());
-    ADSetVals.append(ui->bv_dSB11->value());
-    ADSetVals.append(ui->bv_dSB12->value());
-    ADSetVals.append(ui->bv_dSB13->value());
-    ADSetVals.append(ui->bv_dSB14->value());
-    ADSetVals.append(ui->bv_dSB15->value());
+    ADSetVals.append(ui->bv_dSB1->value()/2);
+    ADSetVals.append(ui->bv_dSB2->value()/2);
+    ADSetVals.append(ui->bv_dSB3->value()/2);
+    ADSetVals.append(ui->bv_dSB4->value()/2);
+    ADSetVals.append(ui->bv_dSB5->value()/2);
+    ADSetVals.append(ui->bv_dSB6->value()/2);
+    ADSetVals.append(ui->bv_dSB7->value()/2);
+    ADSetVals.append(ui->bv_dSB8->value()/2);
+    ADSetVals.append(ui->bv_dSB9->value()/2);
+    ADSetVals.append(ui->bv_dSB10->value()/2);
+    ADSetVals.append(ui->bv_dSB11->value()/2);
+    ADSetVals.append(ui->bv_dSB12->value()/2);
+    ADSetVals.append(ui->bv_dSB13->value()/2);
+    ADSetVals.append(ui->bv_dSB14->value()/2);
+    ADSetVals.append(ui->bv_dSB15->value()/2);
     //可调电流
-    ADSetVals.append(ui->ajc_dSB1->value());
-    ADSetVals.append(ui->ajc_dSB2->value());
-    ADSetVals.append(ui->ajc_dSB3->value());
-    ADSetVals.append(ui->ajc_dSB4->value());
-    ADSetVals.append(ui->ajc_dSB5->value());
+    ADSetVals.append(ui->ajc_dSB1->value()/4);//电路放大250倍，而界面已经放大了1000倍，所以需要再除以4倍
+    ADSetVals.append(ui->ajc_dSB2->value()/4);//电路放大250倍，而界面已经放大了1000倍，所以需要再除以4倍
+    ADSetVals.append(ui->ajc_dSB3->value()/4);//电路放大250倍，而界面已经放大了1000倍，所以需要再除以4倍
+    ADSetVals.append(ui->ajc_dSB4->value()*25);//电路放大25000倍，而界面已经放大了1000倍，所以需要再乘以25倍
+    ADSetVals.append(ui->ajc_dSB5->value()*25);//电路放大25000倍，而界面已经放大了1000倍，所以需要再乘以25倍
 
     emit ADSettings_signal(ADSetVals);
     //qDebug()<<"ADSetVals"<<ADSetVals;
@@ -687,60 +752,58 @@ void MainWindow:: loadData() {
     if (loadedValues.size() > 0)
         ui->sv_dSB1->setValue(loadedValues[0].toDouble());
     if (loadedValues.size() > 1)
-        ui->sv_dSB1->setValue(loadedValues[1].toDouble());
+        ui->sv_dSB2->setValue(loadedValues[1].toDouble());
     if (loadedValues.size() > 2)
-        ui->sv_dSB2->setValue(loadedValues[2].toDouble());
+        ui->sv_dSB3->setValue(loadedValues[2].toDouble());
     if (loadedValues.size() > 3)
-        ui->sv_dSB3->setValue(loadedValues[3].toDouble());
+        ui->sv_dSB4->setValue(loadedValues[3].toDouble());
     if (loadedValues.size() > 4)
-        ui->sv_dSB4->setValue(loadedValues[4].toDouble());
-    if (loadedValues.size() > 5)
-        ui->sv_dSB5->setValue(loadedValues[5].toDouble());
+        ui->sv_dSB5->setValue(loadedValues[4].toDouble());
         //SUBPV
-    if (loadedValues.size() > 6)
-        ui->SUBPV_dSB->setValue(loadedValues[6].toDouble());
+    if (loadedValues.size() > 5)
+        ui->SUBPV_dSB->setValue(loadedValues[5].toDouble());
         //偏置电压
+    if (loadedValues.size() > 6)
+        ui->bv_dSB1->setValue(loadedValues[6].toDouble());
     if (loadedValues.size() > 7)
-        ui->bv_dSB1->setValue(loadedValues[7].toDouble());
+        ui->bv_dSB2->setValue(loadedValues[7].toDouble());
     if (loadedValues.size() > 8)
-        ui->bv_dSB2->setValue(loadedValues[8].toDouble());
+        ui->bv_dSB3->setValue(loadedValues[8].toDouble());
     if (loadedValues.size() > 9)
-        ui->bv_dSB3->setValue(loadedValues[9].toDouble());
+        ui->bv_dSB4->setValue(loadedValues[9].toDouble());
     if (loadedValues.size() > 10)
-        ui->bv_dSB4->setValue(loadedValues[10].toDouble());
+        ui->bv_dSB5->setValue(loadedValues[10].toDouble());
     if (loadedValues.size() > 11)
-        ui->bv_dSB5->setValue(loadedValues[11].toDouble());
+        ui->bv_dSB6->setValue(loadedValues[11].toDouble());
     if (loadedValues.size() > 12)
-        ui->bv_dSB6->setValue(loadedValues[12].toDouble());
+        ui->bv_dSB7->setValue(loadedValues[12].toDouble());
     if (loadedValues.size() > 13)
-        ui->bv_dSB7->setValue(loadedValues[13].toDouble());
+        ui->bv_dSB8->setValue(loadedValues[13].toDouble());
     if (loadedValues.size() > 14)
-        ui->bv_dSB8->setValue(loadedValues[14].toDouble());
+        ui->bv_dSB9->setValue(loadedValues[14].toDouble());
     if (loadedValues.size() > 15)
-        ui->bv_dSB9->setValue(loadedValues[15].toDouble());
+        ui->bv_dSB10->setValue(loadedValues[15].toDouble());
     if (loadedValues.size() > 16)
-        ui->bv_dSB10->setValue(loadedValues[16].toDouble());
+        ui->bv_dSB11->setValue(loadedValues[16].toDouble());
     if (loadedValues.size() > 17)
-        ui->bv_dSB11->setValue(loadedValues[17].toDouble());
+        ui->bv_dSB12->setValue(loadedValues[17].toDouble());
     if (loadedValues.size() > 18)
-        ui->bv_dSB12->setValue(loadedValues[18].toDouble());
+        ui->bv_dSB13->setValue(loadedValues[18].toDouble());
     if (loadedValues.size() > 19)
-        ui->bv_dSB13->setValue(loadedValues[19].toDouble());
+        ui->bv_dSB14->setValue(loadedValues[19].toDouble());
     if (loadedValues.size() > 20)
-        ui->bv_dSB14->setValue(loadedValues[20].toDouble());
-    if (loadedValues.size() > 21)
-        ui->bv_dSB15->setValue(loadedValues[21].toDouble());
+        ui->bv_dSB15->setValue(loadedValues[20].toDouble());
         //可调电流
+    if (loadedValues.size() > 21)
+        ui->ajc_dSB1->setValue(loadedValues[21].toDouble());
     if (loadedValues.size() > 22)
-        ui->ajc_dSB1->setValue(loadedValues[22].toDouble());
+        ui->ajc_dSB2->setValue(loadedValues[22].toDouble());
     if (loadedValues.size() > 23)
-        ui->ajc_dSB2->setValue(loadedValues[23].toDouble());
+        ui->ajc_dSB3->setValue(loadedValues[23].toDouble());
     if (loadedValues.size() > 24)
-        ui->ajc_dSB3->setValue(loadedValues[24].toDouble());
+        ui->ajc_dSB4->setValue(loadedValues[24].toDouble());
     if (loadedValues.size() > 25)
-        ui->ajc_dSB4->setValue(loadedValues[25].toDouble());
-    if (loadedValues.size() > 26)
-        ui->ajc_dSB5->setValue(loadedValues[26].toDouble());
+        ui->ajc_dSB5->setValue(loadedValues[25].toDouble());
 
     qDebug() << "Data loaded:" << loadedValues;
 }

@@ -110,6 +110,7 @@ private slots:
 
     void on_serial_det_pB_clicked();
     //电压电流控制窗口
+    void LCDNumInit();
     void LCDNumShow_slot(unsigned char index,float value);
     void LCDNumShow_slot2(std::vector<float>currents);
     void on_confupd_pB_clicked();

@@ -5,6 +5,8 @@
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <QThread>
+#include <QTimer>
+#include <QMutex>
 
 class SerialWorker : public QObject
 {
@@ -14,6 +16,10 @@ public:
 
     ~SerialWorker();
     QSerialPort *serialWorker;
+    QTimer *timer;
+    QMutex mutex;  // 互斥锁，用于保证线程安全
+
+    QByteArray baRcvData;
 
     void SerialPortInit(QString com_name);
     void SerialOpen();
@@ -24,6 +30,8 @@ public:
     bool XorCorrect(const std::vector<unsigned char>& byteArray);
     void InstructionAnalyse(const std::vector<unsigned char>& content);
 
+
+
     void string2Hex(QString str, QByteArray &senddata);
     char hex2Char(char ch);
 
@@ -33,6 +41,7 @@ public slots:
     void SerialPortReadyRead_Slot();
     void ADInstructionCode(QList<float> ADSetVals);
     void DAInstructionCode(QList<float> ADSetVals);
+    void timeUpdate();
 signals:
     void recvDataSignal(QString buf);
     void LCDNumShow(unsigned char index,float value);
