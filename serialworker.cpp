@@ -168,43 +168,91 @@ void SerialWorker::ADInstructionCode(QList<float> ADSetVals)
 
 }
 //将所有AD的数据放入一条指令中发送
-void SerialWorker::DAInstructionCode(QList<float> ADSetVals)
+void SerialWorker::InstructionCode(unsigned char flag,QList<float> SetVals)
 {
     //计算异或校验
     unsigned char checksum = 0; // 存储校验和
-    // 计算长度（长度始终为53个字节=26*2+1个指令）
-    QString lengthString = QString::number(53, 16).toUpper().rightJustified(2, '0'); // 确保长度是2位
-
-    checksum ^= 0x35; // 进行异或运算,长度为53
-    checksum ^= 0xDA; // 进行异或运算
     QString dataString;
-    for(int i=0;i<ADSetVals.size();i++)
+    float value = 0.0;
+    unsigned short usValue;
+    unsigned char lowByte;
+    unsigned char highByte;
+    QString lowHexString;
+    QString highHexString;
+
+    unsigned char length = 0;
+    for(int i=0;i<SetVals.size();i++)
     {
-        //先放大1000倍然后转换十六进制
-        float value = ADSetVals[i]*1000;
-        //qDebug()<<"value"<<value;
-        // 转换为整数,需要两字节存储
-        unsigned short usValue = static_cast<unsigned short>(static_cast<int>(value));
+        switch(flag)
+        {
+        case 0xAA:
+            length = 0x03;
+            //先放大1000倍然后转换十六进制
+            value = SetVals[i]*1000;
+            //qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            //然后插入帧头，长度，校验码，帧尾
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            highByte = static_cast<unsigned char>((usValue>>8)&0xFF);
+            // 生成十六进制字符串
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            highHexString = QString::number(highByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
 
-        //然后插入帧头，长度，校验码，帧尾
+            checksum ^= highByte; // 进行异或运算
+            checksum ^= lowByte;
 
-        unsigned char lowByte = static_cast<unsigned char>(usValue&0xFF);
-        unsigned char highByte = static_cast<unsigned char>((usValue>>8)&0xFF);
-        // 生成十六进制字符串
-        QString lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
-        QString highHexString = QString::number(highByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            dataString = dataString + highHexString + lowHexString;
+            break;
+        case 0xDA:
+            length = 0x35;
+            //先放大1000倍然后转换十六进制
+            value = SetVals[i]*1000;
+            //qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            //然后插入帧头，长度，校验码，帧尾
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            highByte = static_cast<unsigned char>((usValue>>8)&0xFF);
+            // 生成十六进制字符串
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            highHexString = QString::number(highByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
 
-        checksum ^= highByte; // 进行异或运算
-        checksum ^= lowByte;
+            checksum ^= highByte; // 进行异或运算
+            checksum ^= lowByte;
 
-        dataString = dataString + highHexString + lowHexString;
+            dataString = dataString + highHexString + lowHexString;
+            break;
+        case 0xBB://不放大,只有8bit即2字节，使用0~15代替1.024~16.384
+            length = 0x02;
+            value = SetVals[i]/1.024-1+0.001;
+            qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            qDebug()<<"usValue"<<usValue;
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            checksum ^=lowByte;
+            dataString = dataString + lowHexString;
+            break;
+        default:
+            qDebug() << "指令发送标志无法识别";
+            break;
+        }
+
     }
-    //qDebug() << "checksum" << checksum;
+    QString framedHexString;
+    QString lengthString;
+    QString flagString;
+    lengthString = QString::number(length, 16).toUpper().rightJustified(2, '0'); // 确保长度是2位
+    flagString = QString::number(flag, 16).toUpper(); // 确保长度是2位
+    checksum ^= length; // 进行异或运算,计算长度（长度始终为53个字节=26*2+1个指令）
+    checksum ^= flag; // 进行异或运算
     // 插入帧头和其它信息
-    QString framedHexString = "EB" + lengthString + "DA" + dataString + QString::number(checksum, 16).toUpper().rightJustified(2, '0') +"0A";
-
+    framedHexString = "EB" + lengthString + flagString + dataString + QString::number(checksum, 16).toUpper().rightJustified(2, '0') +"0A";
+    //qDebug() << "checksum" << checksum;
     //最后发送给串口输出槽函数
-    emit DA_instruction_signal(framedHexString);
+    emit instruction_send_signal(framedHexString);
 
     qDebug() << "串口输出指令framedHexString:" << framedHexString;
 }
@@ -340,7 +388,7 @@ void SerialWorker::InstructionAnalyse(const std::vector<unsigned char> &content)
         float currentMilliamp = (content[2] << 8) | (content[3] & 0xFF);
         float current = currentMilliamp / 1000;
         emit LCDNumShow(content[1],current);
-        qDebug() << "current" << current;
+//        qDebug() << "current" << current;
     }
     else if(content[0] == 0xDA && content.size() == 95)
     {
@@ -353,9 +401,16 @@ void SerialWorker::InstructionAnalyse(const std::vector<unsigned char> &content)
             currents.push_back(current);
         }
         emit LCDNumShow2(currents);
-        qDebug()<<"currents"<<currents;
+//        qDebug()<<"currents"<<currents;
     }
-    //
+    else if(content[0] == 0xAA && content.size() == 3)  //积分时间
+    {
+
+    }
+    else if(content[0] == 0xBB && content.size() == 2)  //主时钟频率
+    {
+
+    }
 }
 
 void SerialWorker::SerialPortReadyRead_Slot()

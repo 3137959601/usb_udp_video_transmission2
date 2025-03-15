@@ -26,6 +26,7 @@ ushort MainWindow::COL_FPGA = 640;//分辨率初始化
 bool b_fullscreen = false;
 extern bool serial_bind_flag;
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -128,7 +129,7 @@ void MainWindow::initSerial()
     connect(this,&MainWindow::serial_send_signal,serialworker,&SerialWorker::SerialSendData_Slot);
 
     //connect(serialworker,&SerialWorker::AD_instruction_signal,serialworker,&SerialWorker::SerialSendData_Slot);
-    connect(serialworker,&SerialWorker::DA_instruction_signal,serialworker,&SerialWorker::SerialSendData_Slot);
+    connect(serialworker,&SerialWorker::instruction_send_signal,serialworker,&SerialWorker::SerialSendData_Slot);
 }
 //电压电流控制窗口初始化，包括加载LCD配置值
 void MainWindow::initAD()
@@ -136,7 +137,7 @@ void MainWindow::initAD()
     //connect(serialworker,&SerialWorker::LCDNumShow,this,&MainWindow::LCDNumShow_slot);
     //connect(this,&MainWindow::ADSettings_signal,serialworker,&SerialWorker::ADInstructionCode);
     connect(serialworker,&SerialWorker::LCDNumShow2,this,&MainWindow::LCDNumShow_slot2);
-    connect(this,&MainWindow::ADSettings_signal,serialworker,&SerialWorker::DAInstructionCode);
+    connect(this,&MainWindow::InstructSettings_signal,serialworker,&SerialWorker::InstructionCode);
     LCDNumInit();
 }
 
@@ -282,7 +283,7 @@ void MainWindow::on_tooltB_clicked()
 
 void MainWindow::on_switchBt_clicked()
 {
-    Acquire=!Acquire;
+//    Acquire=!Acquire;                             //暂时关闭相机功能，只保留串口传输功能
     if(Acquire)
     {
         ui->switchBt->setIcon(QIcon(":/picture/switch_on.png"));
@@ -329,6 +330,7 @@ void MainWindow::on_serialpB_clicked()
             ui->serialpB->setText("关闭串口");
             ui->serialpB->setIcon(QIcon(":/picture/serial_open.png"));
             ui->serial_det_pB->setEnabled(false);
+            ui->serialCb->setEnabled(false);
         }
 
     }
@@ -338,6 +340,7 @@ void MainWindow::on_serialpB_clicked()
         ui->serialpB->setText("打开串口");
         ui->serialpB->setIcon(QIcon(":/picture/serial_close.png"));
         ui->serial_det_pB->setEnabled(true);
+        ui->serialCb->setEnabled(true);
     }
 }
 
@@ -695,11 +698,27 @@ void MainWindow::on_confupd_pB_clicked()
     ADSetVals.append(ui->ajc_dSB4->value()*25);//电路放大25000倍，而界面已经放大了1000倍，所以需要再乘以25倍
     ADSetVals.append(ui->ajc_dSB5->value()*25);//电路放大25000倍，而界面已经放大了1000倍，所以需要再乘以25倍
 
-    emit ADSettings_signal(ADSetVals);
+    emit InstructSettings_signal(0xDA,ADSetVals);
     //qDebug()<<"ADSetVals"<<ADSetVals;
 
 
 }
+//积分时间确认，发送积分时间配置指令
+void MainWindow::on_itgr_pB_clicked()
+{
+    QList<float>AASetVals;
+    AASetVals.append(ui->itgr_dSB->value());
+    emit InstructSettings_signal(0xAA,AASetVals);
+}
+
+//主时钟频率配置
+void MainWindow::on_clk_pB_clicked()
+{
+    QList<float>BBSetVals;
+    BBSetVals.append(ui->clk_dSB->value());
+    emit InstructSettings_signal(0xBB,BBSetVals);
+}
+
 
 
 void MainWindow::on_confsv_pB_clicked()
@@ -807,3 +826,18 @@ void MainWindow:: loadData() {
 
     qDebug() << "Data loaded:" << loadedValues;
 }
+
+void MainWindow::on_stream_save_pB_clicked()
+{
+    if(usbthread->stream_save_flag==false)
+    {
+        usbthread->stream_save_flag = true;
+        ui->stream_save_pB->setText("停止保存");
+    }
+    else if(usbthread->stream_save_flag==true)
+    {
+        usbthread->stream_save_flag = false;
+        ui->stream_save_pB->setText("开始保存");
+    }
+}
+

@@ -40,14 +40,15 @@ public slots:
     void SerialSendData_Slot(QString buf);
     void SerialPortReadyRead_Slot();
     void ADInstructionCode(QList<float> ADSetVals);
-    void DAInstructionCode(QList<float> ADSetVals);
+    void InstructionCode(unsigned char flag,QList<float> SetVals);
+
     void timeUpdate();
 signals:
     void recvDataSignal(QString buf);
     void LCDNumShow(unsigned char index,float value);
     void LCDNumShow2(std::vector<float>currents);
     void AD_instruction_signal(QString buf);
-    void DA_instruction_signal(QString buf);
+    void instruction_send_signal(QString buf);
 };
 
 #endif // SERIALWORKER_H

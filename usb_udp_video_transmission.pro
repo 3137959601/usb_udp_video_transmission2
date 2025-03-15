@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-QMAKE_CXXFLAGS_RELEASE = -O2 -MD -GL
+#QMAKE_CXXFLAGS_RELEASE = -O2 -MD -GL
 #QMAKE_CXXFLAGS_DEBUG = -Zi -MDd
 QMAKE_LFLAGS += "/STACK:655360000,40960000" #设置栈保留大小6553600k，提交大小409600k
 CONFIG += resources_big
@@ -44,7 +44,7 @@ FORMS += \
     child_window/system_settings_window.ui \
     child_window/toolwindow.ui
 
-#CONFIG += lrelease             //用于多语言转换
+CONFIG += lrelease             //用于多语言转换
 #CONFIG += embed_translations   //用于多语言转换
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -91,13 +91,21 @@ else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += 'C:/Progra
 else:unix: PRE_TARGETDEPS += 'C:/Program Files (x86)/Windows Kits/10/Lib/10.0.22000.0/um/x64/libSetupAPI.a'
 
 
-unix|win32: LIBS += -L'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64/' -llegacy_stdio_definitions
+#unix|win32: LIBS += -L'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64/' -llegacy_stdio_definitions
 
-INCLUDEPATH += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64'
-DEPENDPATH += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64'
+#INCLUDEPATH += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64'
+#DEPENDPATH += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64'
 
-win32:!win32-g++: PRE_TARGETDEPS += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64/legacy_stdio_definitions.lib'
-else:unix|win32-g++: PRE_TARGETDEPS += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64/liblegacy_stdio_definitions.a'
+#win32:!win32-g++: PRE_TARGETDEPS += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64/legacy_stdio_definitions.lib'
+#else:unix|win32-g++: PRE_TARGETDEPS += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/lib/x64/liblegacy_stdio_definitions.a'
+
+unix|win32: LIBS += -L'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/lib/x64/' -llegacy_stdio_definitions
+
+INCLUDEPATH += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/lib/x64'
+DEPENDPATH += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/lib/x64'
+
+win32:!win32-g++: PRE_TARGETDEPS += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/lib/x64/legacy_stdio_definitions.lib'
+else:unix|win32-g++: PRE_TARGETDEPS += 'D:/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/lib/x64/liblegacy_stdio_definitions.a'
 
 win32:CONFIG(release, debug|release): LIBS += -LD:/opencv/build/x64/vc16/lib/ -lopencv_world470
 else:win32:CONFIG(debug, debug|release): LIBS += -LD:/opencv/build/x64/vc16/lib/ -lopencv_world470d
@@ -107,4 +115,4 @@ INCLUDEPATH += D:/opencv/build/include
 DEPENDPATH += D:/opencv/build/include
 
 RESOURCES += \
-    pictures.qrc
+    picture.qrc

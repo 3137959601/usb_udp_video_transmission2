@@ -9,6 +9,11 @@ usbThread::usbThread(QObject *parent):QObject(parent)
 
 }
 
+void usbThread::stream_save()
+{
+
+}
+
 int usbThread::Xfer()
 {
     //------------------------------------连接USB FX3--------------------------------------//

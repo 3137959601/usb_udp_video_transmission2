@@ -78,7 +78,7 @@ signals :
     void close_serial_signal();
     void serial_send_signal(QString buf);
     //电压电流控制
-    void ADSettings_signal(QList<float>value);
+    void InstructSettings_signal(unsigned char flag,QList<float>value);
 
 protected:
     void closeEvent(QCloseEvent *event) override; // 重载 closeEvent
@@ -120,6 +120,12 @@ private slots:
     void on_confsv_pB_clicked();
 
     void loadData();
+    void on_itgr_pB_clicked();
+
+    void on_clk_pB_clicked();
+
+    void on_stream_save_pB_clicked();
+
 private:
     Ui::MainWindow *ui;
 
