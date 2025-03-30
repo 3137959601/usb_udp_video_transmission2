@@ -47,6 +47,8 @@ signals:
     void recvDataSignal(QString buf);
     void LCDNumShow(unsigned char index,float value);
     void LCDNumShow2(std::vector<float>currents);
+    void Temp_LCDNumShow(std::vector<float>temp);
+
     void AD_instruction_signal(QString buf);
     void instruction_send_signal(QString buf);
 };

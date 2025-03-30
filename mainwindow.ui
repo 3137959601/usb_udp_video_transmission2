@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>979</width>
-    <height>750</height>
+    <width>1006</width>
+    <height>749</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,231 +74,66 @@
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>66</x>
-      <y>262</y>
+      <x>60</x>
+      <y>310</y>
       <width>309</width>
-      <height>439</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="title">
-     <string>指令收发窗口</string>
+     <string>指令窗口</string>
     </property>
-    <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="0">
-      <layout class="QVBoxLayout" name="verticalLayout_7">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_6">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QPushButton" name="serialpB">
-             <property name="text">
-              <string>打开串口</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="serial_det_pB">
-             <property name="text">
-              <string>串口检测</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="serialCb">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>75</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>指令发送框</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QTextEdit" name="serialSendtE">
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>30</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="command_sendBt">
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-            background-color:qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgba(255, 0, 150, 204), stop:1 rgba(0, 204, 255, 204));
-            font-family: 'Liberation Sans', Arial, sans-serif;  /* 仅设置字体 */
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 15px;
-            letter-spacing: 1.5px;
-        }
-        QPushButton:hover {
-            background-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgba(255, 0, 150, 255), stop:1 rgba(0, 204, 255, 255));
-        }
-        QPushButton:pressed {
-            background-color: qlineargradient(spread:pad, x1:0, y1:0.5, x2:1, y2:0.5, stop:0 rgba(235, 0, 150, 204), stop:1 rgba(0, 204, 255, 204));
-        }
-</string>
-             </property>
-             <property name="text">
-              <string>指令发送</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <item>
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>指令接收框</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_5">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <item>
-          <widget class="QPlainTextEdit" name="serialRecvpTE">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>200</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>16777215</width>
-             <height>200</height>
-            </size>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
-           <item>
-            <spacer name="horizontalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="command_clearBt">
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>清空</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </item>
-    </layout>
+    <widget class="QPushButton" name="serial_det_pB">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>28</y>
+       <width>75</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>串口检测</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="serialCb">
+     <property name="geometry">
+      <rect>
+       <x>221</x>
+       <y>29</y>
+       <width>75</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>75</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="serialpB">
+     <property name="geometry">
+      <rect>
+       <x>13</x>
+       <y>28</y>
+       <width>75</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>打开串口</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
@@ -306,7 +141,7 @@
       <x>66</x>
       <y>180</y>
       <width>311</width>
-      <height>85</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="title">
@@ -399,7 +234,7 @@
       <x>0</x>
       <y>0</y>
       <width>51</width>
-      <height>701</height>
+      <height>661</height>
      </rect>
     </property>
     <property name="layoutDirection">
@@ -666,16 +501,65 @@ QPushButton:default {
      </item>
     </layout>
    </widget>
+   <widget class="QGroupBox" name="groupBox_8">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>390</y>
+      <width>311</width>
+      <height>87</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>USB数据流保存</string>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="stream_save_pB">
+       <property name="text">
+        <string>开始保存</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" colspan="2">
+      <spacer name="horizontalSpacer_9">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QComboBox" name="filepath_cB">
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QToolButton" name="path_sel_tB">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>10</y>
-      <width>594</width>
+      <x>392</x>
+      <y>12</y>
+      <width>581</width>
       <height>691</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout_12">
+    <layout class="QGridLayout" name="gridLayout_13">
      <item row="0" column="0">
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
@@ -3736,8 +3620,8 @@ QDoubleSpinBox::down-button {
        <property name="title">
         <string>其他指令</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_11">
-        <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0" rowspan="2">
          <widget class="QGroupBox" name="groupBox_6">
           <property name="title">
            <string>积分时间</string>
@@ -3835,10 +3719,10 @@ QDoubleSpinBox::down-button {
           </layout>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="1" rowspan="2">
          <widget class="QGroupBox" name="groupBox_7">
           <property name="title">
-           <string>主时钟频率</string>
+           <string>灰度时钟频率</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_10">
            <item row="0" column="0">
@@ -3936,33 +3820,145 @@ QDoubleSpinBox::down-button {
           </layout>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QGroupBox" name="groupBox_8">
+        <item row="0" column="2" rowspan="2">
+         <widget class="QGroupBox" name="groupBox_10">
           <property name="title">
-           <string>USB数据流保存</string>
+           <string>事件时钟频率</string>
           </property>
-          <layout class="QGridLayout" name="gridLayout_7">
+          <layout class="QGridLayout" name="gridLayout_12">
            <item row="0" column="0">
-            <widget class="QPushButton" name="stream_save_pB">
-             <property name="text">
-              <string>开始保存</string>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item>
+              <widget class="QDoubleSpinBox" name="clk_dSB_2">
+               <property name="styleSheet">
+                <string notr="true">QDoubleSpinBox {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f9f9f9, stop: 1 #e0e0e0);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 12px;
+    color: #333;
+    selection-background-color: #0078d7;
+    selection-color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;
+    width: 24px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom-right-radius: 8px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                      stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+}
+        QDoubleSpinBox:hover {
+            border: 1px solid #999;
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #f0f0f0, stop: 1 #d0d0d0);
+        }
+        QDoubleSpinBox:focus {
+            border: 1px solid #0078d7;
+            background-color: white;
+        }
+        QDoubleSpinBox::up-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::down-button:hover {
+            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, 
+                                              stop: 0 #e0e0e0, stop: 1 #c0c0c0);
+        }
+        QDoubleSpinBox::up-arrow {
+            image: url(:/picture/up_arrow.png);
+            width: 8px;
+            height: 8px;
+        }
+        QDoubleSpinBox::down-arrow {
+            image: url(:/picture/down_arrow.png);
+            width: 8px;
+            height: 8px;
+        }</string>
+               </property>
+               <property name="suffix">
+                <string>MHz</string>
+               </property>
+               <property name="decimals">
+                <number>3</number>
+               </property>
+               <property name="minimum">
+                <double>1.024000000000000</double>
+               </property>
+               <property name="maximum">
+                <double>16.384000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>1.024000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="clk_pB_2">
+               <property name="text">
+                <string>确定</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QGroupBox" name="groupBox_9">
+          <property name="title">
+           <string>温度/K</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_11">
+           <item row="0" column="0">
+            <widget class="QLCDNumber" name="Temp_lcdNum">
+             <property name="styleSheet">
+              <string notr="true">QLCDNumber {
+    background-color: #2e2e2e; /* 背景色 */
+    color: #00FF00;           /* 字体颜色（绿色像LED灯） */
+    border: 2px solid #00FF00; /* 边框样式和颜色 */
+    border-radius: 10px;      /* 边框圆角 */
+    padding: 5px;             /* 内边距 */
+}
+
+QLCDNumber:hover {
+    background-color: #3e3e3e; /* 鼠标悬停时背景色 */
+    border: 2px solid #FFFFFF; /* 鼠标悬停时边框颜色 */
+}
+</string>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QComboBox" name="path_display_cB"/>
-           </item>
-           <item row="1" column="1">
-            <widget class="QToolButton" name="path_sel_tB">
-             <property name="text">
-              <string>...</string>
+             <property name="smallDecimalPoint">
+              <bool>false</bool>
+             </property>
+             <property name="digitCount">
+              <number>6</number>
+             </property>
+             <property name="value" stdset="0">
+              <double>0.000000000000000</double>
              </property>
             </widget>
            </item>
           </layout>
          </widget>
         </item>
-        <item row="0" column="3">
+        <item row="1" column="3">
          <spacer name="horizontalSpacer_8">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -3976,6 +3972,11 @@ QDoubleSpinBox::down-button {
          </spacer>
         </item>
        </layout>
+       <zorder>groupBox_9</zorder>
+       <zorder>groupBox_6</zorder>
+       <zorder>groupBox_7</zorder>
+       <zorder>horizontalSpacer_8</zorder>
+       <zorder>groupBox_10</zorder>
       </widget>
      </item>
     </layout>
@@ -3985,13 +3986,14 @@ QDoubleSpinBox::down-button {
    <zorder>groupBox_3</zorder>
    <zorder>groupBox_2</zorder>
    <zorder>sideBar</zorder>
+   <zorder>groupBox_8</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>979</width>
+     <width>1006</width>
      <height>22</height>
     </rect>
    </property>

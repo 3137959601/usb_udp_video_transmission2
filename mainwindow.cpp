@@ -36,6 +36,10 @@ MainWindow::MainWindow(QWidget *parent)
     this->initThreads();
     this->initSerial();
     this->initAD();
+
+    //初始化保存路径
+    ui->filepath_cB->addItem(QApplication::applicationDirPath());
+    usbthread->setSaveDir(QApplication::applicationDirPath());
 }
 
 MainWindow::~MainWindow()
@@ -70,19 +74,23 @@ void MainWindow::initUI()
     ui->serialpB->setIcon(QIcon(":/picture/serial_close.png"));
     // 默认创建状态栏
     auto p_status_bar = this->statusBar();
-    p_status_bar->showMessage("这是一个QMainWindow集成QStatusBar示例。");
+    p_status_bar->showMessage("红外双通道采集系统");
 
     // 初始化 QSettings
-    settings = new QSettings("MyCompany", "MyApp", this);
+//    settings = new QSettings("MyCompany", "MyApp", this);
+    // 使用INI文件存储，确保可写位置
+    settings = new QSettings(QApplication::applicationDirPath() + "/config.ini",
+                           QSettings::IniFormat,
+                           this);
 
+    qDebug() << "Config file:" << settings->fileName();
     // 加载数据
-    //loadData();
-    ui->confsv_pB->setEnabled(false);
+    loadData();
+
     //初始时先检测一次USB接口
     this->on_camera_det_pB_clicked();
 
-    //    zoom_ratio[0] = 0.2;
-    //    zoom_ratio[1] = 0.25;
+
 }
 
 void MainWindow::initThreads()
@@ -124,7 +132,7 @@ void MainWindow::initSerial()
     connect(this,&MainWindow::open_serial_signal,serialworker,&SerialWorker::SerialPortInit);
     connect(this,&MainWindow::close_serial_signal,serialworker,&SerialWorker::SerialClose);
 
-    connect(serialworker,&SerialWorker::recvDataSignal,this,&MainWindow::serial_recvDataSlot);
+//    connect(serialworker,&SerialWorker::recvDataSignal,this,&MainWindow::serial_recvDataSlot);
     //多个信号对应一个槽
     connect(this,&MainWindow::serial_send_signal,serialworker,&SerialWorker::SerialSendData_Slot);
 
@@ -137,13 +145,17 @@ void MainWindow::initAD()
     //connect(serialworker,&SerialWorker::LCDNumShow,this,&MainWindow::LCDNumShow_slot);
     //connect(this,&MainWindow::ADSettings_signal,serialworker,&SerialWorker::ADInstructionCode);
     connect(serialworker,&SerialWorker::LCDNumShow2,this,&MainWindow::LCDNumShow_slot2);
+    connect(serialworker,&SerialWorker::Temp_LCDNumShow,this,&MainWindow::Temp_LCDNumShow_slot);
     connect(this,&MainWindow::InstructSettings_signal,serialworker,&SerialWorker::InstructionCode);
-    LCDNumInit();
+
 }
 
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    usbthread->stream_save_flag = false;        //数据流图像保存
+    ui->stream_save_pB->setText("开始保存");
+
     Acquire = false;
     if(thread1)
     {
@@ -283,7 +295,7 @@ void MainWindow::on_tooltB_clicked()
 
 void MainWindow::on_switchBt_clicked()
 {
-//    Acquire=!Acquire;                             //暂时关闭相机功能，只保留串口传输功能
+    Acquire=!Acquire;                             //暂时关闭相机功能，只保留串口传输功能
     if(Acquire)
     {
         ui->switchBt->setIcon(QIcon(":/picture/switch_on.png"));
@@ -294,6 +306,9 @@ void MainWindow::on_switchBt_clicked()
         ui->switchBt->setIcon(QIcon(":/picture/switch_off.png"));
         ui->camera_det_pB->setEnabled(true);
         ui->camera_comboBox->setEnabled(true);
+
+        usbthread->stream_save_flag = false;        //数据流图像保存
+        ui->stream_save_pB->setText("开始保存");
     }
 }
 
@@ -343,28 +358,28 @@ void MainWindow::on_serialpB_clicked()
         ui->serialCb->setEnabled(true);
     }
 }
+//原指令接收框，已被删除
+//void MainWindow::serial_recvDataSlot(QString data)
+//{
+//    if(data[0]==QChar(0xEB)&&data[2]!=QChar(0xDA))
+//    {
+//        ui->serialRecvpTE->appendPlainText(data);
+//    }
 
-void MainWindow::serial_recvDataSlot(QString data)
-{
-    if(data[0]==QChar(0xEB)&&data[2]!=QChar(0xDA))
-    {
-        ui->serialRecvpTE->appendPlainText(data);
-    }
+//    //qDebug()<<"开启recv主线程"<<QThread::currentThreadId();//查看槽函数在哪个线程运行
+//}
 
-    //qDebug()<<"开启recv主线程"<<QThread::currentThreadId();//查看槽函数在哪个线程运行
-}
+//原指令发送按钮，已被删除
+//void MainWindow::on_command_sendBt_clicked()
+//{
+//    emit serial_send_signal(ui->serialSendtE->toPlainText());
+//}
 
-
-void MainWindow::on_command_sendBt_clicked()
-{
-    emit serial_send_signal(ui->serialSendtE->toPlainText());
-}
-
-
-void MainWindow::on_command_clearBt_clicked()
-{
-    ui->serialRecvpTE->clear();
-}
+//原指令清除按钮，已被删除
+//void MainWindow::on_command_clearBt_clicked()
+//{
+//    ui->serialRecvpTE->clear();
+//}
 
 
 void MainWindow::on_serial_det_pB_clicked()
@@ -384,62 +399,237 @@ void MainWindow::on_serial_det_pB_clicked()
         ui->serialCb->setCurrentText(currentSerialPort);
     }
 }
-void MainWindow::LCDNumInit()
+
+
+void MainWindow::LCDNumShow_slot2(std::vector<float> currents)
 {
-//    ui->sc_lcdNum1->setFixedDecimalMode(3,0);
-    QList<float>ADSetInitVals;
-    ADSetInitVals.resize(26); // 分配足够的空间
-    for(int i=0;i<5;i++)
-    {
-        ADSetInitVals[i] = 0;
+    // 检查数据有效性
+    if(currents.size() < 47) {
+        qWarning() << "Invalid currents data size:" << currents.size();
+        return;
     }
-        ADSetInitVals[5] = 0.4f;
-    for(int i=6;i<21;i++)
-    {
-        ADSetInitVals[i] = 1.2f;
+
+    // 定义LCD控件和对应数据索引的映射
+    struct LCDMapping {
+        QLCDNumber* lcd;
+        int dataIndex;
+        std::function<float(float)> transform; // 可选的数据转换函数
+    };
+
+    // 所有LCD控件的配置
+    const std::vector<LCDMapping> mappings = {
+        // 供电电流电压
+        {ui->sc_lcdNum1, 0, nullptr}, {ui->sc_lcdNum2, 2, nullptr},
+        {ui->sc_lcdNum3, 4, nullptr}, {ui->sc_lcdNum4, 6, nullptr},
+        {ui->sc_lcdNum5, 8, nullptr},
+        // 供电电压
+        {ui->sv_lcdNum1, 1, nullptr}, {ui->sv_lcdNum2, 3, nullptr},
+        {ui->sv_lcdNum3, 5, nullptr}, {ui->sv_lcdNum4, 7, nullptr},
+        {ui->sv_lcdNum5, 9, nullptr},
+        // SUBPI (根据原理图，实际测量值需要减去2.5v的电压)
+        {ui->SUBPI_lcdNum, 10, [](float v){ return v - 2.5f; }},
+        // SUBPV
+        {ui->SUBPV_lcdNum, 11, nullptr},
+        // 可调电流
+        {ui->ajc_lcdNum1, 12, nullptr}, {ui->ajc_lcdNum2, 13, nullptr},
+        {ui->ajc_lcdNum3, 14, nullptr}, {ui->ajc_lcdNum4, 15, nullptr},
+        {ui->ajc_lcdNum5, 46, nullptr},
+        // 偏置电流(奇数索引)
+        {ui->bc_lcdNum1, 17, nullptr}, {ui->bc_lcdNum2, 19, nullptr},
+        {ui->bc_lcdNum3, 21, nullptr}, {ui->bc_lcdNum4, 23, nullptr},
+        {ui->bc_lcdNum5, 25, nullptr}, {ui->bc_lcdNum6, 27, nullptr},
+        {ui->bc_lcdNum7, 29, nullptr}, {ui->bc_lcdNum8, 31, nullptr},
+        {ui->bc_lcdNum9, 33, nullptr}, {ui->bc_lcdNum10, 35, nullptr},
+        {ui->bc_lcdNum11, 37, nullptr}, {ui->bc_lcdNum12, 39, nullptr},
+        {ui->bc_lcdNum13, 41, nullptr}, {ui->bc_lcdNum14, 43, nullptr},
+        {ui->bc_lcdNum15, 45, nullptr},
+        // 偏置电压(偶数索引)
+        {ui->bv_lcdNum1, 16, nullptr}, {ui->bv_lcdNum2, 18, nullptr},
+        {ui->bv_lcdNum3, 20, nullptr}, {ui->bv_lcdNum4, 22, nullptr},
+        {ui->bv_lcdNum5, 24, nullptr}, {ui->bv_lcdNum6, 26, nullptr},
+        {ui->bv_lcdNum7, 28, nullptr}, {ui->bv_lcdNum8, 30, nullptr},
+        {ui->bv_lcdNum9, 32, nullptr}, {ui->bv_lcdNum10, 34, nullptr},
+        {ui->bv_lcdNum11, 36, nullptr}, {ui->bv_lcdNum12, 38, nullptr},
+        {ui->bv_lcdNum13, 40, nullptr}, {ui->bv_lcdNum14, 42, nullptr},
+        {ui->bv_lcdNum15, 44, nullptr}
+    };
+
+    // 统一处理所有LCD显示
+    for(const auto& mapping : mappings) {
+        float value = currents[mapping.dataIndex];
+        if(mapping.transform) {
+            value = mapping.transform(value);
+        }
+        mapping.lcd->display(QString::number(value, 'f', 3));
     }
-    for(int i=21;i<24;i++)
-    {
-        ADSetInitVals[i] = 5.0f;
-    }
-    for(int i=24;i<26;i++)
-    {
-        ADSetInitVals[i] = 0.1f;
-    }
-    //供电电压
-    ui->sv_dSB1->setValue(ADSetInitVals[0]);
-    ui->sv_dSB2->setValue(ADSetInitVals[1]);
-    ui->sv_dSB3->setValue(ADSetInitVals[2]);
-    ui->sv_dSB4->setValue(ADSetInitVals[3]);
-    ui->sv_dSB5->setValue(ADSetInitVals[4]);
-    //SUBPV
-    ui->SUBPV_dSB->setValue(ADSetInitVals[5]);
-    //偏置电压
-    ui->bv_dSB1->setValue(ADSetInitVals[6]);
-    ui->bv_dSB2->setValue(ADSetInitVals[7]);
-    ui->bv_dSB3->setValue(ADSetInitVals[8]);
-    ui->bv_dSB4->setValue(ADSetInitVals[9]);
-    ui->bv_dSB5->setValue(ADSetInitVals[10]);
-    ui->bv_dSB6->setValue(ADSetInitVals[11]);
-    ui->bv_dSB7->setValue(ADSetInitVals[12]);
-    ui->bv_dSB8->setValue(ADSetInitVals[13]);
-    ui->bv_dSB9->setValue(ADSetInitVals[14]);
-    ui->bv_dSB10->setValue(ADSetInitVals[15]);
-    ui->bv_dSB11->setValue(ADSetInitVals[16]);
-    ui->bv_dSB12->setValue(ADSetInitVals[17]);
-    ui->bv_dSB13->setValue(ADSetInitVals[18]);
-    ui->bv_dSB14->setValue(ADSetInitVals[19]);
-    ui->bv_dSB15->setValue(ADSetInitVals[20]);
-    //可调电流
-    ui->ajc_dSB1->setValue(ADSetInitVals[21]);
-    ui->ajc_dSB2->setValue(ADSetInitVals[22]);
-    ui->ajc_dSB3->setValue(ADSetInitVals[23]);
-    ui->ajc_dSB4->setValue(ADSetInitVals[24]);
-    ui->ajc_dSB5->setValue(ADSetInitVals[25]);
 }
+
+void MainWindow::Temp_LCDNumShow_slot(std::vector<float> Temps)
+{
+    ui->Temp_lcdNum->display(QString::number(Temps[0], 'f', 2));
+}
+//设置下位机电压值，同时根据原理图的倍数关系对设置值进行转换
+void MainWindow::on_confupd_pB_clicked()
+{
+    QList<float>ADSetVals;
+    //根据原理图，电压电流会有2倍的放大，所以设置先除以2
+    //供电电压
+    ADSetVals.append(ui->sv_dSB1->value()/2);
+    ADSetVals.append(ui->sv_dSB2->value()/2);
+    ADSetVals.append(ui->sv_dSB3->value()/2);
+    ADSetVals.append(ui->sv_dSB4->value()/2);
+    ADSetVals.append(ui->sv_dSB5->value()/2);
+    //SUBPV
+    ADSetVals.append(ui->SUBPV_dSB->value());   //电路忘记放大了，暂时不除以2
+    //偏置电压
+    ADSetVals.append(ui->bv_dSB1->value()/2);
+    ADSetVals.append(ui->bv_dSB2->value()/2);
+    ADSetVals.append(ui->bv_dSB3->value()/2);
+    ADSetVals.append(ui->bv_dSB4->value()/2);
+    ADSetVals.append(ui->bv_dSB5->value()/2);
+    ADSetVals.append(ui->bv_dSB6->value()/2);
+    ADSetVals.append(ui->bv_dSB7->value()/2);
+    ADSetVals.append(ui->bv_dSB8->value()/2);
+    ADSetVals.append(ui->bv_dSB9->value()/2);
+    ADSetVals.append(ui->bv_dSB10->value()/2);
+    ADSetVals.append(ui->bv_dSB11->value()/2);
+    ADSetVals.append(ui->bv_dSB12->value()/2);
+    ADSetVals.append(ui->bv_dSB13->value()/2);
+    ADSetVals.append(ui->bv_dSB14->value()/2);
+    ADSetVals.append(ui->bv_dSB15->value()/2);
+    //可调电流
+    ADSetVals.append(ui->ajc_dSB1->value()/4);//电路放大250倍，而界面已经放大了1000倍，所以需要再除以4倍
+    ADSetVals.append(ui->ajc_dSB2->value()/4);//电路放大250倍，而界面已经放大了1000倍，所以需要再除以4倍
+    ADSetVals.append(ui->ajc_dSB3->value()/4);//电路放大250倍，而界面已经放大了1000倍，所以需要再除以4倍
+    ADSetVals.append(ui->ajc_dSB4->value()*25);//电路放大25000倍，而界面已经放大了1000倍，所以需要再乘以25倍
+    ADSetVals.append(ui->ajc_dSB5->value()*25);//电路放大25000倍，而界面已经放大了1000倍，所以需要再乘以25倍
+
+    emit InstructSettings_signal(0xDA,ADSetVals);
+    //qDebug()<<"ADSetVals"<<ADSetVals;
+
+
+}
+//积分时间确认，发送积分时间配置指令
+void MainWindow::on_itgr_pB_clicked()
+{
+    QList<float>AASetVals;
+    AASetVals.append(ui->itgr_dSB->value());
+    emit InstructSettings_signal(0xAA,AASetVals);
+}
+
+//主时钟频率配置
+void MainWindow::on_clk_pB_clicked()
+{
+    QList<float>BBSetVals;
+    BBSetVals.append(ui->clk_dSB->value());
+    emit InstructSettings_signal(0xBB,BBSetVals);
+}
+
+
+
+void MainWindow::on_confsv_pB_clicked()
+{
+    // 定义所有需要保存的spinbox指针数组
+    QDoubleSpinBox* spinBoxes[] = {
+        // 供电电压
+        ui->sv_dSB1, ui->sv_dSB2, ui->sv_dSB3, ui->sv_dSB4, ui->sv_dSB5,
+        // SUBPV
+        ui->SUBPV_dSB,
+        // 偏置电压
+        ui->bv_dSB1, ui->bv_dSB2, ui->bv_dSB3, ui->bv_dSB4, ui->bv_dSB5,
+        ui->bv_dSB6, ui->bv_dSB7, ui->bv_dSB8, ui->bv_dSB9, ui->bv_dSB10,
+        ui->bv_dSB11, ui->bv_dSB12, ui->bv_dSB13, ui->bv_dSB14, ui->bv_dSB15,
+        // 可调电流
+        ui->ajc_dSB1, ui->ajc_dSB2, ui->ajc_dSB3, ui->ajc_dSB4, ui->ajc_dSB5,
+        //积分时间
+        ui->itgr_dSB,
+        //主时钟频率
+        ui->clk_dSB,ui->clk_dSB_2
+    };
+
+    QStringList values;
+    const int spinBoxCount = sizeof(spinBoxes) / sizeof(spinBoxes[0]);
+
+    // 遍历所有spinbox获取值
+    for (int i = 0; i < spinBoxCount; ++i) {
+        values << QString::number(spinBoxes[i]->value());
+    }
+
+    // 保存到QSettings
+    settings->setValue("spinBoxValues", values.join(","));
+    settings->sync();
+    qDebug() << "Data saved:" << values;
+
+}
+void MainWindow:: loadData() {
+
+    // 定义所有需要保存的spinbox指针数组
+    QDoubleSpinBox* spinBoxes[] = {
+        // 供电电压
+        ui->sv_dSB1, ui->sv_dSB2, ui->sv_dSB3, ui->sv_dSB4, ui->sv_dSB5,
+        // SUBPV
+        ui->SUBPV_dSB,
+        // 偏置电压
+        ui->bv_dSB1, ui->bv_dSB2, ui->bv_dSB3, ui->bv_dSB4, ui->bv_dSB5,
+        ui->bv_dSB6, ui->bv_dSB7, ui->bv_dSB8, ui->bv_dSB9, ui->bv_dSB10,
+        ui->bv_dSB11, ui->bv_dSB12, ui->bv_dSB13, ui->bv_dSB14, ui->bv_dSB15,
+        // 可调电流
+        ui->ajc_dSB1, ui->ajc_dSB2, ui->ajc_dSB3, ui->ajc_dSB4, ui->ajc_dSB5,
+        //积分时间
+        ui->itgr_dSB,
+        //主时钟频率
+        ui->clk_dSB,ui->clk_dSB_2
+    };
+
+    // 从 QSettings 中读取值并更新 QDoubleSpinBox,如果不存在，则使用defaultValues
+    const int spinBoxCount = sizeof(spinBoxes) / sizeof(spinBoxes[0]);
+    QString defaultValues = QString("0,").repeated(spinBoxCount-1) + "0";
+
+    QString storedValues = settings->value("spinBoxValues", defaultValues).toString();
+    QStringList loadedValues = storedValues.split(",");
+
+    for (int i = 0; i < spinBoxCount && i < loadedValues.size(); ++i) {
+        spinBoxes[i]->setValue(loadedValues[i].toDouble());
+    }
+    qDebug() << "Data loaded:" << loadedValues;
+}
+
+void MainWindow::on_stream_save_pB_clicked()
+{
+    if(Acquire)
+    {
+        if(usbthread->stream_save_flag==false)
+        {
+            usbthread->stream_save_flag = true;
+            ui->stream_save_pB->setText("停止保存");
+        }
+        else if(usbthread->stream_save_flag==true)
+        {
+            usbthread->stream_save_flag = false;
+            ui->stream_save_pB->setText("开始保存");
+        }
+    }
+    else
+    {
+        usbthread->stream_save_flag = false;
+        ui->stream_save_pB->setText("开始保存");
+    }
+}
+
+
+void MainWindow::on_path_sel_tB_clicked()
+{
+    QString directory = QDir::toNativeSeparators(QFileDialog::getExistingDirectory(this,tr("Streamer Save path" ),QDir::currentPath()));
+    if ( !directory.isEmpty()){
+        if (ui->filepath_cB->findText(directory) == -1)ui->filepath_cB->addItem(directory);
+        ui->filepath_cB->setCurrentIndex(ui->filepath_cB->findText(directory));
+    }
+    usbthread->setSaveDir(directory);
+}
+
 void MainWindow::LCDNumShow_slot(unsigned char index,float value)//这种方法没有被使用到，暂时舍弃
 {
-    //也许有一种办法可以给LCDNumber批量赋值，例如找到它们的指针
+    //可以通过使用 ​查找表（Lookup Table）​ 替代冗长的 switch-case  QMap<unsigned char, QLCDNumber*> lcdMap;
     switch(index){
     //供电电流
         case 0x01:
@@ -595,249 +785,3 @@ void MainWindow::LCDNumShow_slot(unsigned char index,float value)//这种方法�
     }
 
 }
-
-void MainWindow::LCDNumShow_slot2(std::vector<float> currents)
-{
-     // 使用 QString 格式化为三位小数
-//     std::vector<QString> formattedNumbers(currents.size());
-//     for(int i=0;i<currents.size();i++)
-//        formattedNumbers[i] = QString::number(currents[i], 'f', 3);
-     // 将格式化后的字符串传递给 QLCDNumber
-
-    //按照原理图顺序,将LCDNumber小数点后固定为三位显示
-//供电电流电压
-        ui->sc_lcdNum1->display(QString::number(currents[0], 'f', 3));
-        ui->sc_lcdNum2->display(QString::number(currents[2], 'f', 3));
-        ui->sc_lcdNum3->display(QString::number(currents[4], 'f', 3));
-        ui->sc_lcdNum4->display(QString::number(currents[6], 'f', 3));
-        ui->sc_lcdNum5->display(QString::number(currents[8], 'f', 3));
-//供电电压
-        ui->sv_lcdNum1->display(QString::number(currents[1], 'f', 3));
-        ui->sv_lcdNum2->display(QString::number(currents[3], 'f', 3));
-        ui->sv_lcdNum3->display(QString::number(currents[5], 'f', 3));
-        ui->sv_lcdNum4->display(QString::number(currents[7], 'f', 3));
-        ui->sv_lcdNum5->display(QString::number(currents[9], 'f', 3));
-//SUBPI
-        ui->SUBPI_lcdNum->display(QString::number(currents[10]-2.5, 'f', 3));//根据原理图，实际测量值需要减去2.5v的电压
-//SUBPI
-        ui->SUBPV_lcdNum->display(QString::number(currents[11], 'f', 3));
-//偏置电流
-        ui->bc_lcdNum1->display(QString::number(currents[17], 'f', 3));
-        ui->bc_lcdNum2->display(QString::number(currents[19], 'f', 3));
-        ui->bc_lcdNum3->display(QString::number(currents[21], 'f', 3));
-        ui->bc_lcdNum4->display(QString::number(currents[23], 'f', 3));
-        ui->bc_lcdNum5->display(QString::number(currents[25], 'f', 3));
-        ui->bc_lcdNum6->display(QString::number(currents[27], 'f', 3));
-        ui->bc_lcdNum7->display(QString::number(currents[29], 'f', 3));
-        ui->bc_lcdNum8->display(QString::number(currents[31], 'f', 3));
-        ui->bc_lcdNum9->display(QString::number(currents[33], 'f', 3));
-        ui->bc_lcdNum10->display(QString::number(currents[35], 'f', 3));
-        ui->bc_lcdNum11->display(QString::number(currents[37], 'f', 3));
-        ui->bc_lcdNum12->display(QString::number(currents[39], 'f', 3));
-        ui->bc_lcdNum13->display(QString::number(currents[41], 'f', 3));
-        ui->bc_lcdNum14->display(QString::number(currents[43], 'f', 3));
-        ui->bc_lcdNum15->display(QString::number(currents[45], 'f', 3));
-
-//偏置电压
-        ui->bv_lcdNum1->display(QString::number(currents[16], 'f', 3));
-        ui->bv_lcdNum2->display(QString::number(currents[18], 'f', 3));
-        ui->bv_lcdNum3->display(QString::number(currents[20], 'f', 3));
-        ui->bv_lcdNum4->display(QString::number(currents[22], 'f', 3));
-        ui->bv_lcdNum5->display(QString::number(currents[24], 'f', 3));
-        ui->bv_lcdNum6->display(QString::number(currents[26], 'f', 3));
-        ui->bv_lcdNum7->display(QString::number(currents[28], 'f', 3));
-        ui->bv_lcdNum8->display(QString::number(currents[30], 'f', 3));
-        ui->bv_lcdNum9->display(QString::number(currents[32], 'f', 3));
-        ui->bv_lcdNum10->display(QString::number(currents[34], 'f', 3));
-        ui->bv_lcdNum11->display(QString::number(currents[36], 'f', 3));
-        ui->bv_lcdNum12->display(QString::number(currents[38], 'f', 3));
-        ui->bv_lcdNum13->display(QString::number(currents[40], 'f', 3));
-        ui->bv_lcdNum14->display(QString::number(currents[42], 'f', 3));
-        ui->bv_lcdNum15->display(QString::number(currents[44], 'f', 3));
-
-//可调电流
-        ui->ajc_lcdNum1->display(QString::number(currents[12], 'f', 3));
-        ui->ajc_lcdNum2->display(QString::number(currents[13], 'f', 3));
-        ui->ajc_lcdNum3->display(QString::number(currents[14], 'f', 3));
-        ui->ajc_lcdNum4->display(QString::number(currents[15], 'f', 3));
-        ui->ajc_lcdNum5->display(QString::number(currents[46], 'f', 3));
-}
-//设置下位机电压值，同时根据原理图的倍数关系对设置值进行转换
-void MainWindow::on_confupd_pB_clicked()
-{
-    QList<float>ADSetVals;
-    //根据原理图，电压电流会有2倍的放大，所以设置先除以2
-    //供电电压
-    ADSetVals.append(ui->sv_dSB1->value()/2);
-    ADSetVals.append(ui->sv_dSB2->value()/2);
-    ADSetVals.append(ui->sv_dSB3->value()/2);
-    ADSetVals.append(ui->sv_dSB4->value()/2);
-    ADSetVals.append(ui->sv_dSB5->value()/2);
-    //SUBPV
-    ADSetVals.append(ui->SUBPV_dSB->value());   //电路忘记放大了，暂时不除以2
-    //偏置电压
-    ADSetVals.append(ui->bv_dSB1->value()/2);
-    ADSetVals.append(ui->bv_dSB2->value()/2);
-    ADSetVals.append(ui->bv_dSB3->value()/2);
-    ADSetVals.append(ui->bv_dSB4->value()/2);
-    ADSetVals.append(ui->bv_dSB5->value()/2);
-    ADSetVals.append(ui->bv_dSB6->value()/2);
-    ADSetVals.append(ui->bv_dSB7->value()/2);
-    ADSetVals.append(ui->bv_dSB8->value()/2);
-    ADSetVals.append(ui->bv_dSB9->value()/2);
-    ADSetVals.append(ui->bv_dSB10->value()/2);
-    ADSetVals.append(ui->bv_dSB11->value()/2);
-    ADSetVals.append(ui->bv_dSB12->value()/2);
-    ADSetVals.append(ui->bv_dSB13->value()/2);
-    ADSetVals.append(ui->bv_dSB14->value()/2);
-    ADSetVals.append(ui->bv_dSB15->value()/2);
-    //可调电流
-    ADSetVals.append(ui->ajc_dSB1->value()/4);//电路放大250倍，而界面已经放大了1000倍，所以需要再除以4倍
-    ADSetVals.append(ui->ajc_dSB2->value()/4);//电路放大250倍，而界面已经放大了1000倍，所以需要再除以4倍
-    ADSetVals.append(ui->ajc_dSB3->value()/4);//电路放大250倍，而界面已经放大了1000倍，所以需要再除以4倍
-    ADSetVals.append(ui->ajc_dSB4->value()*25);//电路放大25000倍，而界面已经放大了1000倍，所以需要再乘以25倍
-    ADSetVals.append(ui->ajc_dSB5->value()*25);//电路放大25000倍，而界面已经放大了1000倍，所以需要再乘以25倍
-
-    emit InstructSettings_signal(0xDA,ADSetVals);
-    //qDebug()<<"ADSetVals"<<ADSetVals;
-
-
-}
-//积分时间确认，发送积分时间配置指令
-void MainWindow::on_itgr_pB_clicked()
-{
-    QList<float>AASetVals;
-    AASetVals.append(ui->itgr_dSB->value());
-    emit InstructSettings_signal(0xAA,AASetVals);
-}
-
-//主时钟频率配置
-void MainWindow::on_clk_pB_clicked()
-{
-    QList<float>BBSetVals;
-    BBSetVals.append(ui->clk_dSB->value());
-    emit InstructSettings_signal(0xBB,BBSetVals);
-}
-
-
-
-void MainWindow::on_confsv_pB_clicked()
-{
-    QStringList values; // 使用 QStringList 来存放值
-
-    // 获取每个 QDoubleSpinBox 的值
-    // 将值转换为字符串并存入列表
-    //供电电压
-    values << QString::number(ui->sv_dSB1->value());
-    values << QString::number(ui->sv_dSB2->value());
-    values << QString::number(ui->sv_dSB3->value());
-    values << QString::number(ui->sv_dSB4->value());
-    values << QString::number(ui->sv_dSB5->value());
-    //SUBPV
-    values << QString::number(ui->SUBPV_dSB->value());
-    //偏置电压
-    values << QString::number(ui->bv_dSB1->value());
-    values << QString::number(ui->bv_dSB2->value());
-    values << QString::number(ui->bv_dSB3->value());
-    values << QString::number(ui->bv_dSB4->value());
-    values << QString::number(ui->bv_dSB5->value());
-    values << QString::number(ui->bv_dSB6->value());
-    values << QString::number(ui->bv_dSB7->value());
-    values << QString::number(ui->bv_dSB8->value());
-    values << QString::number(ui->bv_dSB9->value());
-    values << QString::number(ui->bv_dSB10->value());
-    values << QString::number(ui->bv_dSB11->value());
-    values << QString::number(ui->bv_dSB12->value());
-    values << QString::number(ui->bv_dSB13->value());
-    values << QString::number(ui->bv_dSB14->value());
-    values << QString::number(ui->bv_dSB15->value());
-    //可调电流
-    values << QString::number(ui->ajc_dSB1->value());
-    values << QString::number(ui->ajc_dSB2->value());
-    values << QString::number(ui->ajc_dSB3->value());
-    values << QString::number(ui->ajc_dSB4->value());
-    values << QString::number(ui->ajc_dSB5->value());
-    //保存到 QSettings，以逗号分隔的字符串形式存储
-    settings->setValue("spinBoxValues", values.join(","));
-    settings->sync();
-    qDebug() << "Data saved:" << values;
-
-}
-void MainWindow:: loadData() {
-    // 从 QSettings 中读取值并更新 QDoubleSpinBox
-    QString storedValues = settings->value("spinBoxValues", "0,0,0").toString();
-    QStringList loadedValues = storedValues.split(",");
-        //供电电压
-    if (loadedValues.size() > 0)
-        ui->sv_dSB1->setValue(loadedValues[0].toDouble());
-    if (loadedValues.size() > 1)
-        ui->sv_dSB2->setValue(loadedValues[1].toDouble());
-    if (loadedValues.size() > 2)
-        ui->sv_dSB3->setValue(loadedValues[2].toDouble());
-    if (loadedValues.size() > 3)
-        ui->sv_dSB4->setValue(loadedValues[3].toDouble());
-    if (loadedValues.size() > 4)
-        ui->sv_dSB5->setValue(loadedValues[4].toDouble());
-        //SUBPV
-    if (loadedValues.size() > 5)
-        ui->SUBPV_dSB->setValue(loadedValues[5].toDouble());
-        //偏置电压
-    if (loadedValues.size() > 6)
-        ui->bv_dSB1->setValue(loadedValues[6].toDouble());
-    if (loadedValues.size() > 7)
-        ui->bv_dSB2->setValue(loadedValues[7].toDouble());
-    if (loadedValues.size() > 8)
-        ui->bv_dSB3->setValue(loadedValues[8].toDouble());
-    if (loadedValues.size() > 9)
-        ui->bv_dSB4->setValue(loadedValues[9].toDouble());
-    if (loadedValues.size() > 10)
-        ui->bv_dSB5->setValue(loadedValues[10].toDouble());
-    if (loadedValues.size() > 11)
-        ui->bv_dSB6->setValue(loadedValues[11].toDouble());
-    if (loadedValues.size() > 12)
-        ui->bv_dSB7->setValue(loadedValues[12].toDouble());
-    if (loadedValues.size() > 13)
-        ui->bv_dSB8->setValue(loadedValues[13].toDouble());
-    if (loadedValues.size() > 14)
-        ui->bv_dSB9->setValue(loadedValues[14].toDouble());
-    if (loadedValues.size() > 15)
-        ui->bv_dSB10->setValue(loadedValues[15].toDouble());
-    if (loadedValues.size() > 16)
-        ui->bv_dSB11->setValue(loadedValues[16].toDouble());
-    if (loadedValues.size() > 17)
-        ui->bv_dSB12->setValue(loadedValues[17].toDouble());
-    if (loadedValues.size() > 18)
-        ui->bv_dSB13->setValue(loadedValues[18].toDouble());
-    if (loadedValues.size() > 19)
-        ui->bv_dSB14->setValue(loadedValues[19].toDouble());
-    if (loadedValues.size() > 20)
-        ui->bv_dSB15->setValue(loadedValues[20].toDouble());
-        //可调电流
-    if (loadedValues.size() > 21)
-        ui->ajc_dSB1->setValue(loadedValues[21].toDouble());
-    if (loadedValues.size() > 22)
-        ui->ajc_dSB2->setValue(loadedValues[22].toDouble());
-    if (loadedValues.size() > 23)
-        ui->ajc_dSB3->setValue(loadedValues[23].toDouble());
-    if (loadedValues.size() > 24)
-        ui->ajc_dSB4->setValue(loadedValues[24].toDouble());
-    if (loadedValues.size() > 25)
-        ui->ajc_dSB5->setValue(loadedValues[25].toDouble());
-
-    qDebug() << "Data loaded:" << loadedValues;
-}
-
-void MainWindow::on_stream_save_pB_clicked()
-{
-    if(usbthread->stream_save_flag==false)
-    {
-        usbthread->stream_save_flag = true;
-        ui->stream_save_pB->setText("停止保存");
-    }
-    else if(usbthread->stream_save_flag==true)
-    {
-        usbthread->stream_save_flag = false;
-        ui->stream_save_pB->setText("开始保存");
-    }
-}
-

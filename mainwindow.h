@@ -7,6 +7,7 @@
 #include <QSerialPortInfo>
 #include <QMessageBox>
 #include <QSettings>
+#include <QCloseEvent>
 
 #include <QMainWindow>
 #include "child_window/system_settings_window.h"
@@ -66,7 +67,7 @@ public:
     void initSerial();
     void initAD();
 
-    void serial_recvDataSlot(QString data);
+//    void serial_recvDataSlot(QString data);
 
 
 signals :
@@ -104,15 +105,17 @@ private slots:
     //串口功能按键
     void on_serialpB_clicked();
 
-    void on_command_sendBt_clicked();
+//    void on_command_sendBt_clicked();
 
-    void on_command_clearBt_clicked();
+//    void on_command_clearBt_clicked();
 
     void on_serial_det_pB_clicked();
     //电压电流控制窗口
-    void LCDNumInit();
+
     void LCDNumShow_slot(unsigned char index,float value);
     void LCDNumShow_slot2(std::vector<float>currents);
+    void Temp_LCDNumShow_slot(std::vector<float>Temps);
+
     void on_confupd_pB_clicked();
 
     //void getADSettings();
@@ -125,6 +128,8 @@ private slots:
     void on_clk_pB_clicked();
 
     void on_stream_save_pB_clicked();
+
+    void on_path_sel_tB_clicked();
 
 private:
     Ui::MainWindow *ui;

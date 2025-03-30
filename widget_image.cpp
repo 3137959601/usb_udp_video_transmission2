@@ -10,8 +10,8 @@ widget_image::~widget_image()
 {
 
 }
-QImage widget_image::image = QImage(640,512,QImage::Format_Grayscale16);
-short widget_image::pic[512][640];
+//QImage widget_image::image = QImage(640,512,QImage::Format_Grayscale16);
+//short widget_image::pic[512][640];
 
 void widget_image::paintEvent(QPaintEvent *e)
 {
@@ -19,9 +19,13 @@ void widget_image::paintEvent(QPaintEvent *e)
     QPainter painter(this);
 //    painter.drawImage(0,0,MainWindow::image);
     //使640*512图像缩小至128*128的窗口大小
-    QImage scaledImage = MainWindow::image.scaled(size());
-    painter.drawImage(0,0,scaledImage);
-
+//    QImage scaledImage = MainWindow::image.scaled(size());
+//    painter.drawImage(0,0,scaledImage);
+    QImage image(reinterpret_cast<const uchar*>(usbThread::usbpic[usbThread::valid_pic]),
+                    128, 128,
+                    128 * sizeof(uchar),  // 行步长（每行的字节数）
+                    QImage::Format_Grayscale8); // 16-bit 灰度图像
+    painter.drawImage(0,0,image);
 }
 void widget_image::repaintImage()
 {

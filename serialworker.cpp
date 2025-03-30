@@ -411,6 +411,22 @@ void SerialWorker::InstructionAnalyse(const std::vector<unsigned char> &content)
     {
 
     }
+    else if(content[0] == 0xCC && content.size() == 3)  //温度
+    {
+        std::vector<float> temps;
+        for(int i = 1;i<content.size()-1;i+=2)
+        {
+            // 解析电流值
+            int currentMilliamp = (content[i] << 8) | (content[i+1] & 0xFF);
+            int voltage_m = currentMilliamp * 2048 / 32768;     //乘以1000，单位时mv
+            float temp = -5.65705E-07* pow(voltage_m, 3)
+                        +0.001423083* pow(voltage_m, 2)
+                        -1.74868743*voltage_m
+                        +1005.643609;
+            temps.push_back(temp);
+        }
+        emit Temp_LCDNumShow(temps);
+    }
 }
 
 void SerialWorker::SerialPortReadyRead_Slot()
