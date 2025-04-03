@@ -10,9 +10,7 @@
 CCyUSBDevice* MainWindow::pUSB = new CCyUSBDevice;
 CCyUSBEndPoint * MainWindow::BulkInEpt;
 bool MainWindow::Acquire = false;
-ushort MainWindow::pic[2][2700*2700];
-int MainWindow::valid_pic = 0;
-QImage MainWindow::image = QImage(640,512,QImage::Format_Grayscale16);//
+
 bool  MainWindow::b_equalizehist = false;
 bool MainWindow::b_medianblur = false;
 int MainWindow::T_equalizehist[2] = {75,15};
@@ -20,12 +18,9 @@ bool MainWindow::AutoAdapt = false;
 bool MainWindow::b_area_array = true;//默认面阵
 double MainWindow::frame_rate = 0;
 
-ushort MainWindow::ROW_FPGA = 512;//分辨率初始化
-ushort MainWindow::COL_FPGA = 640;//分辨率初始化
-
 bool b_fullscreen = false;
 extern bool serial_bind_flag;
-
+extern bool udp_bind_flag;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,13 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->initUI();
-    this->initThreads();
+    this->initUDP();
     this->initSerial();
-    this->initAD();
+    this->initThreads();
+    this->initLCD();
+    this->initPath();
 
-    //初始化保存路径
-    ui->filepath_cB->addItem(QApplication::applicationDirPath());
-    usbthread->setSaveDir(QApplication::applicationDirPath());
 }
 
 MainWindow::~MainWindow()
@@ -52,9 +46,13 @@ void MainWindow::initUI()
     this->setWindowTitle("双通道红外图像传输系统");
 
     Acquire = false;
-    ui->switchBt->setIcon(QIcon(":/picture/switch_off.png"));
-    ui->switchBt->setStyleSheet("border: none;"); // 去掉默认边框
-    ui->switchBt->setIconSize(QSize(40, 40)); // 设置图标大小
+    ui->usb_switchBt->setIcon(QIcon(":/picture/switch_off.png"));
+    ui->usb_switchBt->setStyleSheet("border: none;"); // 去掉默认边框
+    ui->usb_switchBt->setIconSize(QSize(40, 40)); // 设置图标大小
+
+    ui->udp_switchBt->setIcon(QIcon(":/picture/switch_off.png"));
+    ui->udp_switchBt->setStyleSheet("border: none;"); // 去掉默认边框
+    ui->udp_switchBt->setIconSize(QSize(40, 40)); // 设置图标大小
 
     ui->home_tB->setIcon(QIcon(":/picture/home_1.png"));
     ui->home_tB->setIconSize(QSize(20, 20)); // 增加图标大小
@@ -76,54 +74,25 @@ void MainWindow::initUI()
     auto p_status_bar = this->statusBar();
     p_status_bar->showMessage("红外双通道采集系统");
 
-    // 初始化 QSettings
-//    settings = new QSettings("MyCompany", "MyApp", this);
-    // 使用INI文件存储，确保可写位置
-    settings = new QSettings(QApplication::applicationDirPath() + "/config.ini",
-                           QSettings::IniFormat,
-                           this);
-
-    qDebug() << "Config file:" << settings->fileName();
-    // 加载数据
-    loadData();
-
     //初始时先检测一次USB接口
     this->on_camera_det_pB_clicked();
 
-
+//    qDebug()<<"开启主线程:"<<QThread::currentThread();//查看槽函数在哪个线程运行
 }
 
-void MainWindow::initThreads()
+void MainWindow::initUDP()
 {
-    //为自定义的模块分配空间  不能指定父对象
-    usbthread = new usbThread;
-    drawthread = new drawThread;
-
-    //为自定义的子线程分配空间  指定父对象
-    thread1 = new QThread(this);//子线程1
-    thread2 = new QThread(this);//子2
-    //thread1->setPriority(QThread::HighPriority);
-
-    //把自定义模块添加到子线程
-    usbthread->moveToThread(thread1);
-    drawthread->moveToThread(thread2);
-
-    connect(this,&MainWindow::new_Xfer,usbthread,&usbThread::Xfer);
-    connect(usbthread,SIGNAL(updatapic()),drawthread,SLOT(drawimage()));//usb线程发出pic更新信号，draw线程绘图
-    connect(drawthread,&drawThread::updataimage,ui->usb_widget,&widget_image::repaintImage);//draw线程绘图结束，主线程更新界面
-
-    //启动子线程
-    thread1->start();
-    thread2->start();
+    localport = "1234";
+    localIP = "192.168.1.102";
+    targetPort = "1234";
+    targetIP = "192.168.1.122";
 }
-
 void MainWindow::initSerial()
 {
     QStringList serialNamePort;
     for (const auto& it : QSerialPortInfo::availablePorts())
     {
         serialNamePort<<it.portName();
-
     }
     ui->serialCb->addItems(serialNamePort);
 
@@ -139,15 +108,72 @@ void MainWindow::initSerial()
     //connect(serialworker,&SerialWorker::AD_instruction_signal,serialworker,&SerialWorker::SerialSendData_Slot);
     connect(serialworker,&SerialWorker::instruction_send_signal,serialworker,&SerialWorker::SerialSendData_Slot);
 }
-//电压电流控制窗口初始化，包括加载LCD配置值
-void MainWindow::initAD()
+void MainWindow::initThreads()  //去除绘图线程
 {
+    //为自定义的模块分配空间  不能指定父对象
+    usbthread = new usbThread;
+//    drawthread = new drawThread;
+    udpSocket =new Udp_Thread;
+    //为自定义的子线程分配空间  指定父对象
+    thread1 = new QThread(this);//子线程1
+//    thread2 = new QThread(this);//子2
+    thread3 = new QThread(this);
+    serialThread = new QThread(this);
+
+    //thread1->setPriority(QThread::HighPriority);
+
+    //把自定义模块添加到子线程
+    usbthread->moveToThread(thread1);
+//    drawthread->moveToThread(thread2);
+    udpSocket->moveToThread(thread3);
+    serialworker->moveToThread(serialThread);
+
+    //USB
+    connect(this,&MainWindow::new_Xfer,usbthread,&usbThread::Xfer);
+    //去除绘图算法
+//    connect(usbthread,SIGNAL(updatapic()),drawthread,SLOT(drawimage()));//usb线程发出pic更新信号，draw线程绘图
+//    connect(drawthread,&drawThread::updataimage,ui->usb_widget,&widget_image::repaintImage);//draw线程绘图结束，主线程更新界面
+    connect(usbthread,&usbThread::updatapic,ui->usb_widget,&widget_image::repaintImage);//draw线程绘图结束，主线程更新界面
+    //UDP
+    connect(this,&MainWindow::start_bind,udpSocket,&Udp_Thread::udp_bind);
+    connect(this,&MainWindow::close_udp_signal,udpSocket,&Udp_Thread::udp_close);
+    connect(udpSocket,&Udp_Thread::updataUDPpic,ui->udp_widget,&widget_image::repaintImage);//draw线程绘图结束，主线程更新界面
+
+    //启动子线程
+    thread1->start();
+//    thread2->start();
+    thread3->start();
+    serialThread->start();
+}
+
+
+//电压电流控制窗口初始化，包括加载LCD配置值
+void MainWindow::initLCD()
+{
+    // 初始化 QSettings
+    // settings = new QSettings("MyCompany", "MyApp", this);
+    // 使用INI文件存储，确保可写位置
+    settings = new QSettings(QApplication::applicationDirPath() + "/config.ini",
+                           QSettings::IniFormat,
+                           this);
+
+    qDebug() << "Config file:" << settings->fileName();
+    // 加载数据
+    loadData();
     //connect(serialworker,&SerialWorker::LCDNumShow,this,&MainWindow::LCDNumShow_slot);
     //connect(this,&MainWindow::ADSettings_signal,serialworker,&SerialWorker::ADInstructionCode);
     connect(serialworker,&SerialWorker::LCDNumShow2,this,&MainWindow::LCDNumShow_slot2);
     connect(serialworker,&SerialWorker::Temp_LCDNumShow,this,&MainWindow::Temp_LCDNumShow_slot);
     connect(this,&MainWindow::InstructSettings_signal,serialworker,&SerialWorker::InstructionCode);
 
+}
+
+void MainWindow::initPath()
+{
+    //初始化保存路径
+    ui->filepath_cB->addItem(QApplication::applicationDirPath());
+    usbthread->setSaveDir(QApplication::applicationDirPath());
+    udpSocket->setSaveDir(QApplication::applicationDirPath());
 }
 
 
@@ -164,14 +190,33 @@ void MainWindow::closeEvent(QCloseEvent *event)
         usbthread->deleteLater();
         thread1->deleteLater();
     }
-    if(thread2)
-    {
-        thread2->quit();
-        thread2->wait();
-        drawthread->deleteLater();
-        thread2->deleteLater();
-    }
+//    if(thread2)
+//    {
+//        thread2->quit();
+//        thread2->wait();
+//        drawthread->deleteLater();
+//        thread2->deleteLater();
+//    }
+    //UDP线程关闭
+    udpSocket->stream_save_flag = false;
+    ui->UDP_save_pB->setText("开始保存");
+    // 确保先关闭 UDP
+    emit close_udp_signal();
 
+    // 然后结束子线程
+    if (thread3) {
+        thread3->quit(); // 请求线程退出
+        thread3->wait(); // 等待线程停止
+        delete thread3;  // 删除线程
+        thread3 = nullptr; // 防止悬空指针
+    }
+    if(serialThread)
+    {
+        serialThread->quit();
+        serialThread->wait();
+        serialworker->deleteLater();
+        serialThread->deleteLater();
+    }
     // 如果子窗口存在，关闭它
     if (configWindow != nullptr) {
         configWindow->close();
@@ -293,22 +338,52 @@ void MainWindow::on_tooltB_clicked()
 }
 
 
-void MainWindow::on_switchBt_clicked()
+void MainWindow::on_usb_switchBt_clicked()
 {
-    Acquire=!Acquire;                             //暂时关闭相机功能，只保留串口传输功能
-    if(Acquire)
+    if(ui->camera_comboBox->count()>0)
     {
-        ui->switchBt->setIcon(QIcon(":/picture/switch_on.png"));
-        emit new_Xfer();
-        ui->camera_det_pB->setEnabled(false);
-        ui->camera_comboBox->setEnabled(false);
-    }else{
-        ui->switchBt->setIcon(QIcon(":/picture/switch_off.png"));
-        ui->camera_det_pB->setEnabled(true);
-        ui->camera_comboBox->setEnabled(true);
+        Acquire=!Acquire;                             //暂时关闭相机功能，只保留串口传输功能
+        if(Acquire)
+        {
+            ui->usb_switchBt->setIcon(QIcon(":/picture/switch_on.png"));
+            emit new_Xfer();
+            ui->camera_det_pB->setEnabled(false);
+            ui->camera_comboBox->setEnabled(false);
+        }else{
+            ui->usb_switchBt->setIcon(QIcon(":/picture/switch_off.png"));
+            ui->camera_det_pB->setEnabled(true);
+            ui->camera_comboBox->setEnabled(true);
 
-        usbthread->stream_save_flag = false;        //数据流图像保存
-        ui->stream_save_pB->setText("开始保存");
+            usbthread->stream_save_flag = false;        //数据流图像保存
+            ui->stream_save_pB->setText("开始保存");
+        }
+    }
+
+}
+
+void MainWindow::on_udp_switchBt_clicked()
+{
+    if(!udp_bind_flag)
+    {
+        emit start_bind(localIP,localport.toUInt());
+        QThread::msleep(10);//等待信号发送到udp_thread类，bind UDP
+        if(udp_bind_flag)
+        {
+            ui->udp_switchBt->setIcon(QIcon(":/picture/switch_on.png"));
+
+        }
+
+    }
+    else if(udp_bind_flag)//将按键与udp是否连接分开来判断，防止无可用串口时按键变灰无法选中,但是实际没什么效果，怀疑是电脑有其他UDP接口一直是打开的
+    {
+        emit close_udp_signal();
+        QThread::msleep(10);//等待信号发送到udp_thread类，close UDP
+        if(!udp_bind_flag)
+        {
+            ui->udp_switchBt->setIcon(QIcon(":/picture/switch_off.png"));
+            udpSocket->stream_save_flag = false;
+            ui->UDP_save_pB->setText("开始保存");
+        }
     }
 }
 
@@ -517,12 +592,20 @@ void MainWindow::on_itgr_pB_clicked()
     emit InstructSettings_signal(0xAA,AASetVals);
 }
 
-//主时钟频率配置
+//主时钟频率1配置
 void MainWindow::on_clk_pB_clicked()
 {
     QList<float>BBSetVals;
     BBSetVals.append(ui->clk_dSB->value());
     emit InstructSettings_signal(0xBB,BBSetVals);
+}
+
+//主时钟频率2配置
+void MainWindow::on_clk_pB_2_clicked()
+{
+    QList<float>DDSetVals;
+    DDSetVals.append(ui->clk_dSB_2->value());
+    emit InstructSettings_signal(0xDD,DDSetVals);
 }
 
 
@@ -591,7 +674,7 @@ void MainWindow:: loadData() {
     for (int i = 0; i < spinBoxCount && i < loadedValues.size(); ++i) {
         spinBoxes[i]->setValue(loadedValues[i].toDouble());
     }
-    qDebug() << "Data loaded:" << loadedValues;
+//    qDebug() << "Data loaded:" << loadedValues;
 }
 
 void MainWindow::on_stream_save_pB_clicked()
@@ -616,6 +699,27 @@ void MainWindow::on_stream_save_pB_clicked()
     }
 }
 
+void MainWindow::on_UDP_save_pB_clicked()
+{
+    if(udp_bind_flag)
+    {
+        if(udpSocket->stream_save_flag==false)
+        {
+            udpSocket->stream_save_flag = true;
+            ui->UDP_save_pB->setText("停止保存");
+        }
+        else if(udpSocket->stream_save_flag==true)
+        {
+            udpSocket->stream_save_flag = false;
+            ui->UDP_save_pB->setText("开始保存");
+        }
+    }
+    else
+    {
+        udpSocket->stream_save_flag = false;
+        ui->UDP_save_pB->setText("开始保存");
+    }
+}
 
 void MainWindow::on_path_sel_tB_clicked()
 {
@@ -625,6 +729,7 @@ void MainWindow::on_path_sel_tB_clicked()
         ui->filepath_cB->setCurrentIndex(ui->filepath_cB->findText(directory));
     }
     usbthread->setSaveDir(directory);
+    udpSocket->setSaveDir(directory);
 }
 
 void MainWindow::LCDNumShow_slot(unsigned char index,float value)//这种方法没有被使用到，暂时舍弃
@@ -785,3 +890,9 @@ void MainWindow::LCDNumShow_slot(unsigned char index,float value)//这种方法�
     }
 
 }
+
+
+
+
+
+

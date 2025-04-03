@@ -16,6 +16,10 @@ public:
     QFile file;
     QString save_path;
     bool fileOpened = false; // 标记文件是否已打开
+
+    static  QImage image;
+    static ushort COL_FPGA;
+    static ushort ROW_FPGA;
     static int valid_pic;
     static uchar usbpic[2][256*256];//双缓冲区;
 signals:

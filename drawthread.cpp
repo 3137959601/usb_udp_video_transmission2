@@ -1,10 +1,13 @@
 #include "drawthread.h"
 #include "qimage.h"
 #include "mainwindow.h"
+#include "usbthread.h"
+
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include<qelapsedtimer.h>
+
 using namespace cv;
 drawThread::drawThread(QObject *parent):QObject(parent)
 {
@@ -14,8 +17,8 @@ void drawThread::drawimage()
 {
    QElapsedTimer mstimer;
    mstimer.start();
-    Mat mat(MainWindow::ROW_FPGA,MainWindow::COL_FPGA,CV_16U,MainWindow::pic[MainWindow::valid_pic]);
-    Mat mat2 = Mat::zeros(MainWindow::ROW_FPGA,MainWindow::COL_FPGA,CV_16U);//
+    Mat mat(usbThread::ROW_FPGA,usbThread::COL_FPGA,CV_16U,usbThread::usbpic[usbThread::valid_pic]);
+    Mat mat2 = Mat::zeros(usbThread::ROW_FPGA,usbThread::COL_FPGA,CV_16U);//
     UMat umat;
     UMat umat2;
 
@@ -40,7 +43,7 @@ void drawThread::drawimage()
     }
 
     QImage im( mat.data,mat.cols, mat.rows,static_cast<int>(mat.step),QImage::Format_Grayscale16 );
-    MainWindow::image = im;
+    usbThread::image = im;
 
     //float time = (double)mstimer.nsecsElapsed()/(double)1000000;
     //qDebug() <<"DrawImage TimeCost:"<< time<<"ms";// ms
@@ -124,7 +127,7 @@ void drawThread::EqualizeHist(Mat& src, Mat& dst,Mat& dst2, int graylevel, int d
 {
 
     //第1步：计算原始图像的像素总个数
-    int ss = src.cols * src.rows;
+//    int ss = src.cols * src.rows;
     if (!src.data)
     {
         return;
@@ -136,10 +139,10 @@ void drawThread::EqualizeHist(Mat& src, Mat& dst,Mat& dst2, int graylevel, int d
     //第2步：计算图像的直方图，即计算出每一取值范围内的像素值个数
     uint* mp = new uint[graylevel];
     memset(mp, 0, sizeof(uint) * graylevel);//初始化
-    for (size_t i = 0; i < src.rows; i++)
+    for (int i = 0; i < src.rows; i++)
     {
         ushort* ptr = src.ptr<ushort>(i);
-        for (size_t j = 0; j < src.cols; j++)
+        for (int j = 0; j < src.cols; j++)
         {
             int value = ptr[j];
             mp[value]++;
@@ -147,13 +150,13 @@ void drawThread::EqualizeHist(Mat& src, Mat& dst,Mat& dst2, int graylevel, int d
     }
 
     int number = 0;
-    for (size_t i = 0; i < graylevel; i++)//平台阈值
+    for (int i = 0; i < graylevel; i++)//平台阈值
     {
-        if (mp[i]>T1)
+        if (mp[i]>(uint)T1)
         {
             mp[i] = T1;//上限平台阈值
         }
-        else if((mp[i]<T2)&&(mp[i]>0))
+        else if((mp[i]<(uint)T2)&&(mp[i]>0))
         {
             mp[i] = T2;//下限平台阈值
         }
@@ -177,11 +180,11 @@ void drawThread::EqualizeHist(Mat& src, Mat& dst,Mat& dst2, int graylevel, int d
     //第6步：灰度变换
     if (dataBit == 8)
     {
-        for (size_t i = 0; i < src.rows; i++)
+        for (int i = 0; i < src.rows; i++)
         {
             uchar* pSrc = src.ptr<uchar>(i);
             uchar* pDst = dst.ptr<uchar>(i);
-            for (size_t j = 0; j < src.cols; j++)
+            for (int j = 0; j < src.cols; j++)
             {
                 pDst[j] = mp[pSrc[j]];
             }
@@ -189,11 +192,11 @@ void drawThread::EqualizeHist(Mat& src, Mat& dst,Mat& dst2, int graylevel, int d
     }
     else if(dataBit==16){
         //第四步：灰度变换
-        for (size_t i = 0; i < src.rows; i++)
+        for (int i = 0; i < src.rows; i++)
         {
             unsigned short* pSrc = src.ptr<unsigned short>(i);
             unsigned short* pDst = dst.ptr<unsigned short>(i);
-            for (size_t j = 0; j < src.cols; j++)
+            for (int j = 0; j < src.cols; j++)
             {
                 pDst[j] = mp[pSrc[j]]* 256;
             }
@@ -234,10 +237,10 @@ void drawThread::EqualizeHist_Array(Mat& src, Mat& dst, int graylevel,int dataBi
     //第2步：计算图像的直方图，即计算出每一取值范围内的像素值个数
     ushort *mp = new ushort[graylevel];
     memset(mp, 0, sizeof(ushort) * graylevel);//初始化
-    for (size_t i = 0; i < src.rows; i++)
+    for (int i = 0; i < src.rows; i++)
     {
         ushort* ptr = src.ptr<ushort>(i);
-        for (size_t j = 0; j < src.cols; j++)
+        for (int j = 0; j < src.cols; j++)
         {
             int value = ptr[j];
             mp[value]++;
@@ -259,11 +262,11 @@ void drawThread::EqualizeHist_Array(Mat& src, Mat& dst, int graylevel,int dataBi
     //第4步：灰度变换
     if (dataBit==8)
     {
-        for (size_t i = 0; i < src.rows; i++)
+        for (int i = 0; i < src.rows; i++)
         {
             uchar* pSrc = src.ptr<uchar>(i);
             uchar* pDst = dst.ptr<uchar>(i);
-            for (size_t j = 0; j < src.cols; j++)
+            for (int j = 0; j < src.cols; j++)
             {
                 pDst[j] = mp[pSrc[j]];
             }
@@ -271,11 +274,11 @@ void drawThread::EqualizeHist_Array(Mat& src, Mat& dst, int graylevel,int dataBi
     }
     else if(dataBit==16){
         //第四步：灰度变换
-        for (size_t i = 0; i < src.rows; i++)
+        for (int i = 0; i < src.rows; i++)
         {
             ushort* pSrc = src.ptr<ushort>(i);
             ushort* pDst = dst.ptr<ushort>(i);
-            for (size_t j = 0; j < src.cols; j++)
+            for (int j = 0; j < src.cols; j++)
             {
                 pDst[j] = mp[pSrc[j]];
             }

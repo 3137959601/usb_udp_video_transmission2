@@ -1,4 +1,4 @@
-QT       += core gui serialport
+QT       += core gui serialport network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,25 +17,33 @@ SOURCES += \
     child_window/image_procss_window.cpp \
     child_window/logwindow.cpp \
     drawthread.cpp \
+    image_widget/largeimage_window.cpp \
+    image_widget/udp_widget_image.cpp \
+    image_widget/usb_widget_image.cpp \
+    image_widget/widget_image.cpp \
     main.cpp \
     mainwindow.cpp \
     child_window/system_settings_window.cpp \
     child_window/toolwindow.cpp \
     serialworker.cpp \
-    usbthread.cpp \
-    widget_image.cpp
+    udp_thread.cpp \
+    usbthread.cpp
 
 HEADERS += \
     child_window/image_procss_window.h \
     child_window/logwindow.h \
     cy_cpp/inc/CyAPI.h \
     drawthread.h \
+    image_widget/largeimage_window.h \
+    image_widget/udp_widget_image.h \
+    image_widget/usb_widget_image.h \
+    image_widget/widget_image.h \
     mainwindow.h \
     child_window/system_settings_window.h \
     child_window/toolwindow.h \
     serialworker.h \
-    usbthread.h \
-    widget_image.h
+    udp_thread.h \
+    usbthread.h
 
 FORMS += \
     child_window/image_procss_window.ui \

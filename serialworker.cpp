@@ -235,6 +235,18 @@ void SerialWorker::InstructionCode(unsigned char flag,QList<float> SetVals)
             checksum ^=lowByte;
             dataString = dataString + lowHexString;
             break;
+        case 0xDD://不放大,只有8bit即2字节，使用0~15代替1.024~16.384
+            length = 0x02;
+            value = SetVals[i]/1.024-1+0.001;
+            qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            qDebug()<<"usValue"<<usValue;
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            checksum ^=lowByte;
+            dataString = dataString + lowHexString;
+            break;
         default:
             qDebug() << "指令发送标志无法识别";
             break;
@@ -293,7 +305,7 @@ void SerialWorker::SerialAnalyse(const QByteArray &recvdata)
 
         // 检查帧头和帧尾
         if (byteArray.empty() ) {
-            qDebug()<<"empty,end";
+//            qDebug()<<"empty,end";
             return;
         }
 

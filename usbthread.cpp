@@ -10,6 +10,9 @@ QElapsedTimer timer;
 float elapsedMilliseconds = 0;
 int usbThread::valid_pic = 0;
 uchar usbThread::usbpic[2][256*256];//双缓冲区;
+ushort usbThread::ROW_FPGA = 128;//分辨率初始化
+ushort usbThread::COL_FPGA = 128;//分辨率初始化
+QImage usbThread::image = QImage(640,512,QImage::Format_Grayscale16);//
 
 usbThread::usbThread(QObject *parent):QObject(parent)
 {
@@ -145,7 +148,7 @@ int usbThread::Xfer()
                 {
                     if (!fileOpened)
                     {
-                        auto path = this->save_path + '/' + QDateTime::currentDateTime().toString("hh_mm_ss-yyyy-MM-dd") + "-usbpic.raw";
+                        auto path = this->save_path + '/' + QDateTime::currentDateTime().toString("hh_mm_ss-yyyy-MM-dd") + "-usb_pic.raw";
                         file.setFileName(path);
                         if (file.open(QIODevice::WriteOnly))
                         {
@@ -161,7 +164,7 @@ int usbThread::Xfer()
                         QDataStream aStream(&file);
                         aStream.setByteOrder(QDataStream::LittleEndian);
                         aStream.writeRawData(reinterpret_cast<const char*>(_p), rLen);
-                        qDebug() << "Data written to file. Length:" << rLen;
+//                        qDebug() << "Data written to file. Length:" << rLen;
                     }
                 }
                 else{
@@ -194,7 +197,7 @@ int usbThread::Xfer()
                                         for (int k = 0; k < 8; k++) {   //每个字节共8bit，每个bit代表一个on或off事件
                                             int index = (pix_shift-j)/40*128 + i * 8 + k;
                                             // 提取temp1的1-bit和temp2的1-bit,拼接，移位的同时放大到0~255的像素范围
-                                            usbpic[pic_index][index] = ((((temp1[i] >> (7- k))& 0x01)<<1)|((temp2[i] >> (7- k))& 0x01)) * 0x55;
+                                            usbpic[pic_index][index] = ((((temp1[i] >> (7- k))& 0x01)<<1)|((temp2[i] >> (7- k))& 0x01));
 //                                            usbpic_temp[index] =((((temp1[i] >> (7- k))& 0x01)<<1)|((temp2[i] >> (8- k))& 0x01));
                                         }
                                     }
@@ -229,7 +232,6 @@ int usbThread::Xfer()
                                             usbThread::valid_pic = 0;
                                         }
                                         emit updatapic();
-
                                     }
                                 }
                             }
