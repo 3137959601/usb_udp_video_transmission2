@@ -14,6 +14,7 @@ CONFIG += resources_big
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    child_window/command_window.cpp \
     child_window/image_procss_window.cpp \
     child_window/logwindow.cpp \
     drawthread.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
     usbthread.cpp
 
 HEADERS += \
+    child_window/command_window.h \
     child_window/image_procss_window.h \
     child_window/logwindow.h \
     cy_cpp/inc/CyAPI.h \
@@ -46,11 +48,15 @@ HEADERS += \
     usbthread.h
 
 FORMS += \
+    child_window/command_window.ui \
     child_window/image_procss_window.ui \
     child_window/logwindow.ui \
     mainwindow.ui \
     child_window/system_settings_window.ui \
     child_window/toolwindow.ui
+
+INCLUDEPATH += 'D:/hjx_work/Qt_project/usb_udp_video_transmission2/usb_udp_video_transmission/image_widget'
+DEPENDPATH += 'D:/hjx_work/Qt_project/usb_udp_video_transmission2/usb_udp_video_transmission/image_widget'
 
 CONFIG += lrelease             //用于多语言转换
 #CONFIG += embed_translations   //用于多语言转换

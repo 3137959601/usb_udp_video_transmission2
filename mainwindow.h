@@ -14,6 +14,7 @@
 #include "child_window/logwindow.h"
 #include "child_window/image_procss_window.h"
 #include "child_window/toolwindow.h"
+#include "child_window/command_window.h"
 
 #include <QGraphicsDropShadowEffect>
 
@@ -89,6 +90,8 @@ signals :
     void start_bind(QString ip,uint port);
     void close_udp_signal();
 
+    //分辨率改变信号
+    void resolutionChanged(ushort newWidth, ushort newHeight);
 protected:
     void closeEvent(QCloseEvent *event) override; // 重载 closeEvent
 
@@ -103,14 +106,16 @@ private slots:
 
     void on_home_tB_clicked();
 
-
     void on_tooltB_clicked();
+
+    void on_command_tB_clicked();
     //相机开关按键
     void on_usb_switchBt_clicked();
     void on_udp_switchBt_clicked();
     //相机检测按键
     void on_camera_det_pB_clicked();
-
+    //分辨率选择
+    void on_resolutioCB_currentIndexChanged(int index);
     //串口功能按键
     void on_serialpB_clicked();
 
@@ -137,12 +142,8 @@ private slots:
 
     //文件保存
     void on_stream_save_pB_clicked();
-
     void on_path_sel_tB_clicked();
-
     void on_UDP_save_pB_clicked();
-
-
 
 private:
     Ui::MainWindow *ui;
@@ -153,7 +154,7 @@ private:
     logwindow *logWindow = nullptr;
     image_procss_window *image_process_Window = nullptr;
     toolwindow *toolWindow = nullptr;
-
+    command_window *commandWindow = nullptr;
     QSettings *settings;
     bool switch_flag;
     //UDP参数

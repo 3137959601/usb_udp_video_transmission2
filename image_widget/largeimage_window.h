@@ -12,6 +12,8 @@
 #include <QElapsedTimer>
 #include <QDateTime>
 
+#include "usbthread.h"
+
 class LargeImageWindow: public QWidget
 {
     Q_OBJECT

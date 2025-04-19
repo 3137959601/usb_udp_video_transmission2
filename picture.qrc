@@ -12,5 +12,6 @@
         <file>picture/serial_open.png</file>
         <file>picture/down_arrow.png</file>
         <file>picture/up_arrow.png</file>
+        <file>picture/command.png</file>
     </qresource>
 </RCC>

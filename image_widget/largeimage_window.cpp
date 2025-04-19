@@ -14,7 +14,7 @@ LargeImageWindow::LargeImageWindow(const QImage &image, QWidget *parent)
 
     // 设置 QLabel 样式，使其显示在窗口左上角
     mousePositionLabel->setStyleSheet("background-color: rgba(0, 0, 0, 50); color: white; padding: 3px;");
-    mousePositionLabel->setFixedSize(100, 20);
+    mousePositionLabel->setFixedSize(150, 20);
     mousePositionLabel->setVisible(false); // 隐藏坐标标签
 }
 void LargeImageWindow::contextMenuEvent(QContextMenuEvent *event) {
@@ -29,12 +29,26 @@ void LargeImageWindow::mouseMoveEvent(QMouseEvent *event)
 {
     // 获取鼠标的 x, y 坐标,默认窗口为512是原窗口的4倍，所以先除以4
     //目前受浮点精度误差累积的影响只能计算放大窗口及大于512的正确坐标
-
-    int x = event->pos().x() /4/ m_zoomFactor+1;  // 四舍五入
-    int y = event->pos().y() /4/ m_zoomFactor+1;  // 四舍五入
+    int xscaleFactor = 512/usbThread::COL_FPGA*m_zoomFactor;
+    int yscaleFactor = 512/usbThread::ROW_FPGA*m_zoomFactor;
+    int x = event->pos().x() /xscaleFactor+1;  // 四舍五入
+    int y = event->pos().y() /yscaleFactor+1;  // 四舍五入
     // 更新 QLabel 显示坐标
-    mousePositionLabel->setText(QString("X: %1, Y: %2").arg(x).arg(y));
-
+//    mousePositionLabel->setText(QString("X: %1, Y: %2").arg(x).arg(y));
+    QColor color = m_image.pixelColor(x - 1, y - 1); // 减1是因为前面加了1
+    QString pixelInfo;
+    if (m_image.format() == QImage::Format_Grayscale8) {
+        pixelInfo = QString("X: %1, Y: %2, Gray: %3").arg(x).arg(y).arg(color.red());
+    } else {
+//        pixelInfo = QString("X: %1, Y: %2")
+//                        .arg(x).arg(y)
+//                        .arg(color.red())
+//                        .arg(color.green())
+//                        .arg(color.blue());
+        pixelInfo = QString("X: %1, Y: %2")
+                        .arg(x).arg(y);
+    }
+    mousePositionLabel->setText(pixelInfo);
     // 让 QLabel 贴着鼠标
     // QLabel 的大小
     int labelWidth = mousePositionLabel->width();

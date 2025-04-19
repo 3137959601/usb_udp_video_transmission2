@@ -185,17 +185,18 @@ int usbThread::Xfer()
                             if(dect_cnt == 20)
                             {
                                 dect_cnt = 0;
-                                for(int pix_shift=j;pix_shift<j+128*40;pix_shift+=40)   //一行包括帧头，分为奇偶行共40个元素
+                                for(int pix_shift=j;pix_shift<j+usbThread::COL_FPGA*40;pix_shift+=40)   //一行包括帧头，分为奇偶行共40个元素
                                 {
+                                    int ROW_Bytes = usbThread::ROW_FPGA/8;
                                     //一行像素重新排列
                                     // 提取 每行的偶数列个 8-bit 元素和奇数列个 8-bit 元素
-                                    memcpy(temp1, _p + pix_shift + 4, 16);        // 复制4~20 个 8-bit 元素
-                                    memcpy(temp2, _p + pix_shift + 24, 16);   // 复制第 24~40 个 8-bit 元素
+                                    memcpy(temp1, _p + pix_shift + 4, ROW_Bytes);        // 复制4~20 个 8-bit 元素
+                                    memcpy(temp2, _p + pix_shift + 24, ROW_Bytes);   // 复制第 24~40 个 8-bit 元素
 
                                     // 重新排列到 pic 数组
-                                    for (int i = 0; i < 16; i++) {     //原8bit字节，共16个
+                                    for (int i = 0; i < ROW_Bytes; i++) {     //原8bit字节，共16个
                                         for (int k = 0; k < 8; k++) {   //每个字节共8bit，每个bit代表一个on或off事件
-                                            int index = (pix_shift-j)/40*128 + i * 8 + k;
+                                            int index = (pix_shift-j)/40*usbThread::ROW_FPGA + i * 8 + k;
                                             // 提取temp1的1-bit和temp2的1-bit,拼接，移位的同时放大到0~255的像素范围
                                             usbpic[pic_index][index] = ((((temp1[i] >> (7- k))& 0x01)<<1)|((temp2[i] >> (7- k))& 0x01));
 //                                            usbpic_temp[index] =((((temp1[i] >> (7- k))& 0x01)<<1)|((temp2[i] >> (8- k))& 0x01));
@@ -211,13 +212,13 @@ int usbThread::Xfer()
 //                                        // 重新排列到 pic 数组
 //                                        for (int i = 0; i < 4; i++) {
 //                                            for (int k = 0; k < 4; k++) {
-//                                                int index = (pix_shift-j)/40*128 + row_group*32 + i * 8 + k * 2;
+//                                                int index = (pix_shift-j)/40*usbThread::ROW_FPGA + row_group*32 + i * 8 + k * 2;
 //                                                usbpic[pic_index][index] = ((temp1[3-i] >> (6- k * 2))& 0x3) * 0x55; // 提取 temp1 的 2-bit,移位的同时放大到0~255的像素范围
 //                                                usbpic[pic_index][index + 1] = ((temp2[3-i] >> (6-k * 2))& 0x3) * 0x55; // 提取 temp2 的 2-bit
 //                                            }
 //                                        }
 //                                    }
-                                    if(pix_shift-j >=127*40)
+                                    if(pix_shift-j >=(usbThread::COL_FPGA-1)*40)
                                     {
 //                                        elapsedMilliseconds = (double)timer.nsecsElapsed()/(double)1000000;
 //                                        timer.start();

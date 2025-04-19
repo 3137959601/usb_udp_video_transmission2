@@ -167,7 +167,7 @@ void SerialWorker::ADInstructionCode(QList<float> ADSetVals)
     qDebug() << "Hex Values:" << hexValues;
 
 }
-//将所有AD的数据放入一条指令中发送
+//指令编码函数，将所以指令将所有AD的数据放入一条指令中发送
 void SerialWorker::InstructionCode(unsigned char flag,QList<float> SetVals)
 {
     //计算异或校验
@@ -238,6 +238,90 @@ void SerialWorker::InstructionCode(unsigned char flag,QList<float> SetVals)
         case 0xDD://不放大,只有8bit即2字节，使用0~15代替1.024~16.384
             length = 0x02;
             value = SetVals[i]/1.024-1+0.001;
+            qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            qDebug()<<"usValue"<<usValue;
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            checksum ^=lowByte;
+            dataString = dataString + lowHexString;
+            break;
+        case 0xEE://不放大,每bit有特点含义
+            length = 0x02;
+            value = SetVals[i];
+            qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            qDebug()<<"usValue"<<usValue;
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            checksum ^=lowByte;
+            dataString = dataString + lowHexString;
+            break;
+        case 0xF1://不放大,SPI On事件指令，每bit有特点含义
+            length = 0x02;
+            value = SetVals[i];
+            qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            qDebug()<<"usValue"<<usValue;
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            checksum ^=lowByte;
+            dataString = dataString + lowHexString;
+            break;
+        case 0xF2://不放大,SPI Off事件指令，每bit有特点含义
+            length = 0x02;
+            value = SetVals[i];
+            qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            qDebug()<<"usValue"<<usValue;
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            checksum ^=lowByte;
+            dataString = dataString + lowHexString;
+            break;
+        case 0xE1://非均匀校正采低温指令，EB 02 E1 00 E0 0A，00没有任何意义，做占位使用
+            length = 0x02;
+            value = SetVals[i];
+            qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            qDebug()<<"usValue"<<usValue;
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            checksum ^=lowByte;
+            dataString = dataString + lowHexString;
+            break;
+        case 0xE2://非均匀校正采低温指令，EB 02 E2 00 E0 0A，00没有任何意义，做占位使用
+            length = 0x02;
+            value = SetVals[i];
+            qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            qDebug()<<"usValue"<<usValue;
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            checksum ^=lowByte;
+            dataString = dataString + lowHexString;
+            break;
+        case 0xE3://非均匀校正采低温指令，EB 02 E3 00 E0 0A，00没有任何意义，做占位使用
+            length = 0x02;
+            value = SetVals[i];
+            qDebug()<<"value"<<value;
+            // 转换为整数,需要两字节存储
+            usValue = static_cast<unsigned short>(static_cast<int>(value));
+            qDebug()<<"usValue"<<usValue;
+            lowByte = static_cast<unsigned char>(usValue&0xFF);
+            lowHexString = QString::number(lowByte, 16).toUpper().rightJustified(2, '0'); // 确保是2位
+            checksum ^=lowByte;
+            dataString = dataString + lowHexString;
+            break;
+        case 0xE4://非均匀校正采低温指令，EB 02 E4 00 E0 0A，00没有任何意义，做占位使用
+            length = 0x02;
+            value = SetVals[i];
             qDebug()<<"value"<<value;
             // 转换为整数,需要两字节存储
             usValue = static_cast<unsigned short>(static_cast<int>(value));

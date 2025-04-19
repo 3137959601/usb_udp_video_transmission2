@@ -69,6 +69,9 @@ void MainWindow::initUI()
     ui->tooltB->setIcon(QIcon(":/picture/tool.png"));
     ui->tooltB->setIconSize(QSize(20, 20)); // 增加图标大小
 
+    ui->command_tB->setIcon(QIcon(":/picture/command.png"));
+    ui->command_tB->setIconSize(QSize(20, 20)); // 增加图标大小
+
     ui->serialpB->setIcon(QIcon(":/picture/serial_close.png"));
     // 默认创建状态栏
     auto p_status_bar = this->statusBar();
@@ -77,6 +80,8 @@ void MainWindow::initUI()
     //初始时先检测一次USB接口
     this->on_camera_det_pB_clicked();
 
+    //窗口大小改变
+    connect(this, &MainWindow::resolutionChanged, ui->usb_widget, &widget_image::onResolutionChanged);
 //    qDebug()<<"开启主线程:"<<QThread::currentThread();//查看槽函数在哪个线程运行
 }
 
@@ -166,6 +171,7 @@ void MainWindow::initLCD()
     connect(serialworker,&SerialWorker::Temp_LCDNumShow,this,&MainWindow::Temp_LCDNumShow_slot);
     connect(this,&MainWindow::InstructSettings_signal,serialworker,&SerialWorker::InstructionCode);
 
+
 }
 
 void MainWindow::initPath()
@@ -229,6 +235,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
     if (toolWindow != nullptr) {
         toolWindow->close();
+    }
+    if (commandWindow != nullptr) {
+        commandWindow->close();
     }
     // 执行其他关闭时的逻辑
 
@@ -294,6 +303,7 @@ void MainWindow::on_image_process_tB_clicked()
             // 设置工具按钮状态为按下
             ui->image_process_tB->setChecked(false);
         });
+        connect(image_process_Window,&image_procss_window::nonuniformity_correction_signal,serialworker,&SerialWorker::InstructionCode);
     } else {
         // 如果窗口已经打开，则将其激活
         image_process_Window->raise(); // 提升窗口到最前面
@@ -337,6 +347,28 @@ void MainWindow::on_tooltB_clicked()
         toolWindow->show(); // 显示新窗口
 }
 
+
+void MainWindow::on_command_tB_clicked()
+{
+    // 如果newWindow为空或者已经关闭，则创建新窗口
+    if (commandWindow == nullptr) {
+        commandWindow = new command_window();
+        commandWindow->setAttribute(Qt::WA_DeleteOnClose); // 窗口关闭时自动删除
+        // 连接主窗口的destroyed信号到新窗口的close槽
+        connect(commandWindow, &QWidget::destroyed, this, [this]() {
+            commandWindow = nullptr; // 将configWindow重置为nullptr
+            // 设置工具按钮状态为按下
+            ui->command_tB->setChecked(false);
+        });
+        connect(commandWindow,&command_window::sensor_signal,serialworker,&SerialWorker::InstructionCode);
+    } else {
+        // 如果窗口已经打开，则将其激活
+        commandWindow->raise(); // 提升窗口到最前面
+        commandWindow->activateWindow(); // 激活窗口
+        ui->command_tB->setChecked(true);
+    }
+        commandWindow->show(); // 显示新窗口
+}
 
 void MainWindow::on_usb_switchBt_clicked()
 {
@@ -404,6 +436,20 @@ void MainWindow::on_camera_det_pB_clicked()
     }
 }
 
+void MainWindow::on_resolutioCB_currentIndexChanged(int index)
+{
+    // 获取当前选中的项
+    QString selectedItem = ui->resolutioCB->itemText(index);
+    // 根据选中的项更新usbThread的静态变量
+    if (selectedItem == "128*128") {
+        usbThread::ROW_FPGA = 128;
+        usbThread::COL_FPGA = 128;
+    } else if (selectedItem == "64*64") {
+        usbThread::ROW_FPGA = 64;
+        usbThread::COL_FPGA = 64;
+    }
+    resolutionChanged(usbThread::ROW_FPGA, usbThread::COL_FPGA);
+}
 
 void MainWindow::on_serialpB_clicked()
 {
@@ -890,9 +936,5 @@ void MainWindow::LCDNumShow_slot(unsigned char index,float value)//这种方法�
     }
 
 }
-
-
-
-
 
 

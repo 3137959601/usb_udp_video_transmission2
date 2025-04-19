@@ -7,19 +7,6 @@ udp_widget_image::udp_widget_image(QWidget *parent)
 
 }
 
-//QImage udp_widget_image::getCurrentImage() const
-//{
-//    QImage image(Udp_Thread::COL_FPGA, Udp_Thread::ROW_FPGA, QImage::Format_Grayscale8);
-
-//    // 这里需要根据您的实际UDP数据处理逻辑填充图像
-//    // 示例代码：
-//    uchar *bits = image.bits();
-//    for (int i = 0; i < Udp_Thread::COL_FPGA * Udp_Thread::ROW_FPGA; ++i) {
-//        bits[i] = Udp_Thread::pic[i];  // 假设pic是您的UDP图像数据
-//    }
-
-//    return image;
-//}
 QImage udp_widget_image::getCurrentImage() const
 {
     // 从UDP线程获取图像数据,直接16位显示

@@ -1,6 +1,3 @@
-QT host computer program，
-using UDP and USB dual channels respectively to receive infrared camera images, 
-and equipped with perfect image processing tools and host computer debugging tools.
-
-实现串口与串口传输助手的通信，完成指令协议的制定与收发解析
-UDP通信还未整合
+QT host computer program;
+USB and UDP dual channels are used to receive infrared event type and gray level image respectively.
+And equipped with perfect image processing tools and serial command control tools
