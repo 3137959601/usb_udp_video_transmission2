@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>979</width>
+    <width>989</width>
     <height>751</height>
    </rect>
   </property>
@@ -545,6 +545,11 @@ QPushButton:disabled {
             <item>
              <property name="text">
               <string>64*64</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>640*512</string>
              </property>
             </item>
            </widget>
@@ -3596,7 +3601,7 @@ QLCDNumber:hover {
              <item row="0" column="0">
               <widget class="QLabel" name="label_40">
                <property name="text">
-                <string>供电电流1~5</string>
+                <string>供电电流1~5/mA</string>
                </property>
                <property name="openExternalLinks">
                 <bool>false</bool>
@@ -3703,7 +3708,7 @@ QDoubleSpinBox::down-button {
              <item row="3" column="0">
               <widget class="QLabel" name="label_41">
                <property name="text">
-                <string>SUBPI</string>
+                <string>SUBPI/mA</string>
                </property>
               </widget>
              </item>
@@ -3725,9 +3730,16 @@ QDoubleSpinBox::down-button {
               </spacer>
              </item>
              <item>
-              <widget class="QPushButton" name="confupd_pB">
+              <widget class="QToolButton" name="confload_path_tB">
                <property name="text">
-                <string>配置更新</string>
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="confload_pB">
+               <property name="text">
+                <string>配置加载</string>
                </property>
               </widget>
              </item>
@@ -3735,6 +3747,20 @@ QDoubleSpinBox::down-button {
               <widget class="QPushButton" name="confsv_pB">
                <property name="text">
                 <string>配置保存</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="confupd_pB">
+               <property name="text">
+                <string>配置更新</string>
                </property>
               </widget>
              </item>
@@ -3931,7 +3957,7 @@ QDoubleSpinBox::down-button {
                  <double>1.024000000000000</double>
                 </property>
                 <property name="maximum">
-                 <double>16.384000000000000</double>
+                 <double>40.960000000000001</double>
                 </property>
                 <property name="singleStep">
                  <double>1.024000000000000</double>
@@ -4032,7 +4058,7 @@ QDoubleSpinBox::down-button {
                  <double>1.024000000000000</double>
                 </property>
                 <property name="maximum">
-                 <double>16.384000000000000</double>
+                 <double>40.960000000000001</double>
                 </property>
                 <property name="singleStep">
                  <double>1.024000000000000</double>
@@ -4118,7 +4144,7 @@ QLCDNumber:hover {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>979</width>
+     <width>989</width>
      <height>22</height>
     </rect>
    </property>

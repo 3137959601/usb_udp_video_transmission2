@@ -199,25 +199,8 @@ int usbThread::Xfer()
                                             int index = (pix_shift-j)/40*usbThread::ROW_FPGA + i * 8 + k;
                                             // 提取temp1的1-bit和temp2的1-bit,拼接，移位的同时放大到0~255的像素范围
                                             usbpic[pic_index][index] = ((((temp1[i] >> (7- k))& 0x01)<<1)|((temp2[i] >> (7- k))& 0x01));
-//                                            usbpic_temp[index] =((((temp1[i] >> (7- k))& 0x01)<<1)|((temp2[i] >> (8- k))& 0x01));
                                         }
                                     }
-//                                    //一行像素重新排列
-//                                    for(int row_group = 0;row_group<4;row_group++)  //共有四个列分组，分别对应第0~31，,3~63，,6~95,96~127列
-//                                    {
-//                                        // 提取 每行的偶数列个 8-bit 元素和奇数列个 8-bit 元素
-//                                        memcpy(temp1, _p + pix_shift + row_group*4  + 4, 4);        // 复制前 4 个 8-bit 元素
-//                                        memcpy(temp2, _p + pix_shift + row_group*4 + 24, 4);   // 复制第 17~20 个 8-bit 元素
-
-//                                        // 重新排列到 pic 数组
-//                                        for (int i = 0; i < 4; i++) {
-//                                            for (int k = 0; k < 4; k++) {
-//                                                int index = (pix_shift-j)/40*usbThread::ROW_FPGA + row_group*32 + i * 8 + k * 2;
-//                                                usbpic[pic_index][index] = ((temp1[3-i] >> (6- k * 2))& 0x3) * 0x55; // 提取 temp1 的 2-bit,移位的同时放大到0~255的像素范围
-//                                                usbpic[pic_index][index + 1] = ((temp2[3-i] >> (6-k * 2))& 0x3) * 0x55; // 提取 temp2 的 2-bit
-//                                            }
-//                                        }
-//                                    }
                                     if(pix_shift-j >=(usbThread::COL_FPGA-1)*40)
                                     {
 //                                        elapsedMilliseconds = (double)timer.nsecsElapsed()/(double)1000000;

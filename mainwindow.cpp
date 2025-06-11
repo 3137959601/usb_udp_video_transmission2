@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete settings;  // 防止内存泄漏
     delete ui;
 }
 
@@ -142,7 +143,31 @@ void MainWindow::initThreads()  //去除绘图线程
     //UDP
     connect(this,&MainWindow::start_bind,udpSocket,&Udp_Thread::udp_bind);
     connect(this,&MainWindow::close_udp_signal,udpSocket,&Udp_Thread::udp_close);
-    connect(udpSocket,&Udp_Thread::updataUDPpic,ui->udp_widget,&widget_image::repaintImage);//draw线程绘图结束，主线程更新界面
+
+//    connect(udpSocket,&Udp_Thread::updataUDPpic,ui->udp_widget,&widget_image::repaintImage);//draw线程绘图结束，主线程更新界面
+
+    // —— 图像处理线程初始化 ——
+    imgProc = new ImageProcessor;
+    procThread = new QThread;
+    imgProc->moveToThread(procThread);
+    connect(thread3, &QThread::finished, procThread, &QThread::quit);       //UDP线程结束后退出
+    connect(this, &MainWindow::destroyed, imgProc, &ImageProcessor::deleteLater);
+    connect(this, &MainWindow::destroyed, procThread, &QThread::deleteLater);
+    // 当UDP线程有新帧时，送给处理线程
+    connect(udpSocket, &Udp_Thread::updataUDPpic, this, [=](){
+        ushort *buf = Udp_Thread::pic[Udp_Thread::valid_pic];
+//        int w = Udp_Thread::COL_FPGA;
+//        int h = Udp_Thread::ROW_FPGA;
+        // 直接用 Qt::QueuedConnection 发给线程中的对象：
+        QMetaObject::invokeMethod(imgProc, [=](){
+            imgProc->process(buf, Udp_Thread::COL_FPGA, Udp_Thread::ROW_FPGA);
+        }, Qt::QueuedConnection);
+    });
+
+    // 处理完毕，更新显示
+    connect(imgProc,&ImageProcessor::processed12,ui->udp_widget,&udp_widget_image::onProcessedImage);//draw线程绘图结束，主线程更新界面
+//    connect(imgProc, &ImageProcessor::processed, ui->udp_widget, &widget_image::onProcessedImage);
+    procThread->start();
 
     //启动子线程
     thread1->start();
@@ -303,7 +328,18 @@ void MainWindow::on_image_process_tB_clicked()
             // 设置工具按钮状态为按下
             ui->image_process_tB->setChecked(false);
         });
-        connect(image_process_Window,&image_procss_window::nonuniformity_correction_signal,serialworker,&SerialWorker::InstructionCode);
+//        connect(image_process_Window,&image_procss_window::nonuniformity_correction_signal,serialworker,&SerialWorker::InstructionCode);
+        //直方图增强按钮连接
+        connect(image_process_Window->getHistEqualButton(),  &QPushButton::toggled, imgProc, &ImageProcessor::enableHistEqualize);
+        // —— 两点校正按钮连接 ——
+        connect(image_process_Window->getLowRefButton(),  &QPushButton::clicked, imgProc, &ImageProcessor::startLowCapture);
+        connect(image_process_Window->getHighRefButton(), &QPushButton::clicked, imgProc, &ImageProcessor::startHighCapture);
+//        connect(image_process_Window->getTwoPointButton(), &QPushButton::clicked, imgProc, &ImageProcessor::doTwoPointCalibration);
+        connect(image_process_Window->getTwoPointButton(), &QPushButton::toggled,
+                imgProc, &ImageProcessor::enableTwoPoint);
+        // —— 捕获状态显示 ——
+        connect(imgProc, &ImageProcessor::captureStatus,
+                this, [&](const QString &msg){ ui->statusbar->showMessage(msg, 3000); });
     } else {
         // 如果窗口已经打开，则将其激活
         image_process_Window->raise(); // 提升窗口到最前面
@@ -467,6 +503,10 @@ void MainWindow::on_serialpB_clicked()
             ui->serialpB->setIcon(QIcon(":/picture/serial_open.png"));
             ui->serial_det_pB->setEnabled(false);
             ui->serialCb->setEnabled(false);
+            //串口打开时自动发送一次配置command窗口中的默认指令
+            QList<float> value;
+            value.append(49);//110001
+            emit InstructSettings_signal(0xEE, value);
         }
 
     }
@@ -539,16 +579,16 @@ void MainWindow::LCDNumShow_slot2(std::vector<float> currents)
 
     // 所有LCD控件的配置
     const std::vector<LCDMapping> mappings = {
-        // 供电电流电压
-        {ui->sc_lcdNum1, 0, nullptr}, {ui->sc_lcdNum2, 2, nullptr},
-        {ui->sc_lcdNum3, 4, nullptr}, {ui->sc_lcdNum4, 6, nullptr},
-        {ui->sc_lcdNum5, 8, nullptr},
+        // 供电电压电流,需要除以25，让后乘以1000转换为mA
+        {ui->sc_lcdNum1, 0, [](float v){ return v*40;}}, {ui->sc_lcdNum2, 2, [](float v){ return v*40;}},
+        {ui->sc_lcdNum3, 4, [](float v){ return v*40;}}, {ui->sc_lcdNum4, 6, [](float v){ return v*40;}},
+        {ui->sc_lcdNum5, 8, [](float v){ return v*40;}},
         // 供电电压
         {ui->sv_lcdNum1, 1, nullptr}, {ui->sv_lcdNum2, 3, nullptr},
         {ui->sv_lcdNum3, 5, nullptr}, {ui->sv_lcdNum4, 7, nullptr},
         {ui->sv_lcdNum5, 9, nullptr},
-        // SUBPI (根据原理图，实际测量值需要减去2.5v的电压)
-        {ui->SUBPI_lcdNum, 10, [](float v){ return v - 2.5f; }},
+        // SUBPI (根据原理图，实际测量值需要减去2.5v的电压,再除以50，乘以1000转换为mA)
+        {ui->SUBPI_lcdNum, 10, [](float v){ return (v - 2.5f)*20; }},
         // SUBPV
         {ui->SUBPV_lcdNum, 11, nullptr},
         // 可调电流
@@ -655,6 +695,40 @@ void MainWindow::on_clk_pB_2_clicked()
 }
 
 
+
+void MainWindow::on_confload_pB_clicked()
+{
+    settings->sync();  // 强制同步磁盘文件到内存
+    loadData();
+}
+
+
+void MainWindow::on_confload_path_tB_clicked()
+{
+    // 打开文件选择对话框，限制为 .ini 文件
+    QString fileName = QFileDialog::getOpenFileName(
+        this,
+        "选择配置文件",
+        QApplication::applicationDirPath(),  // 默认路径为程序所在目录
+        "INI 文件 (*.ini);;所有文件 (*)"
+    );
+
+    if (fileName.isEmpty()) {
+        qDebug() << "未选择文件";
+        return;
+    }
+
+    // 销毁旧的 QSettings 对象
+    delete settings;
+    settings = nullptr;
+
+    // 创建新的 QSettings 对象（指向用户选择的文件）
+    settings = new QSettings(fileName, QSettings::IniFormat, this);
+    qDebug() << "已加载配置文件:" << settings->fileName();
+
+    // 重新加载数据
+    loadData();
+}
 
 void MainWindow::on_confsv_pB_clicked()
 {
@@ -936,5 +1010,6 @@ void MainWindow::LCDNumShow_slot(unsigned char index,float value)//这种方法�
     }
 
 }
+
 
 

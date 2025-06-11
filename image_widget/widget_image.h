@@ -30,6 +30,7 @@ public slots:
         // 更新图像显示
         update();
     }
+
 protected:
     virtual QImage getCurrentImage() const = 0; //​值返回​（副本）	调用者获得独立拷贝，安全但可能有拷贝开销	需要隔离原始数据时使用
 //    const QImage& getDisplayImage()const;    //​常量引用	直接返回内部引用，零拷贝但需注意生命周期	仅访问不修改时使用

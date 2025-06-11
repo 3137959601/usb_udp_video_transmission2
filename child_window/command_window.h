@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "serialworker.h"
 #include <QButtonGroup>
+#include <QSpinBox>
+#include "../toolbox/binaryspinbox.h"
 
 namespace Ui {
 class command_window;
@@ -26,8 +28,13 @@ private slots:
 
     void on_off_set_pB_clicked();
 
+    void on_FA2415ASetpB_clicked();
+
+    void on_FA2415ArB_toggled(bool checked);
+
 private:
     Ui::command_window *ui;
+    bool m_isFa2415ArbSelected = true;
 };
 
 #endif // COMMAND_WINDOW_H

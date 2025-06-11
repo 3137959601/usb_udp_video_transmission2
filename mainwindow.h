@@ -23,6 +23,7 @@
 #include "usbthread.h"
 #include "serialworker.h"
 #include "udp_thread.h"
+#include "image_processor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,11 +44,13 @@ public:
 
     Udp_Thread *udpSocket;
     SerialWorker *serialworker;
+    ImageProcessor *imgProc;
 
     QThread *thread1;
     QThread *thread2;
     QThread *thread3;
     QThread *serialThread;
+    QThread *procThread;
 
     QPixmap pixmap ;
 
@@ -99,15 +102,10 @@ private slots:
     //void on_system_setup_tB_triggered(QAction *arg1);
     //子窗口按键
     void on_system_setup_tB_clicked();
-
     void on_log_tB_clicked();
-
     void on_image_process_tB_clicked();
-
     void on_home_tB_clicked();
-
     void on_tooltB_clicked();
-
     void on_command_tB_clicked();
     //相机开关按键
     void on_usb_switchBt_clicked();
@@ -120,7 +118,6 @@ private slots:
     void on_serialpB_clicked();
 
 //    void on_command_sendBt_clicked();
-
 //    void on_command_clearBt_clicked();
 
     void on_serial_det_pB_clicked();
@@ -129,16 +126,18 @@ private slots:
     void LCDNumShow_slot(unsigned char index,float value);
     void LCDNumShow_slot2(std::vector<float>currents);
     void Temp_LCDNumShow_slot(std::vector<float>Temps);
-
+    //指令发送
+    void on_confupd_pB_clicked();
     void on_itgr_pB_clicked();
     void on_clk_pB_clicked();
     void on_clk_pB_2_clicked();
-    void on_confupd_pB_clicked();
-
-    //void getADSettings();
-    //配置保存
+    //配置存储及加载相关指令
+    void on_confload_pB_clicked();
+     void on_confload_path_tB_clicked();
     void on_confsv_pB_clicked();
     void loadData();
+    //void getADSettings();
+
 
     //文件保存
     void on_stream_save_pB_clicked();
@@ -162,6 +161,7 @@ private:
     QString localIP;
     QString targetPort;
     QString targetIP;
+
 
 };
 #endif // MAINWINDOW_H

@@ -27,28 +27,37 @@ void LargeImageWindow::contextMenuEvent(QContextMenuEvent *event) {
 }
 void LargeImageWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    // 获取鼠标的 x, y 坐标,默认窗口为512是原窗口的4倍，所以先除以4
-    //目前受浮点精度误差累积的影响只能计算放大窗口及大于512的正确坐标
-    int xscaleFactor = 512/usbThread::COL_FPGA*m_zoomFactor;
-    int yscaleFactor = 512/usbThread::ROW_FPGA*m_zoomFactor;
-    int x = event->pos().x() /xscaleFactor+1;  // 四舍五入
-    int y = event->pos().y() /yscaleFactor+1;  // 四舍五入
-    // 更新 QLabel 显示坐标
-//    mousePositionLabel->setText(QString("X: %1, Y: %2").arg(x).arg(y));
-    QColor color = m_image.pixelColor(x - 1, y - 1); // 减1是因为前面加了1
-    QString pixelInfo;
-    if (m_image.format() == QImage::Format_Grayscale8) {
-        pixelInfo = QString("X: %1, Y: %2, Gray: %3").arg(x).arg(y).arg(color.red());
-    } else {
-//        pixelInfo = QString("X: %1, Y: %2")
-//                        .arg(x).arg(y)
-//                        .arg(color.red())
-//                        .arg(color.green())
-//                        .arg(color.blue());
-        pixelInfo = QString("X: %1, Y: %2")
-                        .arg(x).arg(y);
-    }
-    mousePositionLabel->setText(pixelInfo);
+    refreshMouseLabel(event->pos());
+}
+
+void LargeImageWindow::refreshMouseLabel(const QPoint &pos)
+{
+    // 将窗口坐标映射到图像像素坐标
+    int xscale = width() / m_image.width();
+    int yscale = height() / m_image.height();
+    int x = pos.x() / xscale + 1;
+    int y = pos.y() / yscale + 1;
+    if (x < 1 || x > m_raw12.width() || y < 1 || y > m_raw12.height())
+        return;
+    //    if (m_image.format() == QImage::Format_Grayscale8) {
+    //        pixelInfo = QString("X: %1, Y: %2, Gray: %3").arg(x).arg(y).arg(color.red());
+    //    } else {
+    ////        pixelInfo = QString("X: %1, Y: %2")
+    ////                        .arg(x).arg(y)
+    ////                        .arg(color.red())
+    ////                        .arg(color.green())
+    ////                        .arg(color.blue());
+    //        pixelInfo = QString("X: %1, Y: %2")
+    //                        .arg(x).arg(y);
+    //    }
+    //    mousePositionLabel->setText(pixelInfo);
+    // 读取 12 位像素值
+    const ushort *buf = reinterpret_cast<const ushort*>(m_raw12.constBits());
+    ushort val12 = buf[(y-1) * m_raw12.width() + (x-1)];
+    mousePositionLabel->setText(
+        QString("X:%1 Y:%2 Gray:%3").arg(x).arg(y).arg(val12)
+    );
+
     // 让 QLabel 贴着鼠标
     // QLabel 的大小
     int labelWidth = mousePositionLabel->width();
@@ -59,21 +68,22 @@ void LargeImageWindow::mouseMoveEvent(QMouseEvent *event)
     int windowHeight = this->height();
 
     // 计算 QLabel 的新位置（优先右下角）
-    int newX = event->pos().x() + 10;
-    int newY = event->pos().y() + 10;
+    int newX = pos.x() + 10;
+    int newY = pos.y() + 10;
 
     // **防止 QLabel 超出右边界**
     if (newX + labelWidth > windowWidth) {
-        newX = event->pos().x() - labelWidth - 10; // 移动到鼠标左侧
+        newX = pos.x() - labelWidth - 10; // 移动到鼠标左侧
     }
 
     // **防止 QLabel 超出下边界**
     if (newY + labelHeight > windowHeight) {
-        newY = event->pos().y() - labelHeight - 10; // 移动到鼠标上方
+        newY = pos.y() - labelHeight - 10; // 移动到鼠标上方
     }
 
     // 更新 QLabel 的位置
     mousePositionLabel->move(newX, newY);
+    mousePositionLabel->setVisible(true);
 }
 void LargeImageWindow::enterEvent(QEnterEvent *event)
 {
@@ -120,6 +130,18 @@ void LargeImageWindow::paintEvent(QPaintEvent *event)
 void LargeImageWindow::updateImage(const QImage &newImage) {
     m_image = newImage; // QImage 的隐式共享机制保证高效
     update(); // 触发重绘
-
-//    qDebug()<<"LargeImageWindow:"<<QThread::currentThreadId();
+    //    qDebug()<<"LargeImageWindow:"<<QThread::currentThreadId();
 }
+
+void LargeImageWindow::updateImage12(const QImage &img12)
+{
+    m_raw12 = img12;
+    // 如果鼠标此刻在窗口内，则刷新标签
+    if (mousePositionLabel->isVisible()) {
+        // 全局鼠标位置 --映射到-> widget 坐标
+        QPoint wpos = mapFromGlobal(QCursor::pos());
+        if (rect().contains(wpos))  //如果鼠标在窗口内则更新它，否则不处理
+            refreshMouseLabel(wpos);
+    }
+}
+

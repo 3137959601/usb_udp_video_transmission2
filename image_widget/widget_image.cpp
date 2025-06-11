@@ -1,5 +1,6 @@
 #include "widget_image.h"
 #include "mainwindow.h"
+#include "udp_widget_image.h"
 
 widget_image::widget_image(QWidget *parent) : QWidget(parent)
 {
@@ -19,6 +20,7 @@ void widget_image::paintEvent(QPaintEvent *e)
     QPainter painter(this);
 
     painter.drawImage(rect(), getCurrentImage().scaled(size(), Qt::KeepAspectRatio));
+
 }
 
 void widget_image::repaintImage()
@@ -26,6 +28,7 @@ void widget_image::repaintImage()
     update();
     emit imageUpdated(getCurrentImage()); // 发射带参数的图像更新信号
 }
+
 
 void widget_image::mousePressEvent(QMouseEvent *event)
 {
@@ -37,6 +40,13 @@ void widget_image::mousePressEvent(QMouseEvent *event)
             largeWindow = new LargeImageWindow(dynamicImage);
             largeWindow->setAttribute(Qt::WA_DeleteOnClose);
             largeWindow->setWindowFlag(Qt::Window);
+
+            //连接 udp_widget_image 的12位图像信号到大窗口槽
+            udp_widget_image *udp = qobject_cast<udp_widget_image*>(this);
+            if (udp) {  //增加一个12位未压缩图像发送给大窗口，以定位对应坐标的像素值
+                connect(udp, &udp_widget_image::raw12Updated,
+                        largeWindow, &LargeImageWindow::updateImage12);
+            }
 
             QObject::connect(this, &widget_image::imageUpdated, largeWindow, &LargeImageWindow::updateImage);
             QObject::connect(largeWindow, &QObject::destroyed, [&]() { largeWindow = nullptr; });
